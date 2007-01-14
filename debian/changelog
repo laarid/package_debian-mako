@@ -1,5 +1,5 @@
-mako (0.1.0-1) unstable; urgency=low
+mako (0.1.1-1) unstable; urgency=low
 
   * Initial release (closes: #405576)
 
- -- Piotr Ozarowski <ozarow@gmail.com>  Thu,  4 Jan 2007 23:04:33 +0100
+ -- Piotr Ozarowski <ozarow@gmail.com>  Sun, 14 Jan 2007 20:11:22 +0100
