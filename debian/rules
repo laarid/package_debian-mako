@@ -29,7 +29,7 @@ install-python%:
 binary-indep: build install
 	dh_testdir -i
 	dh_testroot -i
-	dh_installchangelogs -i
+	dh_installchangelogs -i CHANGES
 	dh_installdocs -i
 	rm -rf debian/python-mako/usr/share/doc/python-mako/doc/build
 	dh_pycentral -i
