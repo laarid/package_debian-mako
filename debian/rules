@@ -1,0 +1,48 @@
+#!/usr/bin/make -f
+
+#export DH_VERBOSE=1
+
+DEB_UPSTREAM_VERSION=$(shell dpkg-parsechangelog \
+	| grep ^Version: | cut -d ' ' -f 2 | cut -d '-' -f 1)
+
+PYVERS=$(shell pyversions -vr)
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-*
+	rm -rf build
+	find . -name *\.py[co] -exec rm {} \;
+	dh_clean
+
+build:
+
+install: $(PYVERS:%=install-python%)
+install-python%:
+	python$* setup.py install \
+		--single-version-externally-managed \
+		--root $(CURDIR)/debian/python-mako
+	# share Egg dir
+	mv debian/python-mako/usr/lib/python$*/site-packages/Mako-${DEB_UPSTREAM_VERSION}-py$*.egg-info \
+	   debian/python-mako/usr/lib/python$*/site-packages/Mako-${DEB_UPSTREAM_VERSION}.egg-info
+
+binary-indep: build install
+	dh_testdir -i
+	dh_testroot -i
+	dh_installchangelogs -i CHANGES
+	dh_installdocs -i
+	dh_installexamples -i
+	rm -rf debian/python-mako/usr/share/doc/python-mako/doc/build
+	dh_pycentral -i
+	dh_compress -i -X.py -Xmakotemplates.txt
+	dh_fixperms -i
+	dh_installdeb -i
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i
+
+binary-arch:
+
+binary: binary-indep binary-arch
+
+.PHONY: build clean binary-indep binary-arch binary install configure
