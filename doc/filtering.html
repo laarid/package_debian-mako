@@ -1,5 +1,6 @@
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<title>Mako Documentation - Filtering and Buffering</title>
 	
     <link rel="stylesheet" href="docs.css"></link>
@@ -25,7 +26,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.1.1   Last Updated: 01/14/07 13:49:55</div>
+<div class="versionheader">Version: 0.1.2   Last Updated: 01/31/07 23:24:25</div>
 
 
 
@@ -44,7 +45,7 @@
             Previous: <a href="inheritance.html">Inheritance</a>
 
             |
-            Next: <a href="caching.html">Caching</a>
+            Next: <a href="unicode.html">The Unicode Chapter</a>
         </div>
         <h3><a href="index.html">Table of Contents</a></h3>
     </div>
@@ -59,6 +60,12 @@
         
             
     <ul>
+        <li><A style="" href="filtering.html#filtering_expression_defaultfilters">The default_filters Argument</a></li>
+        
+            
+    <ul>
+    </ul>
+
     </ul>
 
         <li><A style="" href="filtering.html#filtering_filtering">Filtering Defs</a></li>
@@ -76,7 +83,6 @@
     </ul>
 
 	</div>
-
 
 
 
@@ -144,6 +150,14 @@
 
  <li>
      <code>entity</code> : produces HTML entity references for applicable strings, derived from <code>htmlentitydefs</code>
+ </li>
+
+ <li>
+     <code>unicode</code> : produces a Python unicode string (this function is applied by default).
+ </li>
+
+ <li>
+     <code>decode.&lt;some encoding&gt;</code> : decode input into a Python unicode with the specified encoding
  </li>
 </ul>
 <p>To apply more than one filter, separate them by a comma:
@@ -214,6 +228,86 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
 </pre></div>
 
     </div>
+
+
+    
+    <A name="filtering_expression_defaultfilters"></a>
+    
+    <div class="subsection">
+    
+
+    <h3>The default_filters Argument</h3>
+    
+    
+
+<p><strong>New in version 0.1.2</strong>
+</p>
+<p>In addition to the <code>expression_filter</code> argument, the <code>default_filters</code> argument to both <code>Template</code> and <code>TemplateLookup</code> can specify filtering at the programmatic level.  This array-based argument defaults to <code>[&quot;unicode&quot;]</code>:
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight" ><pre><span class="n">t</span> <span class="o">=</span> <span class="n">TemplateLookup</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;/tmp&#39;</span><span class="p">],</span> <span class="n">default_filters</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;unicode&#39;</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+<p>To replace the usual <code>unicode</code> function with a specific encoding, the <code>decode</code> filter can be substituted:
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight" ><pre><span class="n">t</span> <span class="o">=</span> <span class="n">TemplateLookup</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;/tmp&#39;</span><span class="p">],</span> <span class="n">default_filters</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;decode.utf8&#39;</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+<p>Any string name can be added to <code>default_filters</code> where it will be added to all expressions as a filter.  The filters are applied from left to right, meaning the leftmost filter is applied first.
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight" ><pre><span class="n">t</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">templatetext</span><span class="p">,</span> <span class="n">default_filters</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;unicode&#39;</span><span class="p">,</span> <span class="s">&#39;myfilter&#39;</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+<p>To ease the usage of <code>default_filters</code> with custom filters, you can also add imports (or other code) to all templates using the <code>imports</code> argument:
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight" ><pre><span class="n">t</span> <span class="o">=</span> <span class="n">TemplateLookup</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;/tmp&#39;</span><span class="p">],</span> 
+    <span class="n">default_filters</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;unicode&#39;</span><span class="p">,</span> <span class="s">&#39;myfilter&#39;</span><span class="p">],</span> 
+    <span class="n">imports</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;from mypackage import myfilter&#39;</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+<p>The above will generate templates something like this:
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight" ><pre><span class="c"># ....</span>
+<span class="k">from</span> <span class="nn">mypackage</span> <span class="k">import</span> <span class="n">myfilter</span>
+
+<span class="k">def</span> <span class="nf">render_body</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">myfilter</span><span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="s">&quot;some text&quot;</span><span class="p">)))</span>
+</pre></div>
+
+    </div>
+
+
+
+    </div>
+
 
 
 
@@ -379,7 +473,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
             Previous: <a href="inheritance.html">Inheritance</a>
 
             |
-            Next: <a href="caching.html">Caching</a>
+            Next: <a href="unicode.html">The Unicode Chapter</a>
         </div>
         <h3><a href="index.html">Table of Contents</a></h3>
     </div>
