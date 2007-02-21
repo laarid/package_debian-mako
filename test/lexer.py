@@ -4,6 +4,7 @@ from mako.lexer import Lexer
 from mako import exceptions
 from util import flatten_result, result_lines
 from mako.template import Template
+import re
 
 class LexerTest(unittest.TestCase):
     def test_text_and_tag(self):
@@ -75,7 +76,7 @@ class LexerTest(unittest.TestCase):
     
     def test_text_tag(self):
         template = """
-        # comment
+        ## comment
         % if foo:
             hi
         % endif
@@ -286,6 +287,19 @@ text text la la
 
         % if foo:
             % for x in range(1,5):
+            % endfor
+"""
+        try:
+            nodes = Lexer(template).parse()
+            assert False
+        except exceptions.SyntaxException, e:
+            assert str(e) == "Unterminated control keyword: 'if' at line: 3 char: 1"
+
+    def test_unmatched_control_3(self):
+        template = """
+
+        % if foo:
+            % for x in range(1,5):
             % endlala
         % endif
 """
@@ -312,7 +326,7 @@ text text la la
         
     def test_integration(self):
         template = """<%namespace name="foo" file="somefile.html"/>
- # inherit from foobar.html
+ ## inherit from foobar.html
 <%inherit file="foobar.html"/>
 
 <%def name="header()">
@@ -340,6 +354,40 @@ text text la la
         nodes = Lexer(template).parse()
         assert repr(nodes) == r"""TemplateNode({}, [Text(u'<html>\r\n\r\n', (1, 1)), PageTag(u'page', {}, (3, 1), []), Text(u'\r\n\r\nlike the name says.\r\n\r\n', (3, 9)), ControlLine(u'for', u'for x in [1,2,3]:', False, (7, 1)), Text(u'        ', (8, 1)), Expression(u'x', [], (8, 9)), Text(u'', (8, 13)), ControlLine(u'for', u'endfor', True, (9, 1)), Text(u'\r\n', (10, 1)), DefTag(u'def', {u'name': u'hi()'}, (11, 1), ["Text(u'\\r\\n    hi!\\r\\n', (11, 19))"]), Text(u'\r\n\r\n</html>', (13, 8))])"""
         assert flatten_result(Template(template).render()) == """<html> like the name says. 1 2 3 </html>"""
+    
+    def test_comments(self):
+        template = """
+<style>
+ #someselector
+ # other non comment stuff
+</style>
+## a comment
+
+# also not a comment
+
+   ## this is a comment
+   
+this is ## not a comment
+
+<%doc> multiline
+comment
+</%doc>
+
+hi
+"""
+        nodes = Lexer(template).parse()
+        assert repr(nodes) == r"""TemplateNode({}, [Text(u'\n<style>\n #someselector\n # other non comment stuff\n</style>\n', (1, 1)), Comment(u'a comment', (6, 1)), Text(u'\n# also not a comment\n\n', (7, 1)), Comment(u'this is a comment', (10, 1)), Text(u'   \nthis is ## not a comment\n\n', (11, 1)), Comment(u' multiline\ncomment\n', (14, 1)), Text(u'\n\nhi\n', (16, 8))])"""
+
+    def test_preprocess(self):
+        def preproc(text):
+            return re.sub(r'(?<=\n)\s*#[^#]', "##", text)
+        template = """
+    hi
+    # old style comment
+# another comment
+"""
+        nodes = Lexer(template, preprocessor=preproc).parse()
+        assert repr(nodes) == r"""TemplateNode({}, [Text(u'\n    hi\n', (1, 1)), Comment(u'old style comment', (3, 1)), Comment(u'another comment', (4, 1))])"""
         
 if __name__ == '__main__':
     unittest.main()

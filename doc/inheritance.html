@@ -20,13 +20,15 @@
 
 
 
+
+
 <div id="topanchor"><a name="top">&nbsp;</a></div>
 
 <div id="pagecontrol"><a href="index.html">Multiple Pages</a> | <a href="documentation.html">One Page</a></div>
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.1.2   Last Updated: 01/31/07 23:24:25</div>
+<div class="versionheader">Version: 0.1.3   Last Updated: 02/20/07 19:26:04</div>
 
 
 
@@ -52,7 +54,7 @@
 
 
     <br/>
-	<a href="inheritance.html#inheritance">Inheritance</a>
+	<a href="#inheritance">Inheritance</a>
 	
 	
     <ul>
@@ -101,7 +103,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp"># index.html</span>
+        <div class="highlight" ><pre># index.html
 <span class="cp">&lt;%</span><span class="nb">inherit</span> <span class="na">file=</span><span class="s">&quot;base.html&quot;</span><span class="cp">/&gt;</span>
 
 <span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;header()&quot;</span><span class="cp">&gt;</span>
@@ -119,7 +121,7 @@ this is the body content.
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp"># base.html</span>
+        <div class="highlight" ><pre># base.html
 <span class="nt">&lt;html&gt;</span>
     <span class="nt">&lt;body&gt;</span>
         <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;header&quot;</span><span class="nt">&gt;</span>
@@ -222,7 +224,7 @@ this is the body content.
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp"># base.html</span>
+        <div class="highlight" ><pre># base.html
 <span class="nt">&lt;html&gt;</span>
     <span class="nt">&lt;body&gt;</span>
         <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;header&quot;</span><span class="nt">&gt;</span>
@@ -250,7 +252,7 @@ this is the body content.
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp"># layout.html</span>
+        <div class="highlight" ><pre># layout.html
 <span class="cp">&lt;%</span><span class="nb">inherit</span> <span class="na">file=</span><span class="s">&quot;base.html&quot;</span><span class="cp">/&gt;</span>
 <span class="nt">&lt;ul&gt;</span>
     <span class="cp">${</span><span class="bp">self</span><span class="o">.</span><span class="n">toolbar</span><span class="p">()</span><span class="cp">}</span>
@@ -274,10 +276,10 @@ this is the body content.
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp"># index.html</span>
+        <div class="highlight" ><pre># index.html
 <span class="cp">&lt;%</span><span class="nb">inherit</span> <span class="na">file=</span><span class="s">&quot;layout.html&quot;</span><span class="cp">/&gt;</span>
 
-<span class="cp"># .. rest of template</span>
+# .. rest of template
 </pre></div>
 
     </div>
@@ -341,7 +343,7 @@ this is the body content.
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp"># index.html</span>
+        <div class="highlight" ><pre># index.html
 <span class="cp">&lt;%</span><span class="nb">inherit</span> <span class="na">file=</span><span class="s">&quot;layout.html&quot;</span><span class="cp">/&gt;</span>
 
 <span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;header()&quot;</span><span class="cp">&gt;</span>
@@ -349,7 +351,7 @@ this is the body content.
 <span class="cp">&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span>
 
 <span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;toolbar()&quot;</span><span class="cp">&gt;</span>
-    <span class="cp"># call the parent&#39;s toolbar first</span>
+    # call the parent&#39;s toolbar first
     <span class="cp">${</span><span class="n">parent</span><span class="o">.</span><span class="n">toolbar</span><span class="p">()</span><span class="cp">}</span>
     <span class="nt">&lt;li&gt;</span>selection 4<span class="nt">&lt;/li&gt;</span>
     <span class="nt">&lt;li&gt;</span>selection 5<span class="nt">&lt;/li&gt;</span>
