@@ -14,7 +14,7 @@ Package: python-mako
 Architecture: all
 Depends: ${python:Depends}, python-myghtyutils
 Provides: ${python:Provides}
-Enhances: python-turbogears, python-pygments
+Enhances: python-pylons, python-turbogears, python-pygments
 XB-Python-Version: ${python:Versions}
 Description: hyperfast and lightweight templating for the Python platform
  Mako is a template library written in Python. It provides a familiar, non-XML
