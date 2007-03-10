@@ -38,7 +38,7 @@ class EncodingTest(unittest.TestCase):
         val = u"""<%text>Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »</%text>"""
         val = "## -*- coding: utf-8 -*-\n" + val.encode('utf-8')
         template = Template(val)
-        print template.code
+        #print template.code
         assert template.render_unicode() == u"""Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »"""
 
     def test_unicode_text_ccall(self):
@@ -79,6 +79,23 @@ class EncodingTest(unittest.TestCase):
         """.encode('utf-8'))
         assert template.render_unicode().strip() == u"""hi, drôle de petit voix m’a réveillé."""
     
+    def test_unicode_literal_in_def(self):
+        template = Template(u"""## -*- coding: utf-8 -*-
+        <%def name="bello(foo, bar)">
+        Foo: ${ foo }
+        Bar: ${ bar }
+        </%def>
+        <%call expr="bello(foo=u'árvíztűrő tükörfúrógép', bar=u'ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP')">
+        </%call>""".encode('utf-8'))
+        assert flatten_result(template.render_unicode()) == u"""Foo: árvíztűrő tükörfúrógép Bar: ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP"""
+        
+        template = Template(u"""## -*- coding: utf-8 -*-
+        <%def name="hello(foo=u'árvíztűrő tükörfúrógép', bar=u'ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP')">
+        Foo: ${ foo }
+        Bar: ${ bar }
+        </%def>
+        ${ hello() }""".encode('utf-8'))
+        assert flatten_result(template.render_unicode()) == u"""Foo: árvíztűrő tükörfúrógép Bar: ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP"""
         
     def test_input_encoding(self):
         """test the 'input_encoding' flag on Template, and that unicode objects arent double-decoded"""
@@ -148,8 +165,44 @@ class PageArgsTest(unittest.TestCase):
         
         assert flatten_result(template.render(id="im the id")) == "this is page, id is im the id"
         
+class IncludeTest(unittest.TestCase):
+    def test_basic(self):
+        lookup = TemplateLookup()
+        lookup.put_string("a", """
+            this is a
+            <%include file="b" args="a=3,b=4,c=5"/>
+        """)
+        lookup.put_string("b", """
+            <%page args="a,b,c"/>
+            this is b.  ${a}, ${b}, ${c}
+        """)
+        assert flatten_result(lookup.get_template("a").render()) == "this is a this is b. 3, 4, 5"
 
-        
+    def test_localargs(self):
+        lookup = TemplateLookup()
+        lookup.put_string("a", """
+            this is a
+            <%include file="b" args="a=a,b=b,c=5"/>
+        """)
+        lookup.put_string("b", """
+            <%page args="a,b,c"/>
+            this is b.  ${a}, ${b}, ${c}
+        """)
+        assert flatten_result(lookup.get_template("a").render(a=7,b=8)) == "this is a this is b. 7, 8, 5"
+    
+    def test_viakwargs(self):    
+        lookup = TemplateLookup()
+        lookup.put_string("a", """
+            this is a
+            <%include file="b" args="c=5, **context.kwargs"/>
+        """)
+        lookup.put_string("b", """
+            <%page args="a,b,c"/>
+            this is b.  ${a}, ${b}, ${c}
+        """)
+        assert flatten_result(lookup.get_template("a").render(a=7,b=8)) == "this is a this is b. 7, 8, 5"
+
+
 class ControlTest(unittest.TestCase):
     def test_control(self):
         t = Template("""

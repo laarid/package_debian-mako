@@ -10,6 +10,8 @@ import re
 from mako import parsetree, exceptions
 from mako.pygen import adjust_whitespace
 
+_regexp_cache = {}
+
 class Lexer(object):
     def __init__(self, text, filename=None, input_encoding=None, preprocessor=None):
         self.text = text
@@ -34,10 +36,15 @@ class Lexer(object):
         
         if a match occurs, update the current text and line position."""
         mp = self.match_position
-        if flags:
-            reg = re.compile(regexp, flags)
-        else:
-            reg = re.compile(regexp)
+        try:
+            reg = _regexp_cache[(regexp, flags)]
+        except KeyError:
+            if flags:
+                reg = re.compile(regexp, flags)
+            else:
+                reg = re.compile(regexp)
+            _regexp_cache[(regexp, flags)] = reg
+
         match = reg.match(self.text, self.match_position)
         if match:
             (start, end) = match.span()
@@ -48,7 +55,7 @@ class Lexer(object):
             self.matched_lineno = self.lineno
             lines = re.findall(r"\n", self.text[mp:self.match_position])
             cp = mp - 1
-            while (cp >= 0 and cp<len(self.text) and self.text[cp] != '\n'):
+            while (cp >= 0 and cp<self.textlength and self.text[cp] != '\n'):
                 cp -=1
             self.matched_charpos = mp - cp
             self.lineno += len(lines)
@@ -59,6 +66,9 @@ class Lexer(object):
     def parse_until_text(self, *text):
         startpos = self.match_position
         while True:
+            match = self.match(r'#.*\n')
+            if match:
+                continue
             match = self.match(r'(\"\"\"|\'\'\'|\"|\')')
             if match:
                 m = self.match(r'.*?%s' % match.group(1), re.S)
@@ -69,7 +79,7 @@ class Lexer(object):
                 if match:
                     return (self.text[startpos:self.match_position-len(match.group(1))], match.group(1))
                 else:
-                    match = self.match(r".*?(?=\"|\'|%s)" % r'|'.join(text), re.S)
+                    match = self.match(r".*?(?=\"|\'|#|%s)" % r'|'.join(text), re.S)
                     if not match:
                         raise exceptions.SyntaxException("Expected: %s" % ','.join(text), self.matched_lineno, self.matched_charpos, self.filename)
                 
@@ -118,10 +128,10 @@ class Lexer(object):
                 except UnicodeDecodeError, e:
                     raise exceptions.CompileException("Could not read template using encoding of 'ascii'.  Did you forget a magic encoding comment?", 0, 0, self.filename)
 
-        length = len(self.text)
+        self.textlength = len(self.text)
             
         while (True):
-            if self.match_position > length: 
+            if self.match_position > self.textlength: 
                 break
         
             if self.match_end():
@@ -141,9 +151,9 @@ class Lexer(object):
             if self.match_text(): 
                 continue
             
-            if (self.current.match_position > len(self.current.source)):
+            if self.match_position > self.textlength: 
                 break
-            raise "assertion failed"
+            raise exceptions.CompileException("assertion failed")
             
         if len(self.tag):
             raise exceptions.SyntaxException("Unclosed tag: <%%%s>" % self.tag[-1].keyword, self.matched_lineno, self.matched_charpos, self.filename)
@@ -181,7 +191,7 @@ class Lexer(object):
             if attr:
                 for att in re.findall(r"\s*(\w+)\s*=\s*(?:'([^']*)'|\"([^\"]*)\")", attr):
                     (key, val1, val2) = att
-                    attributes[key] = val1 or val2
+                    attributes[key] = self.escape_code(val1 or val2)
             self.append_node(parsetree.Tag, keyword, attributes)
             if isend:
                 self.tag.pop()
@@ -302,5 +312,3 @@ class Lexer(object):
         else:
             return False
              
-    def _count_lines(self, text):
-        return len(re.findall(r"\n", text)) 
