@@ -1,6 +1,7 @@
 CHANGES
 LICENSE
 MANIFEST.in
+README
 setup.py
 doc/caching.html
 doc/defs.html

@@ -105,7 +105,26 @@ print z
         parsed = ast.PythonCode(code, 0, 0, None)
         assert parsed.undeclared_identifiers == util.Set(['z'])
         assert parsed.declared_identifiers == util.Set(['lala'])
+    
+    def test_locate_identifiers_7(self):
+        code = """
+import foo.bar
+"""
+        parsed = ast.PythonCode(code, 0, 0, None)
+        assert parsed.declared_identifiers == util.Set(['foo'])
+        assert parsed.undeclared_identifiers == util.Set()
 
+    def test_locate_identifiers_8(self):
+        code = """
+class Hi(object):
+    foo = 7
+    def hoho(self):
+        x = 5
+"""
+        parsed = ast.PythonCode(code, 0, 0, None)
+        assert parsed.declared_identifiers == util.Set(['Hi'])
+        assert parsed.undeclared_identifiers == util.Set()
+        
     def test_no_global_imports(self):
         code = """
 from foo import *
@@ -185,11 +204,12 @@ import x as bar
         newcode = ast.ExpressionGenerator(astnode).value()
         assert(eval(code, local_dict)) == eval(newcode, local_dict)
 
-        for code in ["repr({'x':7,'y':18})", "repr([])", "repr({})", "repr([{3:[]}])", "repr({'x':37*2 + len([6,7,8])})", "repr([1, 2, {}, {'x':'7'}])"]:
+        for code in ["repr({'x':7,'y':18})", "repr([])", "repr({})", "repr([{3:[]}])", "repr({'x':37*2 + len([6,7,8])})", "repr([1, 2, {}, {'x':'7'}])", "repr({'x':-1})", "repr(((1,2,3), (4,5,6)))", "repr(1 and 2 and 3 and 4)", "repr(True and False or 55)", "repr(1 & 2 | 3)", "repr(3//5)", "repr(3^5)", "repr([q.endswith('e') for q in ['one', 'two', 'three']])", "repr([x for x in (5,6,7) if x == 6])", "repr(not False)"]:
             local_dict={}
             astnode = parse(code)
             newcode = ast.ExpressionGenerator(astnode).value()
-            assert(eval(code, local_dict)) == eval(newcode, local_dict)
+            #print code, newcode
+            assert(eval(code, local_dict)) == eval(newcode, local_dict), "%s != %s" % (code, newcode)
 
 if __name__ == '__main__':
     unittest.main()

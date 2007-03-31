@@ -1,4 +1,4 @@
-This package was debianized by Piotr Ozarowski <ozarow@gmail.com> on
+This package was debianized by Piotr Ożarowski <piotr@debian.org> on
 Thu,  4 Jan 2007 23:04:33 +0100.
 
 It was originally downloaded from http://www.makotemplates.org/download.html
@@ -32,7 +32,7 @@ Copyright:
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
 
-The Debian packaging is (C) 2007, Piotr Ozarowski <ozarow@gmail.com> and
+The Debian packaging is (C) 2007, Piotr Ożarowski <piotr@debian.org> and
 is licensed under the GPL.
 
 On Debian systems, the complete text of the GNU General Public License

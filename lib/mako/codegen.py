@@ -14,18 +14,19 @@ from mako import util, ast, parsetree, filters
 MAGIC_NUMBER = 1
 
 
-def compile(node, uri, filename=None, default_filters=None, imports=None):
+def compile(node, uri, filename=None, default_filters=None, buffer_filters=None, imports=None):
     """generate module source code given a parsetree node, uri, and optional source filename"""
     buf = util.FastEncodingBuffer()
     printer = PythonPrinter(buf)
-    _GenerateRenderMethod(printer, _CompileContext(uri, filename, default_filters, imports), node)
+    _GenerateRenderMethod(printer, _CompileContext(uri, filename, default_filters, buffer_filters, imports), node)
     return buf.getvalue()
 
 class _CompileContext(object):
-    def __init__(self, uri, filename, default_filters, imports):
+    def __init__(self, uri, filename, default_filters, buffer_filters, imports):
         self.uri = uri
         self.filename = filename
         self.default_filters = default_filters
+        self.buffer_filters = buffer_filters
         self.imports = imports
         
 class _GenerateRenderMethod(object):
@@ -346,6 +347,8 @@ class _GenerateRenderMethod(object):
             if filtered:
                 s = self.create_filter_callable(node.filter_args.args, s, False)
             self.printer.writeline(None)
+            if buffered and not cached:
+                s = self.create_filter_callable(self.compiler.buffer_filters, s, False)
             if buffered or cached:
                 self.printer.writeline("return %s" % s)
             else:
@@ -357,7 +360,7 @@ class _GenerateRenderMethod(object):
         self.printer.writeline("__%s = %s" % (name, name))
         cachekey = node_or_pagetag.parsed_attributes.get('cache_key', repr(name))
         cacheargs = {}
-        for arg in (('cache_type', 'type'), ('cache_dir', 'data_dir'), ('cache_timeout', 'expiretime')):
+        for arg in (('cache_type', 'type'), ('cache_dir', 'data_dir'), ('cache_timeout', 'expiretime'), ('cache_url', 'url')):
             val = node_or_pagetag.parsed_attributes.get(arg[0], None)
             if val is not None:
                 if arg[1] == 'expiretime':
@@ -382,10 +385,10 @@ class _GenerateRenderMethod(object):
 
         self.write_variable_declares(identifiers, limit=node_or_pagetag.undeclared_identifiers())
         if buffered:
-            self.printer.writelines(
-                    "return context.get('local').get_cached(%s, %screatefunc=lambda:__%s(%s*args, **kwargs))" % (cachekey, ''.join(["%s=%s, " % (k,v) for k, v in cacheargs.iteritems()]), name, ctx_arg),
-                None
-            )
+            s = "context.get('local').get_cached(%s, %screatefunc=lambda:__%s(%s*args, **kwargs))" % (cachekey, ''.join(["%s=%s, " % (k,v) for k, v in cacheargs.iteritems()]), name, ctx_arg)
+            # apply buffer_filters
+            s = self.create_filter_callable(self.compiler.buffer_filters, s, False)
+            self.printer.writelines("return " + s,None)
         else:
             self.printer.writelines(
                     "context.write(context.get('local').get_cached(%s, %screatefunc=lambda:__%s(%s*args, **kwargs)))" % (cachekey, ''.join(["%s=%s, " % (k,v) for k, v in cacheargs.iteritems()]), name, ctx_arg),
@@ -402,20 +405,18 @@ class _GenerateRenderMethod(object):
             elif name == 'unicode':
                 return 'unicode'
             else:
-                return \
-                {'x':'filters.xml_escape',
-                'h':'filters.html_escape',
-                'u':'filters.url_escape',
-                'trim':'filters.trim',
-                'entity':'filters.html_entities_escape',
-                }.get(name, name)
-                
-        if is_expression and self.compiler.pagetag:
-            args = self.compiler.pagetag.filter_args.args + args
-        if is_expression and self.compiler.default_filters:
-            args = self.compiler.default_filters + args
+                return filters.DEFAULT_ESCAPES.get(name, name)
+        
+        if 'n' not in args:
+            if is_expression:
+                if self.compiler.pagetag:
+                    args = self.compiler.pagetag.filter_args.args + args
+                if self.compiler.default_filters:
+                    args = self.compiler.default_filters + args
         for e in args:
             # if filter given as a function, get just the identifier portion
+            if e == 'n':
+                continue
             m = re.match(r'(.+?)(\(.*\))', e)
             if m:
                 (ident, fargs) = m.group(1,2)
