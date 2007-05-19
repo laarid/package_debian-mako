@@ -16,7 +16,7 @@ import imp, time, weakref, tempfile, shutil,  os, stat, sys, re
     
 class Template(object):
     """a compiled template"""
-    def __init__(self, text=None, filename=None, uri=None, format_exceptions=False, error_handler=None, lookup=None, output_encoding=None, module_directory=None, cache_type=None, cache_dir=None, cache_url=None, module_filename=None, input_encoding=None, default_filters=['unicode'], buffer_filters=[], imports=None, preprocessor=None):
+    def __init__(self, text=None, filename=None, uri=None, format_exceptions=False, error_handler=None, lookup=None, output_encoding=None, encoding_errors='strict', module_directory=None, cache_type=None, cache_dir=None, cache_url=None, module_filename=None, input_encoding=None, default_filters=['unicode'], buffer_filters=[], imports=None, preprocessor=None):
         """construct a new Template instance using either literal template text, or a previously loaded template module
         
         text - textual template source, or None if a module is to be provided
@@ -59,7 +59,7 @@ class Template(object):
                 u = self.uri
                 if u[0] == '/':
                     u = u[1:]
-                path = os.path.normpath(os.path.join(module_directory.replace('/', os.path.sep), u + ".py"))
+                path = os.path.abspath(os.path.join(module_directory.replace('/', os.path.sep), u + ".py"))
             else:
                 path = None    
             if path is not None:
@@ -91,6 +91,7 @@ class Template(object):
         self.error_handler = error_handler
         self.lookup = lookup
         self.output_encoding = output_encoding
+        self.encoding_errors = encoding_errors
         self.cache_type = cache_type
         self.cache_dir = cache_dir
         self.cache_url = cache_url
@@ -134,6 +135,7 @@ class DefTemplate(Template):
         self.input_encoding = parent.input_encoding
         self.imports = parent.imports
         self.output_encoding = parent.output_encoding
+        self.encoding_errors = parent.encoding_errors
         self.format_exceptions = parent.format_exceptions
         self.error_handler = parent.error_handler
         self.lookup = parent.lookup
@@ -169,15 +171,23 @@ class ModuleInfo(object):
     code = property(_get_code)
     def _get_source(self):
         if self.template_source is not None:
-            return self.template_source
+            if self.module._source_encoding and not isinstance(self.template_source, unicode):
+                return self.template_source.decode(self.module._source_encoding)
+            else:
+                return self.template_source
         else:
-            return file(self.template_filename).read()
+            if self.module._source_encoding:
+                return file(self.template_filename).read().decode(self.module._source_encoding)
+            else:
+                return file(self.template_filename).read()
     source = property(_get_source)
         
 def _compile_text(template, text, filename):
     identifier = template.module_id
-    node = Lexer(text, filename, input_encoding=template.input_encoding, preprocessor=template.preprocessor).parse()
-    source = codegen.compile(node, template.uri, filename, default_filters=template.default_filters, buffer_filters=template.buffer_filters, imports=template.imports)
+    lexer = Lexer(text, filename, input_encoding=template.input_encoding, preprocessor=template.preprocessor)
+    node = lexer.parse()
+    source = codegen.compile(node, template.uri, filename, default_filters=template.default_filters, buffer_filters=template.buffer_filters, imports=template.imports, source_encoding=lexer.encoding)
+    #print source
     cid = identifier
     module = imp.new_module(cid)
     code = compile(source, cid, 'exec')
@@ -187,8 +197,9 @@ def _compile_text(template, text, filename):
 def _compile_module_file(template, text, filename, outputpath):
     identifier = template.module_id
     (dest, name) = tempfile.mkstemp()
-    node = Lexer(text, filename, input_encoding=template.input_encoding, preprocessor=template.preprocessor).parse()
-    source = codegen.compile(node, template.uri, filename, default_filters=template.default_filters, buffer_filters=template.buffer_filters, imports=template.imports)
+    lexer = Lexer(text, filename, input_encoding=template.input_encoding, preprocessor=template.preprocessor)
+    node = lexer.parse()
+    source = codegen.compile(node, template.uri, filename, default_filters=template.default_filters, buffer_filters=template.buffer_filters, imports=template.imports, source_encoding=lexer.encoding)
     os.write(dest, source)
     os.close(dest)
     shutil.move(name, outputpath)

@@ -1,3 +1,32 @@
+0.1.6 
+- caching is now supplied directly by Beaker, which has 
+  all of MyghtyUtils merged into it now.  The latest Beaker
+  (0.7.1) also fixes a bug related to how Mako was using the 
+  cache API.
+- fix to module_directory path generation when the path is "./"
+  [ticket:34]
+- TGPlugin passes options to string-based templates [ticket:35]
+- added an explicit stack frame step to template runtime, which
+  allows much simpler and hopefully bug-free tracking of 'caller',
+  fixes #28
+- if plain Python defs are used with <%call>, a decorator
+  @runtime.supports_callable exists to ensure that the "caller"
+  stack is properly handled for the def.
+- fix to RichTraceback and exception reporting to get template
+  source code as a unicode object #37
+- html_error_template includes options "full=True", "css=True"
+  which control generation of HTML tags, CSS [ticket:39]
+- added the 'encoding_errors' parameter to Template/TemplateLookup
+  for specifying the error handler associated with encoding to
+  'output_encoding' [ticket:40]
+- the Template returned by html_error_template now defaults to
+  output_encoding=sys.getdefaultencoding(),
+  encoding_errors='htmlentityreplace' [ticket:37]
+- control lines, i.e. % lines, support backslashes to continue long
+  lines (#32)
+- fixed codegen bug when defining <%def> within <%call> within <%call>
+- leading utf-8 BOM in template files is honored according to pep-0263
+  
 0.1.5
 - AST expression generation - added in just about everything 
   expression-wise from the AST module  [ticket:26]

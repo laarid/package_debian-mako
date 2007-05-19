@@ -95,7 +95,7 @@ Assigning to a name inside of a def declares that name as local to the scope of 
         x = 10
     %>
     <%def name="somedef()">
-        # error !
+        ## error !
         somedef, x is ${x}  
         <%
             x = 27  
@@ -106,7 +106,9 @@ Assigning to a name inside of a def declares that name as local to the scope of 
     
 ### Calling a def with embedded content and/or other defs {@name=defswithcontent}
 
-A flip-side to def within def is a def call with content.  This is where you call a def, and at the same time declare a block of content (or multiple blocks) that can be used by the def being called.  To achieve this, the target def is invoked using the `<%call>` tag instead of the normal `${}` syntax.  The target def then gets a variable `caller` placed in its context which contains a **namespace** containing the body and other defs defined within the `<%call>` tag.  The body itself is referenced by the method `body()`:
+A flip-side to def within def is a def call with content.  This is where you call a def, and at the same time declare a block of content (or multiple blocks) that can be used by the def being called.  The main point of such a call is to create custom, nestable tags, just like any other template language's custom-tag creation system - where the external tag controls the execution of the nested tags and can communicate state to them.  Only with Mako, you don't have to use any external Python modules, you can define arbitrarily nestable tags right in your templates.
+
+To achieve this, the target def is invoked using the `<%call>` tag instead of the normal `${}` syntax.  The target def then gets a variable `caller` placed in its context which contains a **namespace** containing the body and other defs defined within the `<%call>` tag.  The body itself is referenced by the method `body()`:
 
     <%def name="buildtable()">
         <table>
@@ -120,7 +122,7 @@ A flip-side to def within def is a def call with content.  This is where you cal
         I am the table body.
     </%call>
     
-This produces the output:
+This produces the output (whitespace formatted):
 
     {html}
     <table>
@@ -152,7 +154,7 @@ A custom "conditional" tag:
     
     <%def name="conditional(expr)">
         % if expr:
-            ${body()}
+            ${caller.body()}
         % endif
     </%def>
 
@@ -172,7 +174,7 @@ But that's not all.  The `body()` function also can handle arguments, which will
         % for item in somedata:
             <tr>
             % for col in item:
-                <td>${body(col=col)}</td>\
+                <td>${caller.body(col=col)}</td>\
             % endfor
             </tr>
         % endfor
@@ -183,7 +185,7 @@ But that's not all.  The `body()` function also can handle arguments, which will
         Body data: ${col}
     </%call>
     
-Produces:
+Produces (whitespace formatted):
 
     {html}
     <table>
@@ -197,7 +199,7 @@ Produces:
 You don't have to stick to calling just the `body()` function.  The caller can define any number of callables, allowing the `<%call>` tag to produce whole layouts:
 
     <%def name="layout()">
-        # a layout def
+        ## a layout def
         <div class="mainlayout">
             <div class="header">
                 ${caller.header()}
@@ -211,7 +213,7 @@ You don't have to stick to calling just the `body()` function.  The caller can d
         </div>
     </%def>
 
-    # calls the layout def
+    ## calls the layout def
     <%call expr="layout">
         <%def name="header()">
             I am the header
@@ -226,7 +228,7 @@ You don't have to stick to calling just the `body()` function.  The caller can d
             this is the body
     </%call>
     
-The above layout would produce:
+The above layout would produce (whitespace formatted):
 
     <div class="mainlayout">
         <div class="header">
@@ -242,3 +244,6 @@ The above layout would produce:
             this is the body
         </div>
     </div>
+
+The number of things you can do with `<%call>` is enormous.  You can create form widget libraries, such as an enclosing `<FORM>` tag and nested HTML input elements, or portable wrapping schemes using `<div>` or other elements.  You can create tags that interpret rows of data, such as from a database, providing the individual columns of each row to a `body()` callable which lays out the row any way it wants.  Basically anything you'd do with a "custom tag" or tag library in some other system, Mako provides via `<%def>`s or even plain Python callables which are called via `<%call>`.
+

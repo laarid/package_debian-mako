@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.1.5   Last Updated: 03/31/07 17:18:12</div>
+<div class="versionheader">Version: 0.1.6   Last Updated: 05/18/07 19:23:42</div>
 
 
 
@@ -216,7 +216,7 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">${</span><span class="s">&quot;voix m’a réveillé.&quot;</span><span class="cp">}</span>  # error !
+        <div class="highlight" ><pre><span class="cp">${</span><span class="s">&quot;voix m’a réveillé.&quot;</span><span class="cp">}</span>  <span class="cp">## error !</span>
 </pre></div>
 
     </div>
@@ -227,7 +227,7 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">${</span><span class="n">u</span><span class="s">&quot;voix m’a réveillé.&quot;</span><span class="cp">}</span>  # OK !
+        <div class="highlight" ><pre><span class="cp">${</span><span class="n">u</span><span class="s">&quot;voix m’a réveillé.&quot;</span><span class="cp">}</span>  <span class="cp">## OK !</span>
 </pre></div>
 
     </div>
@@ -277,7 +277,7 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
 
 <p>Now that we have a template which produces a pure unicode output stream, all the hard work is done.  We can take the output and do anything with it.
 </p>
-<p>As stated in the "Usage" chapter, both <code>Template</code> and <code>TemplateLookup</code> accept an <code>output_encoding</code> parameter which can be used to encode the output in any Python supported codec:
+<p>As stated in the "Usage" chapter, both <code>Template</code> and <code>TemplateLookup</code> accept <code>output_encoding</code> and <code>encoding_errors</code> parameters which can be used to encode the output in any Python supported codec:
 </p>
 
     
@@ -287,7 +287,7 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
         <div class="highlight" ><pre><span class="k">from</span> <span class="nn">mako.template</span> <span class="k">import</span> <span class="n">Template</span>
 <span class="k">from</span> <span class="nn">mako.lookup</span> <span class="k">import</span> <span class="n">TemplateLookup</span>
 
-<span class="n">mylookup</span> <span class="o">=</span> <span class="n">TemplateLookup</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;/docs&#39;</span><span class="p">],</span> <span class="n">output_encoding</span><span class="o">=</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="n">mylookup</span> <span class="o">=</span> <span class="n">TemplateLookup</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;/docs&#39;</span><span class="p">],</span> <span class="n">output_encoding</span><span class="o">=</span><span class="s">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">encoding_errors</span><span class="o">=</span><span class="s">&#39;replace&#39;</span><span class="p">)</span>
 
 <span class="n">mytemplate</span> <span class="o">=</span> <span class="n">mylookup</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="s">&quot;foo.txt&quot;</span><span class="p">)</span>
 <span class="k">print</span> <span class="n">mytemplate</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
@@ -312,7 +312,7 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="k">print</span> <span class="n">mytemplate</span><span class="o">.</span><span class="n">render_unicode</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+        <div class="highlight" ><pre><span class="k">print</span> <span class="n">mytemplate</span><span class="o">.</span><span class="n">render_unicode</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">,</span> <span class="s">&#39;replace&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>

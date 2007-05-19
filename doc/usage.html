@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.1.5   Last Updated: 03/31/07 17:18:12</div>
+<div class="versionheader">Version: 0.1.6   Last Updated: 05/18/07 19:23:42</div>
 
 
 
@@ -360,7 +360,7 @@
     
     
 
-<p>Both <code>Template</code> and <code>TemplateLookup</code> accept an <code>output_encoding</code> parameter which can be used to encode the output in any Python supported codec:
+<p>Both <code>Template</code> and <code>TemplateLookup</code> accept <code>output_encoding</code> and <code>encoding_errors</code> parameters which can be used to encode the output in any Python supported codec:
 </p>
 
     
@@ -370,7 +370,7 @@
         <div class="highlight" ><pre><span class="k">from</span> <span class="nn">mako.template</span> <span class="k">import</span> <span class="n">Template</span>
 <span class="k">from</span> <span class="nn">mako.lookup</span> <span class="k">import</span> <span class="n">TemplateLookup</span>
 
-<span class="n">mylookup</span> <span class="o">=</span> <span class="n">TemplateLookup</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;/docs&#39;</span><span class="p">],</span> <span class="n">output_encoding</span><span class="o">=</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="n">mylookup</span> <span class="o">=</span> <span class="n">TemplateLookup</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;/docs&#39;</span><span class="p">],</span> <span class="n">output_encoding</span><span class="o">=</span><span class="s">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">encoding_errors</span><span class="o">=</span><span class="s">&#39;replace&#39;</span><span class="p">)</span>
 
 <span class="n">mytemplate</span> <span class="o">=</span> <span class="n">mylookup</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="s">&quot;foo.txt&quot;</span><span class="p">)</span>
 <span class="k">print</span> <span class="n">mytemplate</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
@@ -395,7 +395,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="k">print</span> <span class="n">mytemplate</span><span class="o">.</span><span class="n">render_unicode</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+        <div class="highlight" ><pre><span class="k">print</span> <span class="n">mytemplate</span><span class="o">.</span><span class="n">render_unicode</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">,</span> <span class="s">&#39;replace&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -452,6 +452,19 @@
     <span class="k">print</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
 <span class="k">except</span><span class="p">:</span>
     <span class="k">print</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">html_error_template</span><span class="p">()</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+<p>The <code>html_error_template</code> template accepts two options: specifying <code>full=False</code> causes only a section of an HTML document to be rendered. Specifying <code>css=False</code> will disable the default stylesheet from being rendered.
+</p>
+<p>E.g.:
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight" ><pre>    print exceptions.html_error_template().render(full=False)
 </pre></div>
 
     </div>

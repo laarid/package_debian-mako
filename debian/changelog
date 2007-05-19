@@ -1,3 +1,12 @@
+mako (0.1.6-1) unstable; urgency=low
+
+  * New upstream release
+  * python-myghtyutils removed from Depends since it's no longer used,
+  * python-beaker added to Recommends (it can be used for caching now)
+  * Provides field removed (it's not used)
+
+ -- Piotr Ożarowski <piotr@debian.org>  Sat, 19 May 2007 15:32:25 +0200
+
 mako (0.1.5-1) unstable; urgency=low
 
   * New upstream release

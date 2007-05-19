@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.1.5   Last Updated: 03/31/07 17:18:12</div>
+<div class="versionheader">Version: 0.1.6   Last Updated: 05/18/07 19:23:42</div>
 
 
 
@@ -101,7 +101,7 @@ template text
     </div>
 <p>The above template, after being executed the first time, will store its content within a cache that by default is scoped within memory.  Subsequent calls to the template's <code>render()</code> method will return content directly from the cache.  When the <code>Template</code> object itself falls out of scope, its corresponding cache is garbage collected along with the template.
 </p>
-<p>Caching requires that the <code>myghtyutils</code> package be installed on the system.
+<p>Caching requires that the <code>beaker</code> package be installed on the system.
 </p>
 <p>The caching flag and all its options can be used with the <code>&lt;%def&gt;</code> tag.  <br></br>
 </p>
@@ -164,7 +164,7 @@ template text
 
 <span class="cp">${</span><span class="n">next</span><span class="o">.</span><span class="n">body</span><span class="p">()</span><span class="cp">}</span>
 
-# rest of template
+<span class="cp">## rest of template</span>
 </pre></div>
 
     </div>

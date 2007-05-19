@@ -12,8 +12,8 @@ XS-Vcs-Browser: http://svn.debian.org/wsvn/python-modules/packages/mako/trunk/?o
 
 Package: python-mako
 Architecture: all
-Depends: ${python:Depends}, python-myghtyutils
-Provides: ${python:Provides}
+Depends: ${python:Depends}
+Recommends: python-beaker (>= 0.7.1)
 Enhances: python-pylons, python-turbogears, python-pygments
 XB-Python-Version: ${python:Versions}
 Description: hyperfast and lightweight templating for the Python platform

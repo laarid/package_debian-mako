@@ -20,18 +20,20 @@ def _format_filepos(lineno, pos, filename):
     else:
         return " in file '%s' at line: %d char: %d" % (filename, lineno, pos)     
 class CompileException(MakoException):
-    def __init__(self, message, lineno, pos, filename):
+    def __init__(self, message, source, lineno, pos, filename):
         MakoException.__init__(self, message + _format_filepos(lineno, pos, filename))
         self.lineno =lineno
         self.pos = pos
         self.filename = filename
+        self.source = source
                     
 class SyntaxException(MakoException):
-    def __init__(self, message, lineno, pos, filename):
+    def __init__(self, message, source, lineno, pos, filename):
         MakoException.__init__(self, message + _format_filepos(lineno, pos, filename))
         self.lineno =lineno
         self.pos = pos
         self.filename = filename
+        self.source = source
         
 class TemplateLookupException(MakoException):
     pass
@@ -68,7 +70,8 @@ class RichTraceback(object):
         if self.error is None:
             self.error = t
         if isinstance(self.error, CompileException) or isinstance(self.error, SyntaxException):
-            self.source = file(self.error.filename).read()
+            import mako.template
+            self.source = self.error.source
             self.lineno = self.error.lineno
             self._has_source = True
         self.reverse_records = [r for r in self.records]
@@ -163,15 +166,25 @@ ${str(tback.error.__class__.__name__)}: ${str(tback.error)}
 def html_error_template():
     """provides a template that renders a stack trace in an HTML format, providing an excerpt of 
     code as well as substituting source template filenames, line numbers and code 
-    for that of the originating source template, as applicable."""
+    for that of the originating source template, as applicable.
+
+    the template's default encoding_errors value is 'htmlentityreplace'. the template has
+    two options:
+
+    with the full option disabled, only a section of an HTML document is returned.
+    with the css option disabled, the default stylesheet won't be included."""
     import mako.template
     return mako.template.Template(r"""
 <%!
     from mako.exceptions import RichTraceback
 %>
+<%page args="full=True, css=True"/>
+% if full:
 <html>
 <head>
     <title>Mako Runtime Error</title>
+% endif
+% if css:
     <style>
         body { font-family:verdana; margin:10px 30px 10px 30px;}
         .stacktrace { margin:5px 5px 5px 5px; }
@@ -182,8 +195,11 @@ def html_error_template():
         .sourceline { margin:5px 5px 10px 5px; font-family:monospace;}
         .location { font-size:80%; }
     </style>
+% endif
+% if full:
 </head>
 <body>
+% endif
 
 <h2>Error !</h2>
 <%
@@ -218,6 +234,8 @@ def html_error_template():
 % endfor
 </div>
 
+% if full:
 </body>
 </html>
-""")
+% endif
+""", output_encoding=sys.getdefaultencoding(), encoding_errors='htmlentityreplace')
