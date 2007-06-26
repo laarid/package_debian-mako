@@ -1,3 +1,16 @@
+0.1.8
+- variable names declared in render methods by internal 
+codegen prefixed by "__M_" to prevent name collisions
+with user code
+- added a Babel (http://babel.edgewall.org/) extractor entry
+point, allowing extraction of gettext messages directly from
+mako templates via Babel [ticket:45]
+- fix to turbogears plugin to work with dot-separated names
+(i.e. load_template('foo.bar')).  also takes file extension
+as a keyword argument (default is 'mak').
+- more tg fix:  fixed [ticket:35], allowing string-based
+templates with tgplugin even if non-compatible args were sent
+
 0.1.7
 - one small fix to the unit tests to support python 2.3
 - a slight hack to how cache.py detects Beaker's memcached, 
