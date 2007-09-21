@@ -6,6 +6,7 @@ Uploaders: Debian Python Modules Team <python-modules-team@lists.alioth.debian.o
 Build-Depends: debhelper (>= 5.0.38)
 Build-Depends-Indep: python (>= 2.3.5-11), python-all-dev, python-central (>= 0.5.6), python-setuptools (>= 0.6b3-1)
 Standards-Version: 3.7.2
+Homepage: http://www.makotemplates.org/
 XS-Python-Version: all
 XS-Vcs-Svn: svn://svn.debian.org/python-modules/packages/mako/trunk
 XS-Vcs-Browser: http://svn.debian.org/wsvn/python-modules/packages/mako/trunk/?op=log
@@ -25,5 +26,3 @@ Description: hyperfast and lightweight templating for the Python platform
  componentized layout and inheritance to produce one of the most
  straightforward and flexible models available, while also maintaining close
  ties to Python calling and scoping semantics.
- .
-  Homepage: http://www.makotemplates.org/
