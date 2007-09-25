@@ -1,3 +1,11 @@
+mako (0.1.9-1) unstable; urgency=low
+
+  * New upstream release
+  * Homepage field added
+  * debian/rules cleanups
+
+ -- Piotr Ożarowski <piotr@debian.org>  Tue, 25 Sep 2007 23:40:21 +0200
+
 mako (0.1.8-1) unstable; urgency=low
 
   * New upstream release

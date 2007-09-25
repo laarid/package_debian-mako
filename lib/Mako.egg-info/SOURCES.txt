@@ -107,7 +107,7 @@ test/tgplugin.py
 test/util.py
 test/foo/__init__.py
 test/foo/test_ns.py
-test/templates/gettext.mako
 test_htdocs/crlf.html
+test_htdocs/gettext.mako
 test_htdocs/internationalization.html
 test_htdocs/read_unicode.html
