@@ -8,8 +8,8 @@ Build-Depends-Indep: python (>= 2.3.5-11), python-all-dev, python-central (>= 0.
 Standards-Version: 3.7.2
 Homepage: http://www.makotemplates.org/
 XS-Python-Version: all
-XS-Vcs-Svn: svn://svn.debian.org/python-modules/packages/mako/trunk
-XS-Vcs-Browser: http://svn.debian.org/wsvn/python-modules/packages/mako/trunk/?op=log
+Vcs-Svn: svn://svn.debian.org/python-modules/packages/mako/trunk
+Vcs-Browser: http://svn.debian.org/wsvn/python-modules/packages/mako/trunk/?op=log
 
 Package: python-mako
 Architecture: all
