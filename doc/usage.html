@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.1.9   Last Updated: 09/25/07 16:19:18</div>
+<div class="versionheader">Version: 0.1.10   Last Updated: 12/27/07 00:53:49</div>
 
 
 
@@ -156,7 +156,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="k">from</span> <span class="nn">mako.template</span> <span class="k">import</span> <span class="n">Template</span>
+        <div class="highlight"><pre><span class="k">from</span> <span class="nn">mako.template</span> <span class="k">import</span> <span class="n">Template</span>
 
 <span class="n">mytemplate</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="s">&quot;hello world!&quot;</span><span class="p">)</span>
 <span class="k">print</span> <span class="n">mytemplate</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
@@ -172,7 +172,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="k">from</span> <span class="nn">mako.template</span> <span class="k">import</span> <span class="n">Template</span>
+        <div class="highlight"><pre><span class="k">from</span> <span class="nn">mako.template</span> <span class="k">import</span> <span class="n">Template</span>
 
 <span class="n">mytemplate</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="s">&quot;hello, ${name}!&quot;</span><span class="p">)</span>
 <span class="k">print</span> <span class="n">mytemplate</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;jack&quot;</span><span class="p">)</span>
@@ -186,7 +186,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="k">from</span> <span class="nn">mako.template</span> <span class="k">import</span> <span class="n">Template</span>
+        <div class="highlight"><pre><span class="k">from</span> <span class="nn">mako.template</span> <span class="k">import</span> <span class="n">Template</span>
 <span class="k">from</span> <span class="nn">mako.runtime</span> <span class="k">import</span> <span class="n">Context</span>
 <span class="k">from</span> <span class="nn">StringIO</span> <span class="k">import</span> <span class="n">StringIO</span>
 
@@ -217,7 +217,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="k">from</span> <span class="nn">mako.template</span> <span class="k">import</span> <span class="n">Template</span>
+        <div class="highlight"><pre><span class="k">from</span> <span class="nn">mako.template</span> <span class="k">import</span> <span class="n">Template</span>
 
 <span class="n">mytemplate</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s">&#39;/docs/mytmpl.txt&#39;</span><span class="p">)</span>
 <span class="k">print</span> <span class="n">mytemplate</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
@@ -231,7 +231,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="k">from</span> <span class="nn">mako.template</span> <span class="k">import</span> <span class="n">Template</span>
+        <div class="highlight"><pre><span class="k">from</span> <span class="nn">mako.template</span> <span class="k">import</span> <span class="n">Template</span>
 
 <span class="n">mytemplate</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s">&#39;/docs/mytmpl.txt&#39;</span><span class="p">,</span> <span class="n">module_directory</span><span class="o">=</span><span class="s">&#39;/tmp/mako_modules&#39;</span><span class="p">)</span>
 <span class="k">print</span> <span class="n">mytemplate</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
@@ -265,7 +265,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="k">from</span> <span class="nn">mako.template</span> <span class="k">import</span> <span class="n">Template</span>
+        <div class="highlight"><pre><span class="k">from</span> <span class="nn">mako.template</span> <span class="k">import</span> <span class="n">Template</span>
 <span class="k">from</span> <span class="nn">mako.lookup</span> <span class="k">import</span> <span class="n">TemplateLookup</span>
 
 <span class="n">mylookup</span> <span class="o">=</span> <span class="n">TemplateLookup</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;/docs&#39;</span><span class="p">])</span>
@@ -282,7 +282,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="k">from</span> <span class="nn">mako.template</span> <span class="k">import</span> <span class="n">Template</span>
+        <div class="highlight"><pre><span class="k">from</span> <span class="nn">mako.template</span> <span class="k">import</span> <span class="n">Template</span>
 <span class="k">from</span> <span class="nn">mako.lookup</span> <span class="k">import</span> <span class="n">TemplateLookup</span>
 
 <span class="n">mylookup</span> <span class="o">=</span> <span class="n">TemplateLookup</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;/docs&#39;</span><span class="p">],</span> <span class="n">module_directory</span><span class="o">=</span><span class="s">&#39;/tmp/mako_modules&#39;</span><span class="p">)</span>
@@ -316,8 +316,8 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="n">mylookup</span> <span class="o">=</span> <span class="n">TemplateLookup</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;/docs&#39;</span><span class="p">],</span> 
-                <span class="n">module_directory</span><span class="o">=</span><span class="s">&#39;/tmp/mako_modules&#39;</span><span class="p">,</span> <span class="n">collection_size</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+        <div class="highlight"><pre><span class="n">mylookup</span> <span class="o">=</span> <span class="n">TemplateLookup</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;/docs&#39;</span><span class="p">],</span> 
+                <span class="n">module_directory</span><span class="o">=</span><span class="s">&#39;/tmp/mako_modules&#39;</span><span class="p">,</span> <span class="n">collection_size</span><span class="o">=</span><span class="mf">500</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -373,7 +373,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="k">from</span> <span class="nn">mako.template</span> <span class="k">import</span> <span class="n">Template</span>
+        <div class="highlight"><pre><span class="k">from</span> <span class="nn">mako.template</span> <span class="k">import</span> <span class="n">Template</span>
 <span class="k">from</span> <span class="nn">mako.lookup</span> <span class="k">import</span> <span class="n">TemplateLookup</span>
 
 <span class="n">mylookup</span> <span class="o">=</span> <span class="n">TemplateLookup</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;/docs&#39;</span><span class="p">],</span> <span class="n">output_encoding</span><span class="o">=</span><span class="s">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">encoding_errors</span><span class="o">=</span><span class="s">&#39;replace&#39;</span><span class="p">)</span>
@@ -390,7 +390,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="k">print</span> <span class="n">mytemplate</span><span class="o">.</span><span class="n">render_unicode</span><span class="p">()</span>
+        <div class="highlight"><pre><span class="k">print</span> <span class="n">mytemplate</span><span class="o">.</span><span class="n">render_unicode</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -401,7 +401,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="k">print</span> <span class="n">mytemplate</span><span class="o">.</span><span class="n">render_unicode</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">,</span> <span class="s">&#39;replace&#39;</span><span class="p">)</span>
+        <div class="highlight"><pre><span class="k">print</span> <span class="n">mytemplate</span><span class="o">.</span><span class="n">render_unicode</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">,</span> <span class="s">&#39;replace&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -434,7 +434,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="k">from</span> <span class="nn">mako</span> <span class="k">import</span> <span class="n">exceptions</span>
+        <div class="highlight"><pre><span class="k">from</span> <span class="nn">mako</span> <span class="k">import</span> <span class="n">exceptions</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="n">template</span> <span class="o">=</span> <span class="n">lookup</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
@@ -451,7 +451,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="k">from</span> <span class="nn">mako</span> <span class="k">import</span> <span class="n">exceptions</span>
+        <div class="highlight"><pre><span class="k">from</span> <span class="nn">mako</span> <span class="k">import</span> <span class="n">exceptions</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="n">template</span> <span class="o">=</span> <span class="n">lookup</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
@@ -470,7 +470,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre>    print exceptions.html_error_template().render(full=False)
+        <div class="highlight"><pre>    print exceptions.html_error_template().render(full=False)
 </pre></div>
 
     </div>
@@ -481,7 +481,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="n">template</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s">&quot;/foo/bar&quot;</span><span class="p">,</span> <span class="n">format_exceptions</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <div class="highlight"><pre><span class="n">template</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s">&quot;/foo/bar&quot;</span><span class="p">,</span> <span class="n">format_exceptions</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="k">print</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
 </pre></div>
 
@@ -495,7 +495,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="k">from</span> <span class="nn">mako.exceptions</span> <span class="k">import</span> <span class="n">RichTraceback</span>
+        <div class="highlight"><pre><span class="k">from</span> <span class="nn">mako.exceptions</span> <span class="k">import</span> <span class="n">RichTraceback</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="n">template</span> <span class="o">=</span> <span class="n">lookup</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
@@ -616,7 +616,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;name&quot;</span><span class="nt">&gt;</span>
+        <div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;name&quot;</span><span class="nt">&gt;</span>
   Name:
   ## TRANSLATORS: This is a proper name. See the gettext
   ## manual, section Names.
@@ -632,7 +632,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="c"># Extraction from Python source files</span>
+        <div class="highlight"><pre><span class="c"># Extraction from Python source files</span>
 
 <span class="k">[python: myproj/**.py]</span>
 
@@ -652,7 +652,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre>myproj$ pybabel extract -F babel.cfg -c &quot;TRANSLATORS:&quot; .
+        <div class="highlight"><pre>myproj$ pybabel extract -F babel.cfg -c &quot;TRANSLATORS:&quot; .
 </pre></div>
 
     </div>
@@ -663,7 +663,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre>#. This is a proper name. See the gettext
+        <div class="highlight"><pre>#. This is a proper name. See the gettext
 #. manual, section Names.
 #: myproj/templates/name.html:5
 msgid &quot;Francois Pinard&quot;
@@ -680,7 +680,7 @@ msgstr &quot;&quot;
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;name&quot;</span><span class="nt">&gt;</span>
+        <div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;name&quot;</span><span class="nt">&gt;</span>
   ## TRANSLATORS: This is a proper name. See the gettext
   ## manual, section Names.
   Name: <span class="cp">${</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;Francois Pinard&#39;</span><span class="p">)</span><span class="cp">}</span>
