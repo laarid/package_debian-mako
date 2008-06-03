@@ -1,3 +1,14 @@
+mako (0.2.0-1) unstable; urgency=low
+
+  * New upstream release
+  * Add "~" to setuptools' required build version (to ease backports)
+  * Add manpage for new mako-render script
+  * s/hyperfast/fast in short description to avoid inflated adjectives
+    (closes: #466008)
+  * doc-base: section changed to Programming/Python
+
+ -- Piotr Ożarowski <piotr@debian.org>  Tue, 03 Jun 2008 22:27:15 +0200
+
 mako (0.1.10-1) unstable; urgency=low
 
   * New upstream release
