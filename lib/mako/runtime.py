@@ -1,5 +1,5 @@
 # runtime.py
-# Copyright (C) 2006, 2007 Michael Bayer mike_mp@zzzcomputing.com
+# Copyright (C) 2006, 2007, 2008 Michael Bayer mike_mp@zzzcomputing.com
 #
 # This module is part of Mako and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
@@ -8,42 +8,78 @@
 
 from mako import exceptions, util
 import inspect, sys
+import __builtin__
 
 class Context(object):
     """provides runtime namespace, output buffer, and various callstacks for templates."""
     def __init__(self, buffer, **data):
         self._buffer_stack = [buffer]
-        self._data = data
+        self._data = dict(__builtin__.__dict__)
+        self._data.update(data)
         self._kwargs = data.copy()
         self._with_template = None
         self.namespaces = {}
         
         # "capture" function which proxies to the generic "capture" function
-        data['capture'] = lambda x, *args, **kwargs: capture(self, x, *args, **kwargs)
+        self._data['capture'] = lambda x, *args, **kwargs: capture(self, x, *args, **kwargs)
         
         # "caller" stack used by def calls with content
-        self.caller_stack = data['caller'] = CallerStack()
+        self.caller_stack = self._data['caller'] = CallerStack()
+        
     lookup = property(lambda self:self._with_template.lookup)
     kwargs = property(lambda self:self._kwargs.copy())
+    
     def push_caller(self, caller):
         self.caller_stack.append(caller)
+        
     def pop_caller(self):
         del self.caller_stack[-1]
+        
     def keys(self):
         return self._data.keys()
+        
     def __getitem__(self, key):
         return self._data[key]
-    def push_buffer(self):
+
+    def _push_writer(self):
+        """push a capturing buffer onto this Context and return the new Writer function."""
+        
+        buf = util.FastEncodingBuffer()
+        self._buffer_stack.append(buf)
+        return buf.write
+
+    def _pop_buffer_and_writer(self):
+        """pop the most recent capturing buffer from this Context 
+        and return the current writer after the pop.
+        
+        """
+
+        buf = self._buffer_stack.pop()
+        return buf, self._buffer_stack[-1].write
+        
+    def _push_buffer(self):
         """push a capturing buffer onto this Context."""
-        self._buffer_stack.append(util.FastEncodingBuffer())
-    def pop_buffer(self):
+        
+        self._push_writer()
+        
+    def _pop_buffer(self):
         """pop the most recent capturing buffer from this Context."""
+        
         return self._buffer_stack.pop()
+        
     def get(self, key, default=None):
         return self._data.get(key, default)
+        
     def write(self, string):
         """write a string to this Context's underlying output buffer."""
+        
         self._buffer_stack[-1].write(string)
+        
+    def writer(self):
+        """return the current writer function"""
+
+        return self._buffer_stack[-1].write
+
     def _copy(self):
         c = Context.__new__(Context)
         c._buffer_stack = self._buffer_stack
@@ -78,10 +114,10 @@ class CallerStack(list):
         return self[-1]
     def __getattr__(self, key):
         return getattr(self._get_caller(), key)
-    def push_frame(self):
+    def _push_frame(self):
         self.append(self.nextcaller or None)
         self.nextcaller = None
-    def pop_frame(self):
+    def _pop_frame(self):
         self.nextcaller = self.pop()
         
         
@@ -94,6 +130,17 @@ class Undefined(object):
 
 UNDEFINED = Undefined()
 
+class _NSAttr(object):
+    def __init__(self, parent):
+        self.__parent = parent
+    def __getattr__(self, key):
+        ns = self.__parent
+        while ns:
+            if hasattr(ns.module, key):
+                return getattr(ns.module, key)
+            else:
+                ns = ns.inherits
+        raise AttributeError(key)    
     
 class Namespace(object):
     """provides access to collections of rendering methods, which can be local, from other templates, or from imported modules"""
@@ -121,11 +168,17 @@ class Namespace(object):
             self.callables = None
         if populate_self and self.template is not None:
             (lclcallable, lclcontext) = _populate_self_namespace(context, self.template, self_ns=self)
-
+        
     module = property(lambda s:s._module or s.template.module)
     filename = property(lambda s:s._module and s._module.__file__ or s.template.filename)
     uri = property(lambda s:s.template.uri)
     
+    def attr(self):
+        if not hasattr(self, '_attr'):
+            self._attr = _NSAttr(self)
+        return self._attr
+    attr = property(attr)
+
     def get_namespace(self, uri):
         """return a namespace corresponding to the given template uri.
         
@@ -164,16 +217,16 @@ class Namespace(object):
                 d[ident] = getattr(self, ident)
     
     def _get_star(self):
-        if self.callables is not None:
+        if self.callables:
             for key in self.callables:
                 yield (key, self.callables[key])
-        if self.template is not None:
+        if self.template:
             def get(key):
                 callable_ = self.template.get_def(key).callable_
                 return lambda *args, **kwargs:callable_(self.context, *args, **kwargs)
             for k in self.template.module._exports:
                 yield (k, get(k))
-        if self._module is not None:
+        if self._module:
             def get(key):
                 callable_ = getattr(self._module, key)
                 return lambda *args, **kwargs:callable_(self.context, *args, **kwargs)
@@ -182,23 +235,17 @@ class Namespace(object):
                     yield (k, get(k))
                             
     def __getattr__(self, key):
-        if self.callables is not None:
-            try:
-                return self.callables[key]
-            except KeyError:
-                pass
-        if self.template is not None:
-            try:
-                callable_ = self.template.get_def(key).callable_
-                return lambda *args, **kwargs:callable_(self.context, *args, **kwargs)
-            except AttributeError:
-                pass
-        if self._module is not None:
-            try:
-                callable_ = getattr(self._module, key)
-                return lambda *args, **kwargs:callable_(self.context, *args, **kwargs)
-            except AttributeError:
-                pass
+        if self.callables and key in self.callables:
+            return self.callables[key]
+
+        if self.template and self.template.has_def(key):
+            callable_ = self.template.get_def(key).callable_
+            return lambda *args, **kwargs:callable_(self.context, *args, **kwargs)
+
+        if self._module and hasattr(self._module, key):
+            callable_ = getattr(self._module, key)
+            return lambda *args, **kwargs:callable_(self.context, *args, **kwargs)
+
         if self.inherits is not None:
             return getattr(self.inherits, key)
         raise exceptions.RuntimeException("Namespace '%s' has no member '%s'" % (self.name, key))
@@ -206,22 +253,22 @@ class Namespace(object):
 def supports_caller(func):
     """apply a caller_stack compatibility decorator to a plain Python function."""
     def wrap_stackframe(context,  *args, **kwargs):
-        context.caller_stack.push_frame()
+        context.caller_stack._push_frame()
         try:
             return func(context, *args, **kwargs)
         finally:
-            context.caller_stack.pop_frame()
+            context.caller_stack._pop_frame()
     return wrap_stackframe
         
 def capture(context, callable_, *args, **kwargs):
     """execute the given template def, capturing the output into a buffer."""
     if not callable(callable_):
         raise exceptions.RuntimeException("capture() function expects a callable as its argument (i.e. capture(func, *args, **kwargs))")
-    context.push_buffer()
+    context._push_buffer()
     try:
         callable_(*args, **kwargs)
     finally:
-        buf = context.pop_buffer()
+        buf = context._pop_buffer()
     return buf.getvalue()
         
 def _include_file(context, uri, calling_uri, **kwargs):
@@ -276,16 +323,15 @@ def _populate_self_namespace(context, template, self_ns=None):
 
 def _render(template, callable_, args, data, as_unicode=False):
     """create a Context and return the string output of the given template and template callable."""
-    if as_unicode:
-        buf = util.FastEncodingBuffer()
-    elif template.output_encoding:
-        buf = util.FastEncodingBuffer(template.output_encoding, template.encoding_errors)
+
+    if as_unicode or template.output_encoding:
+        buf = util.FastEncodingBuffer(unicode=as_unicode, encoding=template.output_encoding, errors=template.encoding_errors)
     else:
         buf = util.StringIO()
     context = Context(buf, **data)
     context._with_template = template
     _render_context(template, callable_, context, *args, **_kwargs_for_callable(callable_, data))
-    return context.pop_buffer().getvalue()
+    return context._pop_buffer().getvalue()
 
 def _kwargs_for_callable(callable_, data, **kwargs):
     argspec = inspect.getargspec(callable_)
@@ -329,8 +375,8 @@ def _exec_template(callable_, context, args=None, kwargs=None):
                 if not result:
                     raise error
             else:
-                context._buffer_stack = [util.StringIO()]
                 error_template = exceptions.html_error_template()
+                context._buffer_stack[:] = [util.FastEncodingBuffer(error_template.output_encoding, error_template.encoding_errors)]
                 context._with_template = error_template
                 error_template.render_context(context, error=error)
     else:

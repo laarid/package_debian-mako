@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Piotr Ożarowski <piotr@debian.org>
 Uploaders: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
 Build-Depends: debhelper (>= 5.0.38)
-Build-Depends-Indep: python (>= 2.3.5-11), python-all-dev, python-central (>= 0.5.6), python-setuptools (>= 0.6b3-1)
+Build-Depends-Indep: python (>= 2.3.5-11), python-all-dev, python-central (>= 0.5.6), python-setuptools (>= 0.6b3-1~)
 Standards-Version: 3.7.3
 Homepage: http://www.makotemplates.org/
 XS-Python-Version: all
@@ -17,7 +17,7 @@ Depends: ${python:Depends}
 Recommends: python-beaker (>= 0.7.1)
 Enhances: python-pylons, python-turbogears, python-pygments
 XB-Python-Version: ${python:Versions}
-Description: hyperfast and lightweight templating for the Python platform
+Description: fast and lightweight templating for the Python platform
  Mako is a template library written in Python. It provides a familiar, non-XML
  syntax which compiles into Python modules for maximum performance. Mako's
  syntax and API borrows from the best ideas of many others, including Django

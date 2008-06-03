@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '0.1.10'
+version = '0.2.0'
 
 setup(name='Mako',
       version=version,
@@ -34,6 +34,7 @@ SVN version:
       license='MIT',
       package_dir={'':'lib'},
       packages=find_packages('lib', exclude=['ez_setup', 'examples', 'tests']),
+      scripts=['scripts/mako-render'],
       zip_safe=False,
       install_requires=[
           'Beaker',

@@ -30,7 +30,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.1.10   Last Updated: 12/27/07 00:53:49</div>
+<div class="versionheader">Version: 0.2.0   Last Updated: 06/03/08 15:05:59</div>
 
 
 
@@ -121,7 +121,7 @@
         
             
     <ul>
-        <li><A style="" href="#syntax_expression">Expression Substiution</a></li>
+        <li><A style="" href="#syntax_expression">Expression Substitution</a></li>
         
             
     <ul>
@@ -215,6 +215,12 @@
     <ul>
     </ul>
 
+    </ul>
+
+        <li><A style="" href="#syntax_returning">Returning early from a template</a></li>
+        
+            
+    <ul>
     </ul>
 
     </ul>
@@ -413,6 +419,12 @@
     <ul>
     </ul>
 
+    </ul>
+
+        <li><A style="" href="#unicode_saying">Saying to Heck with it:  Disabling the usage of Unicode entirely</a></li>
+        
+            
+    <ul>
     </ul>
 
     </ul>
@@ -1078,7 +1090,7 @@ msgstr &quot;&quot;
     <div class="subsection">
     
 
-    <h3>Expression Substiution</h3>
+    <h3>Expression Substitution</h3>
     
     
 
@@ -1308,7 +1320,7 @@ another line.
     <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">z</span><span class="o">.</span><span class="n">element</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">x</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">frobnizzle</span><span class="o">==</span><span class="mf">5</span><span class="p">]</span>
 <span class="cp">%&gt;</span>
 <span class="cp">%</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">y</span><span class="p">:</span>
-    element: <span class="cp">${</span><span class="n">y</span><span class="cp">}</span>
+    element: <span class="cp">${</span><span class="n">elem</span><span class="cp">}</span>
 <span class="cp">%</span><span class="k"> endfor</span>
 </pre></div>
 
@@ -1654,6 +1666,52 @@ another line.
 
 
 
+    </div>
+
+
+
+
+            <a href="#syntax">back to section top</a>
+    </div>
+
+
+
+    
+    <A name="syntax_returning"></a>
+    
+    <div class="subsection">
+    
+
+    <h3>Returning early from a template</h3>
+    
+    
+
+<p>Sometimes you want to stop processing a template or <code>&lt;%def&gt;</code> method in the middle and just use the text you've accumulated so far.  You can use a <code>return</code> statement inside a Python block to do that.
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight"><pre><span class="cp">%</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">):</span>
+    No records found.
+    <span class="cp">&lt;%</span> <span class="k">return</span> <span class="cp">%&gt;</span>
+<span class="cp">%</span><span class="k"> endif</span>
+</pre></div>
+
+    </div>
+<p>Or perhaps:
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight"><pre><span class="cp">&lt;%</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">):</span>
+        <span class="k">return</span>
+<span class="cp">%&gt;</span>
+</pre></div>
 
     </div>
 
@@ -3032,7 +3090,7 @@ this is the body content.
     <span class="cp">${</span><span class="n">next</span><span class="o">.</span><span class="n">body</span><span class="p">()</span><span class="cp">}</span>
 <span class="nt">&lt;/div&gt;</span>
 
-<span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;toolbar&quot;</span><span class="cp">&gt;</span>
+<span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;toolbar()&quot;</span><span class="cp">&gt;</span>
     <span class="nt">&lt;li&gt;</span>selection 1<span class="nt">&lt;/li&gt;</span>
     <span class="nt">&lt;li&gt;</span>selection 2<span class="nt">&lt;/li&gt;</span>
     <span class="nt">&lt;li&gt;</span>selection 3<span class="nt">&lt;/li&gt;</span>
@@ -3358,7 +3416,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
 
 <p><strong>New in version 0.1.2</strong>
 </p>
-<p>In addition to the <code>expression_filter</code> argument, the <code>default_filters</code> argument to both <code>Template</code> and <code>TemplateLookup</code> can specify filtering for all expression tags at the programmatic level.  This array-based argument defaults to <code>[&quot;unicode&quot;]</code>:
+<p>In addition to the <code>expression_filter</code> argument, the <code>default_filters</code> argument to both <code>Template</code> and <code>TemplateLookup</code> can specify filtering for all expression tags at the programmatic level.  This array-based argument, when given its default argument of <code>None</code>, will be internally set to <code>[&quot;unicode&quot;]</code>, except when <code>disable_unicode=True</code> is set in which case it defaults to <code>[&quot;str&quot;]</code>:
 </p>
 
     
@@ -3377,6 +3435,17 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
 
     <div class="code">
         <div class="highlight"><pre><span class="n">t</span> <span class="o">=</span> <span class="n">TemplateLookup</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;/tmp&#39;</span><span class="p">],</span> <span class="n">default_filters</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;decode.utf8&#39;</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+<p>To disable <code>default_filters</code> entirely, set it to an empty list:
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight"><pre><span class="n">t</span> <span class="o">=</span> <span class="n">TemplateLookup</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;/tmp&#39;</span><span class="p">],</span> <span class="n">default_filters</span><span class="o">=</span><span class="p">[])</span>
 </pre></div>
 
     </div>
@@ -3667,9 +3736,9 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
 </p>
 <p>There is one operation that Python <em>can</em> do with a non-ascii bytestring, and its a great source of confusion:  it can dump the bytestring straight out to a stream or a file, with nary a care what the encoding is.  To Python, this is pretty much like dumping any other kind of binary data (like an image) to a stream somewhere.  So in a lot of cases, programs that embed all kinds of international characters and encodings into plain byte-strings (i.e. using <code>&quot;hello world&quot;</code> style literals) can fly right through their run, sending reams of strings out to whereever they are going, and the programmer, seeing the same output as was expressed in the input, is now under the illusion that his or her program is Unicode-compliant.  In fact, their program has no unicode awareness whatsoever, and similarly has no ability to interact with libraries that <em>are</em> unicode aware.
 </p>
-<p>Particularly, some template languages like Cheetah, as well as earlier versions of Myghty, will treat expressions in this manner..they just go right through.  Theres nothing "incorrect" about this, but Mako, since it deals with unicode internally, usually requires explicitness when dealing with non-ascii encodings.  Additionally, if you ever need to handle unicode strings and other kinds of encoding conversions more intelligently, the usage of raw bytestrings quickly becomes a nightmare, since you are sending the Python interpreter collections of bytes for which it can make no intelligent decisions with regards to encoding.
+<p>The "pass through encoded data" scheme is what template languages like Cheetah and earlier versions of Myghty do by default.  Mako as of version 0.2 also supports this mode of operation using the "disable_unicode=True" flag.  However, when using Mako in its default mode of unicode-aware, it requires explicitness when dealing with non-ascii encodings.  Additionally, if you ever need to handle unicode strings and other kinds of encoding conversions more intelligently, the usage of raw bytestrings quickly becomes a nightmare, since you are sending the Python interpreter collections of bytes for which it can make no intelligent decisions with regards to encoding.
 </p>
-<p>In Mako, all parsed template constructs and output streams are handled internally as Python <code>unicode</code> objects.  Its only at the point of <code>render()</code> that this unicode stream is rendered into whatever the desired output encoding is.  The implication here is that the template developer must ensure that the encoding of all non-ascii templates is explicit, that all non-ascii-encoded expressions are in one way or another converted to unicode, and that the output stream of the template is handled as a unicode stream being encoded to some encoding.
+<p>In normal Mako operation, all parsed template constructs and output streams are handled internally as Python <code>unicode</code> objects.  Its only at the point of <code>render()</code> that this unicode stream is rendered into whatever the desired output encoding is.  The implication here is that the template developer must ensure that the encoding of all non-ascii templates is explicit, that all non-ascii-encoded expressions are in one way or another converted to unicode, and that the output stream of the template is handled as a unicode stream being encoded to some encoding.
 </p>
 
 
@@ -3888,8 +3957,82 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
 
 
 
+    </div>
+
+
+
+
+            <a href="#unicode">back to section top</a>
+    </div>
+
+
+
+    
+    <A name="unicode_saying"></a>
+    
+    <div class="subsection">
+    
+
+    <h3>Saying to Heck with it:  Disabling the usage of Unicode entirely</h3>
+    
+    
+
+<p>Some segements of Mako's userbase choose to make no usage of Unicode whatsoever, and instead would prefer the "passthru" approach; all string expressions in their templates return encoded bytestrings, and they would like these strings to pass right through.   The generated template module is also in the same encoding as the template and additionally carries Python's "magic encoding comment" at the top.   The only advantage to this approach is that templates need not use <code>u&quot;&quot;</code> for literal strings; there's an arguable speed improvement as well since raw bytestrings generally perform slightly faster than unicode objects in Python.  For these users, they will have to get used to using Unicode when Python 3000 becomes the standard, but for now they can hit the <code>disable_unicode=True</code> flag, introduced in version 0.2 of Mako, as so:
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight"><pre><span class="c"># -*- encoding:utf-8 -*-</span>
+<span class="k">from</span> <span class="nn">mako.template</span> <span class="k">import</span> <span class="n">Template</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="s">&quot;drôle de petit voix m’a réveillé.&quot;</span><span class="p">,</span> <span class="n">disable_unicode</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">input_encoding</span><span class="o">=</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">t</span><span class="o">.</span><span class="n">code</span>
+</pre></div>
 
     </div>
+<p>The generated module source code will contain elements like these:
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight"><pre><span class="c"># -*- encoding:utf-8 -*-</span>
+<span class="c">#  ...more generated code ...</span>
+
+<span class="k">def</span> <span class="nf">render_body</span><span class="p">(</span><span class="n">context</span><span class="p">,</span><span class="o">**</span><span class="n">pageargs</span><span class="p">):</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">caller_stack</span><span class="o">.</span><span class="n">push_frame</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">__M_locals</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">pageargs</span><span class="o">=</span><span class="n">pageargs</span><span class="p">)</span>
+        <span class="c"># SOURCE LINE 1</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;dr</span><span class="se">\xc3\xb4</span><span class="s">le de petit voix m</span><span class="se">\xe2\x80\x99</span><span class="s">a r</span><span class="se">\xc3\xa9</span><span class="s">veill</span><span class="se">\xc3\xa9</span><span class="s">.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s">&#39;&#39;</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">caller_stack</span><span class="o">.</span><span class="n">pop_frame</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+<p>Where above you can see that the <code>encoding</code> magic source comment is at the top, and the string literal used within <code>context.write</code> is a regular bytestring. 
+</p>
+<p>When <code>disable_unicode=True</code> is turned on, the <code>default_filters</code> argument which normally defaults to <code>[&quot;unicode&quot;]</code> now defaults to <code>[&quot;str&quot;]</code> instead.  Setting default_filters to the empty list <code>[]</code> can remove the overhead of the <code>str</code> call.  Also, in this mode you <strong>cannot</strong> safely call <code>render_unicode()</code> - you'll get unicode/decode errors.
+</p>
+<p><strong>Rules for using disable_unicode=True</strong>
+</p>
+<ul>
+ <li>
+     don't use this mode unless you really, really want to and you absolutely understand what you're doing
+ </li>
+
+ <li>
+     don't use this option just because you don't want to learn to use Unicode properly; we aren't supporting user issues in this mode of operation.  We will however offer generous help for the vast majority of users who stick to the Unicode program.
+ </li>
+
+ <li>
+     it's extremely unlikely this mode of operation will be present in the Python 3000 version of Mako since P3K strings are unicode objects by default; bytestrings are relegated to a "bytes" type that is not intended for dealing with text.
+ </li>
+</ul>
 
 
 

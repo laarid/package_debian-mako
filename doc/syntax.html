@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.1.10   Last Updated: 12/27/07 00:53:49</div>
+<div class="versionheader">Version: 0.2.0   Last Updated: 06/03/08 15:05:59</div>
 
 
 
@@ -58,7 +58,7 @@
 	
 	
     <ul>
-        <li><A style="" href="syntax.html#syntax_expression">Expression Substiution</a></li>
+        <li><A style="" href="syntax.html#syntax_expression">Expression Substitution</a></li>
         
             
     <ul>
@@ -154,6 +154,12 @@
 
     </ul>
 
+        <li><A style="" href="syntax.html#syntax_returning">Returning early from a template</a></li>
+        
+            
+    <ul>
+    </ul>
+
     </ul>
 
 	</div>
@@ -188,7 +194,7 @@
     <div class="subsection">
     
 
-    <h3>Expression Substiution</h3>
+    <h3>Expression Substitution</h3>
     
     
 
@@ -418,7 +424,7 @@ another line.
     <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">z</span><span class="o">.</span><span class="n">element</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">x</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">frobnizzle</span><span class="o">==</span><span class="mf">5</span><span class="p">]</span>
 <span class="cp">%&gt;</span>
 <span class="cp">%</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">y</span><span class="p">:</span>
-    element: <span class="cp">${</span><span class="n">y</span><span class="cp">}</span>
+    element: <span class="cp">${</span><span class="n">elem</span><span class="cp">}</span>
 <span class="cp">%</span><span class="k"> endfor</span>
 </pre></div>
 
@@ -764,6 +770,52 @@ another line.
 
 
 
+    </div>
+
+
+
+
+            <a href="#top">back to section top</a>
+    </div>
+
+
+
+    
+    <A name="syntax_returning"></a>
+    
+    <div class="subsection">
+    
+
+    <h3>Returning early from a template</h3>
+    
+    
+
+<p>Sometimes you want to stop processing a template or <code>&lt;%def&gt;</code> method in the middle and just use the text you've accumulated so far.  You can use a <code>return</code> statement inside a Python block to do that.
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight"><pre><span class="cp">%</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">):</span>
+    No records found.
+    <span class="cp">&lt;%</span> <span class="k">return</span> <span class="cp">%&gt;</span>
+<span class="cp">%</span><span class="k"> endif</span>
+</pre></div>
+
+    </div>
+<p>Or perhaps:
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight"><pre><span class="cp">&lt;%</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">):</span>
+        <span class="k">return</span>
+<span class="cp">%&gt;</span>
+</pre></div>
 
     </div>
 

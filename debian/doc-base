@@ -9,7 +9,7 @@ Abstract: This document describes Mako - a template library written in Python.
  the familiar ideas of componentized layout and inheritance to produce one of
  the most straightforward and flexible models available, while also maintaining
  close ties to Python calling and scoping semantics.
-Section: Apps/Programming
+Section: Programming/Python
 
 Format: HTML
 Index: /usr/share/doc/python-mako/doc/index.html

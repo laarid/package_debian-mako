@@ -1,10 +1,16 @@
 from mako.template import Template
+from mako.lookup import TemplateLookup
 from mako import lookup
-import unittest, os
+import shutil, unittest, os
 from util import result_lines
 
 if not os.access('./test_htdocs', os.F_OK):
     os.mkdir('./test_htdocs')
+for cache_dir in ('container_dbm', 'container_dbm_lock', 'container_file',
+            'container_file_lock'):
+    fullpath = os.path.join('./test_htdocs', cache_dir)
+    if os.path.exists(fullpath):
+        shutil.rmtree(fullpath)
 
 class MockCache(object):
     def __init__(self, realcache):
@@ -87,6 +93,67 @@ class CacheTest(unittest.TestCase):
         t.render()
         t.render()
         assert result_lines(t.render()) == [
+            "this is foo",
+            "callcount: [1]"
+        ]
+        assert m.kwargs == {}
+
+    def test_dynamic_key_with_funcargs(self):
+        t = Template("""
+            <%def name="foo(num=5)" cached="True" cache_key="foo_${str(num)}">
+             hi
+            </%def>
+
+            ${foo()}
+        """)
+        m = self._install_mock_cache(t)
+        t.render()
+        t.render()
+        assert result_lines(t.render()) == ['hi']
+        assert m.key == "foo_5"
+
+        t = Template("""
+            <%def name="foo(*args, **kwargs)" cached="True" cache_key="foo_${kwargs['bar']}">
+             hi
+            </%def>
+
+            ${foo(1, 2, bar='lala')}
+        """)
+        m = self._install_mock_cache(t)
+        t.render()
+        assert result_lines(t.render()) == ['hi']
+        assert m.key == "foo_lala"
+
+        t = Template('''
+        <%page args="bar='hi'" cache_key="foo_${bar}" cached="True"/>
+         hi
+        ''')
+        m = self._install_mock_cache(t)
+        t.render()
+        assert result_lines(t.render()) == ['hi']
+        assert m.key == "foo_hi"
+
+        
+    def test_dynamic_key_with_imports(self):
+        lookup = TemplateLookup()
+        lookup.put_string("foo.html", """
+        <%!
+            callcount = [0]
+        %>
+        <%namespace file="ns.html" import="*"/>
+        <%page cached="True" cache_key="${foo}"/>
+        this is foo
+        <%
+        callcount[0] += 1
+        %>
+        callcount: ${callcount}
+""")
+        lookup.put_string("ns.html", """""")
+        t = lookup.get_template("foo.html")
+        m = self._install_mock_cache(t)
+        t.render(foo='somekey')
+        t.render(foo='somekey')
+        assert result_lines(t.render(foo='somekey')) == [
             "this is foo",
             "callcount: [1]"
         ]

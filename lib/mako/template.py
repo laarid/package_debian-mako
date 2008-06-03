@@ -1,5 +1,5 @@
 # template.py
-# Copyright (C) 2006, 2007 Michael Bayer mike_mp@zzzcomputing.com
+# Copyright (C) 2006, 2007, 2008 Michael Bayer mike_mp@zzzcomputing.com
 #
 # This module is part of Mako and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
@@ -10,15 +10,14 @@ as well as template runtime operations."""
 from mako.lexer import Lexer
 from mako import codegen
 from mako import runtime, util, exceptions
-import imp, time, weakref, tempfile, shutil,  os, stat, sys, re
-
+import imp, os, re, shutil, stat, sys, tempfile, time, types, weakref
 
     
 class Template(object):
     """a compiled template"""
     def __init__(self, text=None, filename=None, uri=None, format_exceptions=False, error_handler=None, 
         lookup=None, output_encoding=None, encoding_errors='strict', module_directory=None, cache_type=None, 
-        cache_dir=None, cache_url=None, module_filename=None, input_encoding=None, default_filters=['unicode'], 
+        cache_dir=None, cache_url=None, module_filename=None, input_encoding=None, disable_unicode=False, default_filters=None, 
         buffer_filters=[], imports=None, preprocessor=None):
         """construct a new Template instance using either literal template text, or a previously loaded template module
         
@@ -42,9 +41,19 @@ class Template(object):
             self.module_id = "memory:" + hex(id(self))
             self.uri = self.module_id
         
-        self.default_filters = default_filters
-        self.buffer_filters = buffer_filters
         self.input_encoding = input_encoding
+        self.output_encoding = output_encoding
+        self.encoding_errors = encoding_errors
+        self.disable_unicode = disable_unicode
+        if default_filters is None:
+            if self.disable_unicode:
+                self.default_filters = ['str']
+            else:
+                self.default_filters = ['unicode']
+        else:
+            self.default_filters = default_filters
+        self.buffer_filters = buffer_filters
+            
         self.imports = imports
         self.preprocessor = preprocessor
         
@@ -69,7 +78,7 @@ class Template(object):
             if path is not None:
                 util.verify_directory(os.path.dirname(path))
                 filemtime = os.stat(filename)[stat.ST_MTIME]
-                if not os.access(path, os.F_OK) or os.stat(path)[stat.ST_MTIME] < filemtime:
+                if not os.path.exists(path) or os.stat(path)[stat.ST_MTIME] < filemtime:
                     _compile_module_file(self, file(filename).read(), filename, path)
                 module = imp.load_source(self.module_id, path, file(path))
                 del sys.modules[self.module_id]
@@ -94,8 +103,6 @@ class Template(object):
         self.format_exceptions = format_exceptions
         self.error_handler = error_handler
         self.lookup = lookup
-        self.output_encoding = output_encoding
-        self.encoding_errors = encoding_errors
         self.cache_type = cache_type
         self.cache_dir = cache_dir
         self.cache_url = cache_url
@@ -124,6 +131,9 @@ class Template(object):
         if getattr(context, '_with_template', None) is None:
             context._with_template = self
         runtime._render_context(self, self.callable_, context, *args, **kwargs)
+    
+    def has_def(self, name):
+        return hasattr(self.module, "render_%s" % name)
         
     def get_def(self, name):
         """return a def of this template as an individual Template of its own."""
@@ -138,6 +148,7 @@ class DefTemplate(Template):
         self.buffer_filters = parent.buffer_filters
         self.input_encoding = parent.input_encoding
         self.imports = parent.imports
+        self.disable_unicode = parent.disable_unicode
         self.output_encoding = parent.output_encoding
         self.encoding_errors = parent.encoding_errors
         self.format_exceptions = parent.format_exceptions
@@ -188,22 +199,24 @@ class ModuleInfo(object):
         
 def _compile_text(template, text, filename):
     identifier = template.module_id
-    lexer = Lexer(text, filename, input_encoding=template.input_encoding, preprocessor=template.preprocessor)
+    lexer = Lexer(text, filename, disable_unicode=template.disable_unicode, input_encoding=template.input_encoding, preprocessor=template.preprocessor)
     node = lexer.parse()
-    source = codegen.compile(node, template.uri, filename, default_filters=template.default_filters, buffer_filters=template.buffer_filters, imports=template.imports, source_encoding=lexer.encoding)
+    source = codegen.compile(node, template.uri, filename, default_filters=template.default_filters, buffer_filters=template.buffer_filters, imports=template.imports, source_encoding=lexer.encoding, generate_unicode=not template.disable_unicode)
     #print source
     cid = identifier
-    module = imp.new_module(cid)
+    if isinstance(cid, unicode):
+        cid = cid.encode()
+    module = types.ModuleType(cid)
     code = compile(source, cid, 'exec')
     exec code in module.__dict__, module.__dict__
     return (source, module)
 
 def _compile_module_file(template, text, filename, outputpath):
     identifier = template.module_id
-    (dest, name) = tempfile.mkstemp()
-    lexer = Lexer(text, filename, input_encoding=template.input_encoding, preprocessor=template.preprocessor)
+    lexer = Lexer(text, filename, disable_unicode=template.disable_unicode, input_encoding=template.input_encoding, preprocessor=template.preprocessor)
     node = lexer.parse()
-    source = codegen.compile(node, template.uri, filename, default_filters=template.default_filters, buffer_filters=template.buffer_filters, imports=template.imports, source_encoding=lexer.encoding)
+    source = codegen.compile(node, template.uri, filename, default_filters=template.default_filters, buffer_filters=template.buffer_filters, imports=template.imports, source_encoding=lexer.encoding, generate_unicode=not template.disable_unicode)
+    (dest, name) = tempfile.mkstemp()
     os.write(dest, source)
     os.close(dest)
     shutil.move(name, outputpath)

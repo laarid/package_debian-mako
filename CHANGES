@@ -1,3 +1,86 @@
+0.2.0
+- Speed improvements (as though we needed them, but people
+  contributed and there you go):
+
+  - added "bytestring passthru" mode, via
+    `disable_unicode=True` argument passed to Template or
+    TemplateLookup. All unicode-awareness and filtering is
+    turned off, and template modules are generated with
+    the appropriate magic encoding comment. In this mode,
+    template expressions can only receive raw bytestrings
+    or Unicode objects which represent straight ASCII, and
+    render_unicode() may not be used if multibyte
+    characters are present. When enabled, speed
+    improvement around 10-20%. [ticket:77] (courtesy
+    anonymous guest)
+
+  - inlined the "write" function of Context into a local
+    template variable. This affords a 12-30% speedup in
+    template render time. (idea courtesy same anonymous
+    guest) [ticket:76]
+  
+- New Features, API changes: 
+ 
+  - added "attr" accessor to namespaces. Returns
+    attributes configured as module level attributes, i.e.
+    within <%! %> sections.  [ticket:62] i.e.:
+    
+    # somefile.html
+    <%! 
+        foo = 27
+    %>
+    
+    # some other template
+    <%namespace name="myns" file="somefile.html"/>
+    ${myns.attr.foo}
+
+    The slight backwards incompatibility here is, you
+    can't have namespace defs named "attr" since the
+    "attr" descriptor will occlude it.
+    
+  - cache_key argument can now render arguments passed
+    directly to the %page or %def, i.e. <%def
+    name="foo(x)" cached="True" cache_key="${x}"/>
+    [ticket:78]
+
+  - some functions on Context are now private:
+    _push_buffer(), _pop_buffer(),
+    caller_stack._push_frame(), caller_stack._pop_frame().
+
+  - added a runner script "mako-render" which renders 
+    standard input as a template to stdout [ticket:81] 
+    [ticket:56]
+    
+- Bugfixes:
+  - can now use most names from __builtins__ as variable
+    names without explicit declaration (i.e. 'id', 
+    'exception', 'range', etc.) [ticket:83] [ticket:84]
+    
+  - can also use builtin names as local variable names 
+    (i.e. dict, locals) (came from fix for [ticket:84])
+    
+  - fixed bug in python generation when variable names are
+    used with identifiers like "else", "finally", etc.
+    inside them [ticket:68]
+
+  - fixed codegen bug which occured when using <%page>
+    level caching, combined with an expression-based
+    cache_key, combined with the usage of <%namespace
+    import="*"/> - fixed lexer exceptions not cleaning up
+    temporary files, which could lead to a maximum number
+    of file descriptors used in the process [ticket:69]
+
+  - fixed issue with inline format_exceptions that was
+    producing blank exception pages when an inheriting
+    template is present [ticket:71]
+  
+  - format_exceptions will apply the encoding options of
+    html_error_template() to the buffered output
+  
+  - rewrote the "whitespace adjuster" function to work
+    with more elaborate combinations of quotes and
+    comments [ticket:75]
+
 0.1.10
 - fixed propagation of 'caller' such that nested %def calls
   within a <%call> tag's argument list propigates 'caller'

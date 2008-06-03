@@ -1,5 +1,5 @@
 # lexer.py
-# Copyright (C) 2006, 2007 Michael Bayer mike_mp@zzzcomputing.com
+# Copyright (C) 2006, 2007, 2008 Michael Bayer mike_mp@zzzcomputing.com
 #
 # This module is part of Mako and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
@@ -13,7 +13,7 @@ from mako.pygen import adjust_whitespace
 _regexp_cache = {}
 
 class Lexer(object):
-    def __init__(self, text, filename=None, input_encoding=None, preprocessor=None):
+    def __init__(self, text, filename=None, disable_unicode=False, input_encoding=None, preprocessor=None):
         self.text = text
         self.filename = filename
         self.template = parsetree.TemplateNode(self.filename)
@@ -23,6 +23,7 @@ class Lexer(object):
         self.match_position = 0
         self.tag = []
         self.control_line = []
+        self.disable_unicode = disable_unicode
         self.encoding = input_encoding
         if preprocessor is None:
             self.preprocessor = []
@@ -108,7 +109,7 @@ class Lexer(object):
                 raise exceptions.SyntaxException("Keyword '%s' not a legal ternary for keyword '%s'" % (node.keyword, self.control_line[-1].keyword), **self.exception_kwargs)
 
     def escape_code(self, text):
-        if self.encoding:
+        if not self.disable_unicode and self.encoding:
             return text.encode('ascii', 'backslashreplace')
         else:
             return text
@@ -126,8 +127,7 @@ class Lexer(object):
             parsed_encoding = self.match_encoding()
         if parsed_encoding:
             self.encoding = parsed_encoding
-        if not isinstance(self.text, unicode):
-
+        if not self.disable_unicode and not isinstance(self.text, unicode):
             if self.encoding:
                 try:
                     self.text = self.text.decode(self.encoding)
@@ -272,7 +272,7 @@ class Lexer(object):
         if match:
             (line, pos) = (self.matched_lineno, self.matched_charpos)
             (text, end) = self.parse_until_text(r'%>')
-            text = adjust_whitespace(text)
+            text = adjust_whitespace(text) + "\n"   # the trailing newline helps compiler.parse() not complain about indentation
             self.append_node(parsetree.Code, self.escape_code(text), match.group(1)=='!', lineno=line, pos=pos)
             return True
         else:
