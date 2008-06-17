@@ -1,3 +1,11 @@
+mako (0.2.1-1) unstable; urgency=low
+
+  * New upstream release
+  * debian/copyright file updated
+  * Standards-Version bumped to 3.8.0 (no changes needed)
+
+ -- Piotr Ożarowski <piotr@debian.org>  Tue, 17 Jun 2008 19:43:47 +0200
+
 mako (0.2.0-1) unstable; urgency=low
 
   * New upstream release
