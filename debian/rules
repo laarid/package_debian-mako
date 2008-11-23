@@ -22,9 +22,6 @@ install-python%:
 	python$* setup.py install \
 		--single-version-externally-managed \
 		--root $(CURDIR)/debian/python-mako
-	# share Egg dir
-	mv debian/python-mako/usr/lib/python$*/site-packages/Mako-${DEB_UPSTREAM_VERSION}-py$*.egg-info \
-	   debian/python-mako/usr/lib/python$*/site-packages/Mako-${DEB_UPSTREAM_VERSION}.egg-info
 	# use default Python version in shebang
 	sed -i -e '1s,usr/bin/.*,usr/bin/python,' $(CURDIR)/debian/python-mako/usr/bin/mako-render
 
@@ -42,7 +39,7 @@ binary-indep: build install
 	dh_installdeb -i
 	dh_gencontrol -i
 	dh_md5sums -i
-	dh_builddeb -i
+	dh_builddeb -i -- -Z bzip2
 
 binary-arch:
 

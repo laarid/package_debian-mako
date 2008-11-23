@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Piotr Ożarowski <piotr@debian.org>
 Uploaders: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
 Build-Depends: debhelper (>= 5.0.38)
-Build-Depends-Indep: python (>= 2.3.5-11), python-all-dev, python-central (>= 0.5.6), python-setuptools (>= 0.6b3-1~)
+Build-Depends-Indep: python (>= 2.3.5-11), python-all-dev, python-central (>= 0.6.1), python-setuptools (>= 0.6b3-1~)
 Standards-Version: 3.8.0
 Homepage: http://www.makotemplates.org/
 XS-Python-Version: all
@@ -14,7 +14,7 @@ Vcs-Browser: http://svn.debian.org/viewsvn/python-modules/packages/mako/trunk/
 Package: python-mako
 Architecture: all
 Depends: ${python:Depends}
-Recommends: python-beaker (>= 0.7.1)
+Recommends: python-beaker (>= 1.1)
 Enhances: python-pylons, python-turbogears, python-pygments
 XB-Python-Version: ${python:Versions}
 Description: fast and lightweight templating for the Python platform
