@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.2.2   Last Updated: 06/23/08 13:32:03</div>
+<div class="versionheader">Version: 0.2.3   Last Updated: 11/23/08 11:57:46</div>
 
 
 
@@ -58,6 +58,12 @@
 	
 	
     <ul>
+        <li><A style="" href="namespaces.html#namespaces_howtocall">Ways to Call Namespaces</a></li>
+        
+            
+    <ul>
+    </ul>
+
         <li><A style="" href="namespaces.html#namespaces_frommodules">Namespaces from Regular Python Modules</a></li>
         
             
@@ -144,8 +150,8 @@
     this is comp1
 <span class="cp">&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span>
 
-<span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;comp2()&quot;</span><span class="cp">&gt;</span>
-    this is comp2
+<span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;comp2(x)&quot;</span><span class="cp">&gt;</span>
+    this is comp2, x is <span class="cp">${</span><span class="n">x</span><span class="cp">}</span>
 <span class="cp">&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span>
 </pre></div>
 
@@ -161,7 +167,7 @@
 <span class="cp">&lt;%</span><span class="nb">namespace</span> <span class="na">name=</span><span class="s">&quot;comp&quot;</span> <span class="na">file=</span><span class="s">&quot;components.html&quot;</span><span class="cp">/&gt;</span>
 
 Heres comp1:  <span class="cp">${</span><span class="n">comp</span><span class="o">.</span><span class="n">comp1</span><span class="p">()</span><span class="cp">}</span>
-Heres comp2:  <span class="cp">${</span><span class="n">comp</span><span class="o">.</span><span class="n">comp2</span><span class="p">()</span><span class="cp">}</span>
+Heres comp2:  <span class="cp">${</span><span class="n">comp</span><span class="o">.</span><span class="n">comp2</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">5</span><span class="p">)</span><span class="cp">}</span>
 </pre></div>
 
     </div>
@@ -177,7 +183,7 @@ Heres comp2:  <span class="cp">${</span><span class="n">comp</span><span class="
         <div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">namespace</span> <span class="na">file=</span><span class="s">&quot;components.html&quot;</span> <span class="na">import=</span><span class="s">&quot;comp1, comp2&quot;</span><span class="cp">/&gt;</span>
 
 Heres comp1:  <span class="cp">${</span><span class="n">comp1</span><span class="p">()</span><span class="cp">}</span>
-Heres comp2:  <span class="cp">${</span><span class="n">comp2</span><span class="p">()</span><span class="cp">}</span>
+Heres comp2:  <span class="cp">${</span><span class="n">comp2</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">5</span><span class="p">)</span><span class="cp">}</span>
 </pre></div>
 
     </div>
@@ -191,12 +197,96 @@ Heres comp2:  <span class="cp">${</span><span class="n">comp2</span><span class=
         <div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">namespace</span> <span class="na">file=</span><span class="s">&quot;components.html&quot;</span> <span class="na">import=</span><span class="s">&quot;*&quot;</span><span class="cp">/&gt;</span>
 
 Heres comp1:  <span class="cp">${</span><span class="n">comp1</span><span class="p">()</span><span class="cp">}</span>
-Heres comp2:  <span class="cp">${</span><span class="n">comp2</span><span class="p">()</span><span class="cp">}</span>
+Heres comp2:  <span class="cp">${</span><span class="n">comp2</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">5</span><span class="p">)</span><span class="cp">}</span>
 </pre></div>
 
     </div>
 <p>The names imported by the <code>import</code> attribute take precedence over any names that exist within the current context.
 </p>
+<p><strong>Note</strong> - in current versions of Mako, usage of "import='*'" is known to decrease performance of the template.  This will be fixed in a future release.
+</p>
+
+
+    
+    <A name="namespaces_howtocall"></a>
+    
+    <div class="subsection">
+    
+
+    <h3>Ways to Call Namespaces</h3>
+    
+    
+
+<p>There are essentially four ways to call a function from a namespace.
+</p>
+<p>The "expression" format, as described previously.  Namespaces are just Python objects with functions on them, and can
+   be used in expressions like any other function:
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight"><pre><span class="cp">${</span><span class="n">mynamespace</span><span class="o">.</span><span class="n">somefunction</span><span class="p">(</span><span class="s">&#39;some arg1&#39;</span><span class="p">,</span> <span class="s">&#39;some arg2&#39;</span><span class="p">,</span> <span class="n">arg3</span><span class="o">=</span><span class="s">&#39;some arg3&#39;</span><span class="p">,</span> <span class="n">arg4</span><span class="o">=</span><span class="s">&#39;some arg4&#39;</span><span class="p">)</span><span class="cp">}</span>
+</pre></div>
+
+    </div>
+<p>Synonymous with the "expression" format is the "custom tag" format, when a "closed" tag is used.  This format, introduced in Mako 0.2.3, allows the usage of a "custom" Mako tag, with the function arguments passed in using named attributes:
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">mynamespace:somefunction</span> <span class="na">arg1=</span><span class="s">&quot;some arg1&quot;</span> <span class="na">arg2=</span><span class="s">&quot;some arg2&quot;</span> <span class="na">arg3=</span><span class="s">&quot;some arg3&quot;</span> <span class="na">arg4=</span><span class="s">&quot;some arg4&quot;</span><span class="cp">/&gt;</span>
+</pre></div>
+
+    </div>
+<p>When using tags, the values of the arguments are taken as literal strings by default.  To embed Python expressions as arguments, use the embedded expression format:
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">mynamespace:somefunction</span> <span class="na">arg1=</span><span class="s">&quot;${someobject.format()}&quot;</span> <span class="na">arg2=</span><span class="s">&quot;${somedef(5, 12)}&quot;</span><span class="cp">/&gt;</span>
+</pre></div>
+
+    </div>
+<p>The "custom tag" format is intended mainly for namespace functions which recognize body content, which in Mako is known as a "def with embedded content":
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">mynamespace:somefunction</span> <span class="na">arg1=</span><span class="s">&quot;some argument&quot;</span> <span class="na">args=</span><span class="s">&quot;x, y&quot;</span><span class="cp">&gt;</span>
+    Some record: <span class="cp">${</span><span class="n">x</span><span class="cp">}</span>, <span class="cp">${</span><span class="n">y</span><span class="cp">}</span>
+<span class="cp">&lt;/%</span><span class="nb">mynamespace:somefunction</span><span class="cp">&gt;</span>
+</pre></div>
+
+    </div>
+<p>The "classic" way to call defs with embedded content is the <code>&lt;%call&gt;</code> tag:
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">call</span> <span class="na">expr=</span><span class="s">&quot;mynamespace.somefunction(arg1=&#39;some argument&#39;)&quot;</span> <span class="na">args=</span><span class="s">&quot;x, y&quot;</span><span class="cp">&gt;</span>
+    Some record: <span class="cp">${</span><span class="n">x</span><span class="cp">}</span>, <span class="cp">${</span><span class="n">y</span><span class="cp">}</span>
+<span class="cp">&lt;/%</span><span class="nb">call</span><span class="cp">&gt;</span>
+</pre></div>
+
+    </div>
+<p>For information on how to construct defs that embed content from the caller, see <a href="defs.html#defs_defswithcontent">Calling a def with embedded content and/or other defs</a>.
+</p>
+
+
+
+            <a href="#top">back to section top</a>
+    </div>
+
 
 
     
@@ -351,6 +441,10 @@ Heres comp2:  <span class="cp">${</span><span class="n">comp2</span><span class=
 <p>The <code>Namespace</code> class includes helpful accessors and methods:
 </p>
 <ul>
+ <li>
+     <code>attr</code> - allows access module level attributes by name.  This accessor allows templates to supply "scalar" attributes which are particularly handy in inheritance relationships.  See the example in <a href="inheritance.html">Inheritance</a>.
+ </li>
+
  <li>
      <code>module</code> - the Python module referenced by this Namespace.  If the namespace references a <code>Template</code>, then this module is the equivalent of <code>template.module</code>, i.e. the generated module for the template.
  </li>

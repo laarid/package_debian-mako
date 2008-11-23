@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.2.2   Last Updated: 06/23/08 13:32:03</div>
+<div class="versionheader">Version: 0.2.3   Last Updated: 11/23/08 11:57:46</div>
 
 
 
@@ -65,6 +65,12 @@
     </ul>
 
         <li><A style="" href="inheritance.html#inheritance_parent">Using the "parent" namespace to augment defs</a></li>
+        
+            
+    <ul>
+    </ul>
+
+        <li><A style="" href="inheritance.html#inheritance_inheritable">Inheritable Attributes</a></li>
         
             
     <ul>
@@ -396,6 +402,70 @@ this is the body content.
     </div>
 <p>and you're now a template inheritance ninja !
 </p>
+
+
+
+            <a href="#top">back to section top</a>
+    </div>
+
+
+
+    
+    <A name="inheritance_inheritable"></a>
+    
+    <div class="subsection">
+    
+
+    <h3>Inheritable Attributes</h3>
+    
+    
+
+<p>The <code>attr</code> accessor of the <code>Namespace</code> object allows access to module level variables declared in a template.  By accessing <code>self.attr</code>, you can access regular attributes from the inheritance chain as declared in <code>&lt;%! %&gt;</code> sections.  Such as:
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight"><pre><span class="cp">&lt;%!</span>
+    <span class="n">class_</span> <span class="o">=</span> <span class="s">&quot;grey&quot;</span>
+<span class="cp">%&gt;</span>
+
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;</span><span class="cp">${</span><span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="o">.</span><span class="n">class_</span><span class="cp">}</span><span class="s">&quot;</span><span class="nt">&gt;</span>
+    <span class="cp">${</span><span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="p">()</span><span class="cp">}</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+
+    </div>
+<p>If a an inheriting template overrides <code>class_</code> to be <code>white</code>, as in:
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight"><pre><span class="cp">&lt;%!</span>
+    <span class="n">class_</span> <span class="o">=</span> <span class="s">&quot;white&quot;</span>
+<span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span><span class="nb">inherit</span> <span class="na">file=</span><span class="s">&quot;parent.html&quot;</span><span class="cp">/&gt;</span>
+
+This is the body
+</pre></div>
+
+    </div>
+<p>You'll get output like:
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;white&quot;</span><span class="nt">&gt;</span>
+    This is the body
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+
+    </div>
 
 
 

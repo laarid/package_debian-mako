@@ -1,3 +1,19 @@
+mako (0.2.3-1) experimental; urgency=low
+
+  [ Sandro Tosi ]
+  * Switch Vcs-Browser field to viewsvn
+
+  [ Piotr Ożarowski ]
+  * New upstream release (upload to experimental due to Lenny freeze, to ease
+    testing rev. dependencies)
+    + python-beaker's recommended version bumped to >= 1.1
+  * Let python-central do the Egg renaming part
+    + python-central required build version bumped to 0.6.1
+    + debian/rules updated
+  * Compress binary package with bzip2
+
+ -- Piotr Ożarowski <piotr@debian.org>  Sun, 23 Nov 2008 18:28:03 +0100
+
 mako (0.2.2-1) unstable; urgency=low
 
   * New upstream release

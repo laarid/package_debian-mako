@@ -1,1 +1,1 @@
-Beaker
+Beaker>=1.1

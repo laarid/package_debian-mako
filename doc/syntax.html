@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.2.2   Last Updated: 06/23/08 13:32:03</div>
+<div class="versionheader">Version: 0.2.3   Last Updated: 11/23/08 11:57:46</div>
 
 
 
@@ -129,6 +129,12 @@
     </ul>
 
         <li><A style="" href="syntax.html#syntax_tags_inherit"><%inherit></a></li>
+        
+            
+    <ul>
+    </ul>
+
+        <li><A style="" href="syntax.html#syntax_tags_namespacename:defname"><%namespacename:defname></a></li>
         
             
     <ul>
@@ -584,6 +590,17 @@ another line.
 </pre></div>
 
     </div>
+<p>Include also accepts arguments which are available as <code>&lt;%page&gt;</code> arguments in the receiving template:
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">include</span> <span class="na">file=</span><span class="s">&quot;toolbar.html&quot;</span> <span class="na">args=</span><span class="s">&quot;current_section=&#39;members&#39;, username=&#39;ed&#39;&quot;</span><span class="cp">/&gt;</span>
+</pre></div>
+
+    </div>
 
 
 
@@ -690,6 +707,39 @@ another line.
 
 
     
+    <A name="syntax_tags_namespacename:defname"></a>
+    
+    <div class="subsection">
+    
+
+    <h3><%namespacename:defname></h3>
+    
+    
+
+<p>As of Mako 0.2.3, any user-defined "tag" can be created against a namespace by using a tag with a name of the form <em>namespacename</em>:<em>defname</em>.  The closed and open formats of such a tag are equivalent to an inline expression and the <code>&lt;%call&gt;</code> tag, respectively.
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">mynamespace:somedef</span> <span class="na">param=</span><span class="s">&quot;some value&quot;</span><span class="cp">&gt;</span>
+    this is the body
+<span class="cp">&lt;/%</span><span class="nb">mynamespace:somedef</span><span class="cp">&gt;</span>
+</pre></div>
+
+    </div>
+<p>To create custom tags which accept a body, see <a href="defs.html#defs_defswithcontent">Calling a def with embedded content and/or other defs</a>.
+</p>
+
+
+
+            <a href="#top">back to section top</a>
+    </div>
+
+
+
+    
     <A name="syntax_tags_call"></a>
     
     <div class="subsection">
@@ -699,7 +749,7 @@ another line.
     
     
 
-<p>The call tag is used to call <code>&lt;%defs&gt;</code> with additional embedded content.  This tag is described in <a href="defs.html#defs_defswithcontent">Calling a def with embedded content and/or other defs</a>.
+<p>The call tag is the "classic" form of a user-defined tag, and is roughly equiavlent to the <code>&lt;%namespacename:defname&gt;</code> syntax described above.  This tag is also described in <a href="defs.html#defs_defswithcontent">Calling a def with embedded content and/or other defs</a>.
 </p>
 
 

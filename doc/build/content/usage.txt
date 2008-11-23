@@ -33,7 +33,7 @@ The `template.render()` method calls upon Mako to create a `Context` object, whi
     ctx = Context(buf, name="jack")
     mytemplate.render_context(ctx)
     print buf.getvalue()
-    
+
 ### Using File-Based Templates {@name=file}
 
 A `Template` can also load its template source code from a file, using the `filename` keyword argument:
@@ -233,7 +233,7 @@ Invoking [Babel](http://babel.edgewall.org/)'s extractor at the command line in 
 
 Will output a gettext catalog to stdout including the following:
 
-    #. This is a proper name. See the gettext
+    #. TRANSLATORS: This is a proper name. See the gettext
     #. manual, section Names.
     #: myproj/templates/name.html:5
     msgid "Francois Pinard"

@@ -7,14 +7,14 @@
 """provides runtime services for templates, including Context, Namespace, and various helper functions."""
 
 from mako import exceptions, util
-import inspect, sys
-import __builtin__
+import __builtin__, inspect, sys
 
 class Context(object):
     """provides runtime namespace, output buffer, and various callstacks for templates."""
     def __init__(self, buffer, **data):
         self._buffer_stack = [buffer]
-        self._data = dict(__builtin__.__dict__)
+        self._orig = data  # original data, minus the builtins
+        self._data = __builtin__.__dict__.copy() # the context data which includes builtins
         self._data.update(data)
         self._kwargs = data.copy()
         self._with_template = None
@@ -84,6 +84,7 @@ class Context(object):
         c = Context.__new__(Context)
         c._buffer_stack = self._buffer_stack
         c._data = self._data.copy()
+        c._orig = self._orig
         c._kwargs = self._kwargs
         c._with_template = self._with_template
         c.namespaces = self.namespaces
@@ -196,14 +197,25 @@ class Namespace(object):
         
     def get_cached(self, key, **kwargs):
         if self.template:
+            if not self.template.cache_enabled:
+                createfunc = kwargs.get('createfunc', None)
+                if createfunc:
+                    return createfunc()
+                else:
+                    return None
+                
             if self.template.cache_dir:
                 kwargs.setdefault('data_dir', self.template.cache_dir)
             if self.template.cache_type:
                 kwargs.setdefault('type', self.template.cache_type)
             if self.template.cache_url:
                 kwargs.setdefault('url', self.template.cache_url)
-        return self.template.module._template_cache.get(key, **kwargs)
-        
+        return self.cache.get(key, **kwargs)
+    
+    def cache(self):
+        return self.template.cache
+    cache = property(cache)
+    
     def include_file(self, uri, **kwargs):
         """include a file at the given uri"""
         _include_file(self.context, uri, self._templateuri, **kwargs)
@@ -275,7 +287,7 @@ def _include_file(context, uri, calling_uri, **kwargs):
     """locate the template from the given uri and include it in the current output."""
     template = _lookup_template(context, uri, calling_uri)
     (callable_, ctx) = _populate_self_namespace(context._clean_inheritance_tokens(), template)
-    callable_(ctx, **_kwargs_for_callable(callable_, context._data, **kwargs))
+    callable_(ctx, **_kwargs_for_callable(callable_, context._orig, **kwargs))
         
 def _inherit_from(context, uri, calling_uri):
     """called by the _inherit method in template modules to set up the inheritance chain at the start
