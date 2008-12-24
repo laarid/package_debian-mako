@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.2.3   Last Updated: 11/23/08 11:57:46</div>
+<div class="versionheader">Version: 0.2.4   Last Updated: 12/22/08 22:46:37</div>
 
 
 
@@ -290,8 +290,8 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
     
 
     <div class="code">
-        <div class="highlight"><pre><span class="k">from</span> <span class="nn">mako.template</span> <span class="k">import</span> <span class="n">Template</span>
-<span class="k">from</span> <span class="nn">mako.lookup</span> <span class="k">import</span> <span class="n">TemplateLookup</span>
+        <div class="highlight"><pre><span class="kn">from</span> <span class="nn">mako.template</span> <span class="kn">import</span> <span class="n">Template</span>
+<span class="kn">from</span> <span class="nn">mako.lookup</span> <span class="kn">import</span> <span class="n">TemplateLookup</span>
 
 <span class="n">mylookup</span> <span class="o">=</span> <span class="n">TemplateLookup</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;/docs&#39;</span><span class="p">],</span> <span class="n">output_encoding</span><span class="o">=</span><span class="s">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">encoding_errors</span><span class="o">=</span><span class="s">&#39;replace&#39;</span><span class="p">)</span>
 
@@ -369,7 +369,7 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
 
     <div class="code">
         <div class="highlight"><pre><span class="c"># -*- encoding:utf-8 -*-</span>
-<span class="k">from</span> <span class="nn">mako.template</span> <span class="k">import</span> <span class="n">Template</span>
+<span class="kn">from</span> <span class="nn">mako.template</span> <span class="kn">import</span> <span class="n">Template</span>
 
 <span class="n">t</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="s">&quot;drôle de petit voix m’a réveillé.&quot;</span><span class="p">,</span> <span class="n">disable_unicode</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">input_encoding</span><span class="o">=</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
 <span class="k">print</span> <span class="n">t</span><span class="o">.</span><span class="n">code</span>
