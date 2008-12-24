@@ -1,3 +1,10 @@
+mako (0.2.4-1) experimental; urgency=low
+
+  * New upstream release (upload to experimental due to Lenny freeze, to ease
+    testing rev. dependencies)
+
+ -- Piotr Ożarowski <piotr@debian.org>  Wed, 24 Dec 2008 01:26:02 +0100
+
 mako (0.2.3-1) experimental; urgency=low
 
   [ Sandro Tosi ]
