@@ -1,3 +1,11 @@
+mako (0.2.4-2) unstable; urgency=low
+
+  * Set the minimum required Python version to 2.4 (closes: #515096)
+  * Upload to unstable
+  * Change Debian packaging license to MIT (to match upstream)
+
+ -- Piotr Ożarowski <piotr@debian.org>  Fri, 13 Feb 2009 16:50:39 +0100
+
 mako (0.2.4-1) experimental; urgency=low
 
   * New upstream release (upload to experimental due to Lenny freeze, to ease
