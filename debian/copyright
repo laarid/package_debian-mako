@@ -66,8 +66,5 @@ examples/bench/basic.py file:
   IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-The Debian packaging is (C) 2007-2008, Piotr Ożarowski <piotr@debian.org> and
-is licensed under the GPL.
-
-On Debian systems, the complete text of the GNU General Public License
-can be found in `/usr/share/common-licenses/GPL'.
+The Debian packaging is © 2007-2009, Piotr Ożarowski <piotr@debian.org> and
+is licensed under the MIT License as well.
