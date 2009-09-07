@@ -4,7 +4,7 @@ mako (0.2.5-1) unstable; urgency=low
   * debian/copyright file updated
   * Switch to python-support
     - debian/preinst file added (to remove python-central files)
-  * Standards-Version bumped to 3.8.0 (no changes needed)
+  * Standards-Version bumped to 3.8.3 (no changes needed)
 
  -- Piotr Ożarowski <piotr@debian.org>  Mon, 07 Sep 2009 23:29:57 +0200
 
