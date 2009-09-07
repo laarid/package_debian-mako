@@ -1,5 +1,5 @@
 # runtime.py
-# Copyright (C) 2006, 2007, 2008 Michael Bayer mike_mp@zzzcomputing.com
+# Copyright (C) 2006, 2007, 2008, 2009 Michael Bayer mike_mp@zzzcomputing.com
 #
 # This module is part of Mako and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
@@ -234,7 +234,7 @@ class Namespace(object):
                 yield (key, self.callables[key])
         if self.template:
             def get(key):
-                callable_ = self.template.get_def(key).callable_
+                callable_ = self.template._get_def_callable(key)
                 return lambda *args, **kwargs:callable_(self.context, *args, **kwargs)
             for k in self.template.module._exports:
                 yield (k, get(k))
@@ -251,7 +251,7 @@ class Namespace(object):
             return self.callables[key]
 
         if self.template and self.template.has_def(key):
-            callable_ = self.template.get_def(key).callable_
+            callable_ = self.template._get_def_callable(key)
             return lambda *args, **kwargs:callable_(self.context, *args, **kwargs)
 
         if self._module and hasattr(self._module, key):
@@ -260,7 +260,7 @@ class Namespace(object):
 
         if self.inherits is not None:
             return getattr(self.inherits, key)
-        raise exceptions.RuntimeException("Namespace '%s' has no member '%s'" % (self.name, key))
+        raise AttributeError("Namespace '%s' has no member '%s'" % (self.name, key))
 
 def supports_caller(func):
     """apply a caller_stack compatibility decorator to a plain Python function."""
@@ -282,7 +282,24 @@ def capture(context, callable_, *args, **kwargs):
     finally:
         buf = context._pop_buffer()
     return buf.getvalue()
-        
+
+def _decorate_toplevel(fn):
+    def decorate_render(render_fn):
+        def go(context, *args, **kw):
+            def y(*args, **kw):
+                return render_fn(context, *args, **kw)
+            return fn(y)(context, *args, **kw)
+        return go
+    return decorate_render
+    
+def _decorate_inline(context, fn):
+    def decorate_render(render_fn):
+        dec = fn(render_fn)
+        def go(*args, **kw):
+            return dec(context, *args, **kw)
+        return go
+    return decorate_render
+            
 def _include_file(context, uri, calling_uri, **kwargs):
     """locate the template from the given uri and include it in the current output."""
     template = _lookup_template(context, uri, calling_uri)

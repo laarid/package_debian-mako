@@ -95,6 +95,7 @@ test/ast.py
 test/babelplugin.py
 test/cache.py
 test/call.py
+test/decorators.py
 test/def.py
 test/exceptions_.py
 test/filters.py

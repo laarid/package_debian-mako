@@ -371,7 +371,22 @@ class NamespaceTest(unittest.TestCase):
             "foo lala",
         ]
     
-    
+    def test_attr_raise(self):
+        l = lookup.TemplateLookup()
+
+        l.put_string("foo.html", """
+            <%def name="foo()">
+            </%def>
+        """)
+
+        l.put_string("bar.html", """
+        <%namespace name="foo" file="foo.html"/>
+        
+        ${foo.notfoo()}
+        """)
+
+        self.assertRaises(AttributeError, l.get_template("bar.html").render)
+        
     def test_custom_tag_1(self):
         template = Template("""
         
@@ -445,7 +460,23 @@ class NamespaceTest(unittest.TestCase):
             "call body"
         ]
         
+    def test_custom_tag_case_sensitive(self):
+        t = Template("""
+        <%def name="renderPanel()">
+            panel ${caller.body()}
+        </%def>
 
+        <%def name="renderTablePanel()">
+            <%self:renderPanel>
+                hi
+            </%self:renderPanel>
+        </%def>
+        
+        <%self:renderTablePanel/>
+        """)
+        assert result_lines(t.render()) == ['panel', 'hi']
+        
+        
     def test_expr_grouping(self):
         """test that parenthesis are placed around string-embedded expressions."""
         

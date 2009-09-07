@@ -1,3 +1,38 @@
+0.2.5
+- Added a "decorator" kw argument to <%def>,
+  allows custom decoration functions to wrap
+  rendering callables.  Mainly intended for
+  custom caching algorithms, not sure what
+  other uses there may be (but there may be).
+  Examples are in the "filtering" docs.
+
+- When Mako creates subdirectories in which
+  to store templates, it uses the more
+  permissive mode of 0775 instead of 0750,
+  helping out with certain multi-process 
+  scenarios. Note that the mode is always
+  subject to the restrictions of the existing
+  umask. [ticket:101]
+  
+- Fixed namespace.__getattr__() to raise 
+  AttributeError on attribute not found 
+  instead of RuntimeError.  [ticket:104]
+  
+- Added last_modified accessor to Template,
+  returns the time.time() when the module
+  was created. [ticket:97]
+
+- Fixed lexing support for whitespace
+  around '=' sign in defs. [ticket:102]
+
+- Removed errant "lower()" in the lexer which
+  was causing tags to compile with 
+  case-insensitive names, thus messing up
+  custom <%call> names. [ticket:108]
+
+- added "mako.__version__" attribute to
+  the base module.  [ticket:110]
+  
 0.2.4
 - Fixed compatibility with Jython 2.5b1.
 

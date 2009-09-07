@@ -1,5 +1,5 @@
 # template.py
-# Copyright (C) 2006, 2007, 2008 Michael Bayer mike_mp@zzzcomputing.com
+# Copyright (C) 2006, 2007, 2008, 2009 Michael Bayer mike_mp@zzzcomputing.com
 #
 # This module is part of Mako and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
@@ -151,8 +151,14 @@ class Template(object):
     def get_def(self, name):
         """return a def of this template as an individual Template of its own."""
         return DefTemplate(self, getattr(self.module, "render_%s" % name))
-    
 
+    def _get_def_callable(self, name):
+        return getattr(self.module, "render_%s" % name)
+    
+    def last_modified(self): 
+        return self.module._modified_time    
+    last_modified = property(last_modified)
+    
 class ModuleTemplate(Template):
     """A Template which is constructed given an existing Python module.
     
@@ -202,6 +208,7 @@ class DefTemplate(Template):
         self.parent = parent
         self.callable_ = callable_
         self.output_encoding = parent.output_encoding
+        self.module = parent.module
         self.encoding_errors = parent.encoding_errors
         self.format_exceptions = parent.format_exceptions
         self.error_handler = parent.error_handler

@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.2.4   Last Updated: 12/22/08 22:46:37</div>
+<div class="versionheader">Version: 0.2.5   Last Updated: 09/07/09 15:28:26</div>
 
 
 
@@ -83,6 +83,12 @@
     </ul>
 
         <li><A style="" href="filtering.html#filtering_buffering">Buffering</a></li>
+        
+            
+    <ul>
+    </ul>
+
+        <li><A style="" href="filtering.html#filtering_decorating">Decorating</a></li>
         
             
     <ul>
@@ -517,6 +523,75 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
 </pre></div>
 
     </div>
+
+
+
+            <a href="#top">back to section top</a>
+    </div>
+
+
+
+    
+    <A name="filtering_decorating"></a>
+    
+    <div class="subsection">
+    
+
+    <h3>Decorating</h3>
+    
+    
+
+<p>This is a feature that's new as of version 0.2.5.   Somewhat like a filter for a %def but more flexible, the <code>decorator</code> argument to <code>%def</code> allows the creation of a function that will work in a similar manner to a Python decorator.   The function can control whether or not the function executes.   The original intent of this function is to allow the creation of custom cache logic, but there may be other uses as well.
+</p>
+<p><code>decorator</code> is intended to be used with a regular Python function, such as one defined in a library module.  Here we'll illustrate the python function defined in the template for simplicities' sake:
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight"><pre><span class="cp">&lt;%!</span>
+    <span class="k">def</span> <span class="nf">bar</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+            <span class="n">context</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;BAR&quot;</span><span class="p">)</span>
+            <span class="n">fn</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+            <span class="n">context</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;BAR&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s">&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">decorate</span>
+<span class="cp">%&gt;</span>
+
+<span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;foo()&quot;</span> <span class="na">decorator=</span><span class="s">&quot;bar&quot;</span><span class="cp">&gt;</span>
+    this is foo
+<span class="cp">&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span>
+
+<span class="cp">${</span><span class="n">foo</span><span class="p">()</span><span class="cp">}</span>
+</pre></div>
+
+    </div>
+<p>The above template will return, with more whitespace than this, <code>&quot;BAR this is foo BAR&quot;</code>.  The function is the render callable itself (or possibly a wrapper around it), and by default will write to the context.  To capture its output, use the <code>capture</code> callable in the <code>mako.runtime</code> module (available in templates as just  <code>runtime</code>):
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight"><pre><span class="cp">&lt;%!</span>
+    <span class="k">def</span> <span class="nf">bar</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s">&quot;BAR&quot;</span> <span class="o">+</span> <span class="n">runtime</span><span class="o">.</span><span class="n">capture</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;BAR&quot;</span>
+        <span class="k">return</span> <span class="n">decorate</span>
+<span class="cp">%&gt;</span>
+
+<span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;foo()&quot;</span> <span class="na">decorator=</span><span class="s">&quot;bar&quot;</span><span class="cp">&gt;</span>
+    this is foo
+<span class="cp">&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span>
+
+<span class="cp">${</span><span class="n">foo</span><span class="p">()</span><span class="cp">}</span>
+</pre></div>
+
+    </div>
+<p>The decorator can be used with top-level defs as well as nested defs.  Note that when calling a top-level def from the <code>Template</code> api, i.e. <code>template.get_def('somedef').render()</code>, the decorator has to write the output to the <code>context</code>, i.e. as in the first example.  The return value gets discarded.
+</p>
 
 
 

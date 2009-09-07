@@ -30,7 +30,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.2.4   Last Updated: 12/22/08 22:46:37</div>
+<div class="versionheader">Version: 0.2.5   Last Updated: 09/07/09 15:28:26</div>
 
 
 
@@ -415,6 +415,12 @@
     <ul>
     </ul>
 
+        <li><A style="" href="#filtering_decorating">Decorating</a></li>
+        
+            
+    <ul>
+    </ul>
+
     </ul>
 
         <li><A style="" href="#unicode">The Unicode Chapter</a></li>
@@ -529,7 +535,7 @@
 </pre></div>
 
     </div>
-<p>Above, the text argument to <code>Template</code> is <strong>compiled</strong> into a Python module representation.  This module contains a function called <code>render_body()</code>, which produces the output of the template.  When <code>mytemplate.render()</code> is called, Mako sets up a runtime environment for the template and calls the <code>render_body()</code> function, capturing the output into a buffer and returning it's string contents.
+<p>Above, the text argument to <code>Template</code> is <strong>compiled</strong> into a Python module representation. This module contains a function called <code>render_body()</code>, which produces the output of the template. When <code>mytemplate.render()</code> is called, Mako sets up a runtime environment for the template and calls the <code>render_body()</code> function, capturing the output into a buffer and returning its string contents.
 </p>
 <p>The code inside the <code>render_body()</code> function has access to a namespace of variables.  You can specify these variables by sending them as additional keyword arguments to the <code>render()</code> method:
 </p>
@@ -707,7 +713,7 @@
     
     
 
-<p>Another important flag on <code>TemplateLookup</code> is <code>filesystem_checks</code>.  This defaults to <code>True</code>, and says that each time a template is returned by the <code>get_template()</code> method, the revision time of the original template file is checked against the last time the template was loaded, and if the file is newer will reload its contents and recompile the template.  On a production system, seting <code>filesystem_checks</code> to <code>False</code> can afford a small to moderate performance increase (depending on the type of filesystem used).
+<p>Another important flag on <code>TemplateLookup</code> is <code>filesystem_checks</code>. This defaults to <code>True</code>, and says that each time a template is returned by the <code>get_template()</code> method, the revision time of the original template file is checked against the last time the template was loaded, and if the file is newer will reload its contents and recompile the template. On a production system, setting <code>filesystem_checks</code> to <code>False</code> can afford a small to moderate performance increase (depending on the type of filesystem used).
 </p>
 
 
@@ -1554,7 +1560,7 @@ another line.
 </pre></div>
 
     </div>
-<p>The %def tag is a lot more powerful than a plain Python def, as the Mako compiler provides many extra services with %def that you wouldn't normally have, such as the ability to export defs as template "methods", automatic propigation of the current <code>Context</code>, buffering/filtering/caching flags, and def calls with content, which enable packages of defs to be sent as arguments to other def calls (not as hard as it sounds).  Get the full deal on what %def can do in <a href="#defs">Defs</a>.
+<p>The %def tag is a lot more powerful than a plain Python def, as the Mako compiler provides many extra services with %def that you wouldn't normally have, such as the ability to export defs as template "methods", automatic propagation of the current <code>Context</code>, buffering/filtering/caching flags, and def calls with content, which enable packages of defs to be sent as arguments to other def calls (not as hard as it sounds).  Get the full deal on what %def can do in <a href="#defs">Defs</a>.
 </p>
 
 
@@ -1901,7 +1907,7 @@ another line.
 </pre></div>
 
     </div>
-<p>When you declare an argument signature for your def, they are required following normal Python conventions (i.e., all arguments are required except keyword arguments with a default value).  This is in contrast to using context-level variables, which evaluate to <code>UNDEFINED</code> if you reference a name that does not exist.
+<p>When you declare an argument signature for your def, they are required to follow normal Python conventions (i.e., all arguments are required except keyword arguments with a default value).  This is in contrast to using context-level variables, which evaluate to <code>UNDEFINED</code> if you reference a name that does not exist.
 </p>
 
 
@@ -2165,7 +2171,7 @@ another line.
 
     <div class="code">
         <div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;lister(count)&quot;</span><span class="cp">&gt;</span>
-    <span class="cp">%</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mf">1</span><span class="p">,</span><span class="n">count</span><span class="p">):</span>
+    <span class="cp">%</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">):</span>
         <span class="cp">${</span><span class="n">caller</span><span class="o">.</span><span class="n">body</span><span class="p">()</span><span class="cp">}</span>
     <span class="cp">%</span><span class="k"> endfor</span>
 <span class="cp">&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span>
@@ -3984,6 +3990,75 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
 </pre></div>
 
     </div>
+
+
+
+            <a href="#filtering">back to section top</a>
+    </div>
+
+
+
+    
+    <A name="filtering_decorating"></a>
+    
+    <div class="subsection">
+    
+
+    <h3>Decorating</h3>
+    
+    
+
+<p>This is a feature that's new as of version 0.2.5.   Somewhat like a filter for a %def but more flexible, the <code>decorator</code> argument to <code>%def</code> allows the creation of a function that will work in a similar manner to a Python decorator.   The function can control whether or not the function executes.   The original intent of this function is to allow the creation of custom cache logic, but there may be other uses as well.
+</p>
+<p><code>decorator</code> is intended to be used with a regular Python function, such as one defined in a library module.  Here we'll illustrate the python function defined in the template for simplicities' sake:
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight"><pre><span class="cp">&lt;%!</span>
+    <span class="k">def</span> <span class="nf">bar</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+            <span class="n">context</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;BAR&quot;</span><span class="p">)</span>
+            <span class="n">fn</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+            <span class="n">context</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;BAR&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s">&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">decorate</span>
+<span class="cp">%&gt;</span>
+
+<span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;foo()&quot;</span> <span class="na">decorator=</span><span class="s">&quot;bar&quot;</span><span class="cp">&gt;</span>
+    this is foo
+<span class="cp">&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span>
+
+<span class="cp">${</span><span class="n">foo</span><span class="p">()</span><span class="cp">}</span>
+</pre></div>
+
+    </div>
+<p>The above template will return, with more whitespace than this, <code>&quot;BAR this is foo BAR&quot;</code>.  The function is the render callable itself (or possibly a wrapper around it), and by default will write to the context.  To capture its output, use the <code>capture</code> callable in the <code>mako.runtime</code> module (available in templates as just  <code>runtime</code>):
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight"><pre><span class="cp">&lt;%!</span>
+    <span class="k">def</span> <span class="nf">bar</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s">&quot;BAR&quot;</span> <span class="o">+</span> <span class="n">runtime</span><span class="o">.</span><span class="n">capture</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;BAR&quot;</span>
+        <span class="k">return</span> <span class="n">decorate</span>
+<span class="cp">%&gt;</span>
+
+<span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;foo()&quot;</span> <span class="na">decorator=</span><span class="s">&quot;bar&quot;</span><span class="cp">&gt;</span>
+    this is foo
+<span class="cp">&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span>
+
+<span class="cp">${</span><span class="n">foo</span><span class="p">()</span><span class="cp">}</span>
+</pre></div>
+
+    </div>
+<p>The decorator can be used with top-level defs as well as nested defs.  Note that when calling a top-level def from the <code>Template</code> api, i.e. <code>template.get_def('somedef').render()</code>, the decorator has to write the output to the <code>context</code>, i.e. as in the first example.  The return value gets discarded.
+</p>
 
 
 
