@@ -19,11 +19,13 @@ build:
 
 install: $(PYVERS:%=install-python%)
 install-python%:
-	python$* setup.py install \
+	python$* setup.py install --prefix=/usr \
 		--single-version-externally-managed \
 		--root $(CURDIR)/debian/python-mako
 	# use default Python version in shebang
 	sed -i -e '1s,usr/bin/.*,usr/bin/python,' $(CURDIR)/debian/python-mako/usr/bin/mako-render
+	# dpkg handles dependencies way better than Python
+	find $(CURDIR)/debian/python-mako -name requires.txt -type f -delete
 
 binary-indep: build install
 	dh_testdir -i
