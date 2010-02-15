@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.2.5   Last Updated: 09/07/09 15:28:26</div>
+<div class="versionheader">Version: 0.3.0   Last Updated: 03/05/10 15:01:21</div>
 
 
 
@@ -112,17 +112,17 @@
     
     
 
-<p>The Python language in the 2.x series supports two ways of representing string objects.  One is the <code>string</code> type and the other is the <code>unicode</code> type, both of which extend a type called <code>basestring</code>.  A key issue in Python, which is hopefully to be resolved in Python 3000, is that objects of type <code>string</code> (i.e. created from an expression such as <code>&quot;hello world&quot;</code>) contain no information regarding what <strong>encoding</strong> the data is stored in.   For this reason they are often referred to as <strong>byte strings</strong>.  The origins of this come from Python's background of being developed before the Unicode standard was even available, back when strings were C-style strings and were just that, a series of bytes.  Strings that had only values below 128 just happened to be <strong>ascii</strong> strings and were printable on the console, whereas strings with values above 128 would produce all kinds of graphical characters and bells.
+<p>The Python language supports two ways of representing what we know as "strings", i.e. series of characters.   In Python 2, the two types are <code>string</code> and <code>unicode</code>, and in Python 3 they are <code>bytes</code> and <code>string</code>.   A key aspect of the Python 2 <code>string</code> and Python 3 <code>bytes</code> types are that they  contain no information regarding what <strong>encoding</strong> the data is stored in.   For this reason they were commonly referred to as <strong>byte strings</strong> on Python 2, and Python 3 makes this name more explicit.  The origins of this come from Python's background of being developed before the Unicode standard was even available, back when strings were C-style strings and were just that, a series of bytes.  Strings that had only values below 128 just happened to be <strong>ascii</strong> strings and were printable on the console, whereas strings with values above 128 would produce all kinds of graphical characters and bells.
 </p>
-<p>Contrast the Python <code>string</code> type with the Python <code>unicode</code> type.  Objects of this type are created whenever you say something like <code>u&quot;hello world&quot;</code>.  In this case, Python represents each character in the string internally using multiple bytes per character (something similar to UTF-16).  Whats important is that when using the <code>unicode</code> type to store strings, Python knows the data's encoding; its in its own internal format.  Whereas when using the <code>string</code> type, it does not.
+<p>Contrast the "bytestring" types with the "unicode/string" type.   Objects of this type are created whenever you say something like <code>u&quot;hello world&quot;</code> (or in Python 3, just <code>&quot;hello world&quot;</code>).  In this case, Python represents each character in the string internally using multiple bytes per character (something similar to UTF-16).  Whats important is that when using the <code>unicode</code>/<code>string</code> type to store strings, Python knows the data's encoding; its in its own internal format.  Whereas when using the <code>string</code>/<code>bytes</code> type, it does not.
 </p>
-<p>When Python attempts to treat a byte-string as a string, which means its attempting to compare/parse its characters, to coerce it into another encoding, or to decode it to a unicode object, it has to guess what the encoding is.  In this case, it will pretty much always guess the encoding as <code>ascii</code>...and if the bytestring contains bytes above value 128, you'll get an error.
+<p>When Python 2 attempts to treat a byte-string as a string, which means its attempting to compare/parse its characters, to coerce it into another encoding, or to decode it to a unicode object, it has to guess what the encoding is.  In this case, it will pretty much always guess the encoding as <code>ascii</code>...and if the bytestring contains bytes above value 128, you'll get an error.  Python 3 eliminates much of this confusion by just raising an error unconditionally if a bytestring is used in a character-aware context.
 </p>
-<p>There is one operation that Python <em>can</em> do with a non-ascii bytestring, and its a great source of confusion:  it can dump the bytestring straight out to a stream or a file, with nary a care what the encoding is.  To Python, this is pretty much like dumping any other kind of binary data (like an image) to a stream somewhere.  So in a lot of cases, programs that embed all kinds of international characters and encodings into plain byte-strings (i.e. using <code>&quot;hello world&quot;</code> style literals) can fly right through their run, sending reams of strings out to whereever they are going, and the programmer, seeing the same output as was expressed in the input, is now under the illusion that his or her program is Unicode-compliant.  In fact, their program has no unicode awareness whatsoever, and similarly has no ability to interact with libraries that <em>are</em> unicode aware.
+<p>There is one operation that Python <em>can</em> do with a non-ascii bytestring, and its a great source of confusion:  it can dump the bytestring straight out to a stream or a file, with nary a care what the encoding is.  To Python, this is pretty much like dumping any other kind of binary data (like an image) to a stream somewhere.  In Python 2, it is common to see programs that embed all kinds of international characters and encodings into plain byte-strings (i.e. using <code>&quot;hello world&quot;</code> style literals) can fly right through their run, sending reams of strings out to whereever they are going, and the programmer, seeing the same output as was expressed in the input, is now under the illusion that his or her program is Unicode-compliant.  In fact, their program has no unicode awareness whatsoever, and similarly has no ability to interact with libraries that <em>are</em> unicode aware.   Python 3 makes this much less likely by defaulting to unicode as the storage format for strings.
 </p>
-<p>The "pass through encoded data" scheme is what template languages like Cheetah and earlier versions of Myghty do by default.  Mako as of version 0.2 also supports this mode of operation using the "disable_unicode=True" flag.  However, when using Mako in its default mode of unicode-aware, it requires explicitness when dealing with non-ascii encodings.  Additionally, if you ever need to handle unicode strings and other kinds of encoding conversions more intelligently, the usage of raw bytestrings quickly becomes a nightmare, since you are sending the Python interpreter collections of bytes for which it can make no intelligent decisions with regards to encoding.
+<p>The "pass through encoded data" scheme is what template languages like Cheetah and earlier versions of Myghty do by default.  Mako as of version 0.2 also supports this mode of operation when using Python 2, using the "disable_unicode=True" flag.  However, when using Mako in its default mode of unicode-aware, it requires explicitness when dealing with non-ascii encodings.  Additionally, if you ever need to handle unicode strings and other kinds of encoding conversions more intelligently, the usage of raw bytestrings quickly becomes a nightmare, since you are sending the Python interpreter collections of bytes for which it can make no intelligent decisions with regards to encoding.   In Python 3 Mako only allows usage of native, unicode strings.
 </p>
-<p>In normal Mako operation, all parsed template constructs and output streams are handled internally as Python <code>unicode</code> objects.  Its only at the point of <code>render()</code> that this unicode stream is rendered into whatever the desired output encoding is.  The implication here is that the template developer must ensure that the encoding of all non-ascii templates is explicit, that all non-ascii-encoded expressions are in one way or another converted to unicode, and that the output stream of the template is handled as a unicode stream being encoded to some encoding.
+<p>In normal Mako operation, all parsed template constructs and output streams are handled internally as Python <code>unicode</code> objects.  Its only at the point of <code>render()</code> that this unicode stream may be rendered into whatever the desired output encoding is.  The implication here is that the template developer must ensure that the encoding of all non-ascii templates is explicit (still required in Python 3), that all non-ascii-encoded expressions are in one way or another converted to unicode (not much of a burden in Python 3), and that the output stream of the template is handled as a unicode stream being encoded to some encoding (still required in Python 3).
 </p>
 
 
@@ -215,14 +215,25 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
 </pre></div>
 
     </div>
-<p>That is, <em></em>the output of all expressions is run through the <code>unicode</code> builtin<em></em>.  This is the default setting, and can be modified to expect various encodings.  The <code>unicode</code> step serves both the purpose of rendering non-string expressions into strings (such as integers or objects which contain <code>__str()__</code> methods), and to ensure that the final output stream is constructed as a unicode object.  The main implication of this is that <strong>any raw bytestrings that contain an encoding other than ascii must first be decoded to a Python unicode object</strong>.   It means you can't say this:
+<p>In Python 3, its just:
 </p>
 
     
     
 
     <div class="code">
-        <div class="highlight"><pre><span class="cp">${</span><span class="s">&quot;voix m’a réveillé.&quot;</span><span class="cp">}</span>  <span class="cp">## error !</span>
+        <div class="highlight"><pre><span class="n">context</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="s">&quot;hello world&quot;</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+<p>That is, <em></em>the output of all expressions is run through the <code>unicode</code> builtin<em></em>.  This is the default setting, and can be modified to expect various encodings.  The <code>unicode</code> step serves both the purpose of rendering non-string expressions into strings (such as integers or objects which contain <code>__str()__</code> methods), and to ensure that the final output stream is constructed as a unicode object.  The main implication of this is that <strong>any raw bytestrings that contain an encoding other than ascii must first be decoded to a Python unicode object</strong>.   It means you can't say this in Python 2:
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight"><pre><span class="cp">${</span><span class="s">&quot;voix m’a réveillé.&quot;</span><span class="cp">}</span>  <span class="cp">## error in Python 2!</span>
 </pre></div>
 
     </div>
@@ -237,7 +248,7 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
 </pre></div>
 
     </div>
-<p>Similarly, if you are reading data from a file, or returning data from some object that is returning a Python bytestring containing a non-ascii encoding, you have to explcitly decode to unicode first, such as:
+<p>Similarly, if you are reading data from a file that is streaming bytes, or returning data from some object that is returning a Python bytestring containing a non-ascii encoding, you have to explcitly decode to unicode first, such as:
 </p>
 
     
@@ -248,6 +259,8 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
 </pre></div>
 
     </div>
+<p>Note that filehandles acquired by <code>open()</code> in Python 3 default to returning "text", that is the decoding is done for you.  See Python 3's documentation for the <code>open()</code> builtin for details on this.
+</p>
 <p>If you want a certain encoding applied to <em>all</em> expressions, override the <code>unicode</code> builtin with the <code>decode</code> builtin at the <code>Template</code> or <code>TemplateLookup</code> level:
 </p>
 
@@ -300,7 +313,9 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
 </pre></div>
 
     </div>
-<p>And <code>render_unicode()</code> will return the template output as a Python <code>unicode</code> object:
+<p><code>render()</code> will return a <code>bytes</code> object in Python 3 if an output encoding is specified.  By default it performs no encoding and returns a native string.
+</p>
+<p><code>render_unicode()</code> will return the template output as a Python <code>unicode</code> object (or <code>string</code> in Python 3):
 </p>
 
     
@@ -361,7 +376,7 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
     
     
 
-<p>Some segements of Mako's userbase choose to make no usage of Unicode whatsoever, and instead would prefer the "passthru" approach; all string expressions in their templates return encoded bytestrings, and they would like these strings to pass right through.   The generated template module is also in the same encoding as the template and additionally carries Python's "magic encoding comment" at the top.   The only advantage to this approach is that templates need not use <code>u&quot;&quot;</code> for literal strings; there's an arguable speed improvement as well since raw bytestrings generally perform slightly faster than unicode objects in Python.  For these users, they will have to get used to using Unicode when Python 3000 becomes the standard, but for now they can hit the <code>disable_unicode=True</code> flag, introduced in version 0.2 of Mako, as so:
+<p>Some segements of Mako's userbase choose to make no usage of Unicode whatsoever, and instead would prefer the "passthru" approach; all string expressions in their templates return encoded bytestrings, and they would like these strings to pass right through.   The only advantage to this approach is that templates need not use <code>u&quot;&quot;</code> for literal strings; there's an arguable speed improvement as well since raw bytestrings generally perform slightly faster than unicode objects in Python.  For these users, assuming they're sticking with Python 2, they can hit the <code>disable_unicode=True</code> flag as so:
 </p>
 
     
@@ -376,6 +391,8 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
 </pre></div>
 
     </div>
+<p>The <code>disable_unicode</code> mode is strictly a Python 2 thing.  It is not supported at all in Python 3.
+</p>
 <p>The generated module source code will contain elements like these:
 </p>
 
@@ -398,7 +415,7 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
 </pre></div>
 
     </div>
-<p>Where above you can see that the <code>encoding</code> magic source comment is at the top, and the string literal used within <code>context.write</code> is a regular bytestring. 
+<p>Where above that the string literal used within <code>context.write</code> is a regular bytestring. 
 </p>
 <p>When <code>disable_unicode=True</code> is turned on, the <code>default_filters</code> argument which normally defaults to <code>[&quot;unicode&quot;]</code> now defaults to <code>[&quot;str&quot;]</code> instead.  Setting default_filters to the empty list <code>[]</code> can remove the overhead of the <code>str</code> call.  Also, in this mode you <strong>cannot</strong> safely call <code>render_unicode()</code> - you'll get unicode/decode errors.
 </p>
@@ -414,7 +431,7 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
  </li>
 
  <li>
-     it's extremely unlikely this mode of operation will be present in the Python 3000 version of Mako since P3K strings are unicode objects by default; bytestrings are relegated to a "bytes" type that is not intended for dealing with text.
+     Python 3 is unicode by default, and the flag is not available when running on Python 3.
  </li>
 </ul>
 

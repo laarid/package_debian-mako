@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.2.5   Last Updated: 09/07/09 15:28:26</div>
+<div class="versionheader">Version: 0.3.0   Last Updated: 03/05/10 15:01:21</div>
 
 
 
@@ -308,8 +308,9 @@ Heres comp2:  <span class="cp">${</span><span class="n">comp2</span><span class=
     
 
     <div class="code">
-        <div class="highlight"><pre>def my_tag(context):
-    context.write(&quot;hello world&quot;)
+        <div class="highlight"><pre><span class="k">def</span> <span class="nf">my_tag</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;hello world&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s">&#39;&#39;</span>
 </pre></div>
 
     </div>
@@ -326,8 +327,42 @@ Heres comp2:  <span class="cp">${</span><span class="n">comp2</span><span class=
 </pre></div>
 
     </div>
-<p>Note that the <code>context</code> argument is not needed in the call; the <code>namespace</code> tag creates a locally-scoped callable which takes care of it.
+<p>Note that the <code>context</code> argument is not needed in the call; the <code>namespace</code> tag creates a locally-scoped callable which takes care of it.   The <code>return ''</code> is so that the def does not dump a <code>None</code> into the output stream - the return value of any def is rendered after the def completes, in addition to whatever was passed to <code>context.write()</code> within its body.
 </p>
+<p>If your def is to be called in an "embedded content" context, that is as described in <a href="defs.html#defs_defswithcontent">Calling a def with embedded content and/or other defs</a>, you should use the <code>@supports_caller</code> decorator, which will ensure that Mako will ensure the correct "caller" variable is available when your def is called, supporting embedded content:
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight"><pre><span class="kn">from</span> <span class="nn">mako.runtime</span> <span class="kn">import</span> <span class="n">supports_caller</span>
+
+<span class="nd">@supports_caller</span>
+<span class="k">def</span> <span class="nf">my_tag</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;&lt;div&gt;&quot;</span><span class="p">)</span>
+    <span class="n">context</span><span class="p">[</span><span class="s">&#39;caller&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">body</span><span class="p">()</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;&lt;/div&gt;&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s">&#39;&#39;</span>
+</pre></div>
+
+    </div>
+<p>Capturing of output is available as well, using the outside-of-templates version of the <code>capture()</code> function, which accepts the "context" as its first argument:
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight"><pre><span class="kn">from</span> <span class="nn">mako.runtime</span> <span class="kn">import</span> <span class="n">supports_caller</span><span class="p">,</span> <span class="n">capture</span>
+
+<span class="nd">@supports_caller</span>
+<span class="k">def</span> <span class="nf">my_tag</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s">&quot;&lt;div&gt;</span><span class="si">%s</span><span class="s">&lt;/div&gt;&quot;</span> <span class="o">%</span> \
+            <span class="n">capture</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">context</span><span class="p">[</span><span class="s">&#39;caller&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">body</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s">&quot;foo&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s">&quot;bar&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
 
 
 
