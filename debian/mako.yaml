@@ -1,0 +1,4 @@
+addon: mako
+description: "allow syntax highlighting for Mako templates"
+files: 
+  - syntax/mako.vim

@@ -5,13 +5,13 @@ It was originally downloaded from http://www.makotemplates.org/download.html
 
 Upstream Author: Mike Bayer <mike@zzzcomputing.com>
 
-Copyright (C) 2006-2009 Michael Bayer <mike@zzzcomputing.com>
+Copyright © 2006-2010 Michael Bayer <mike@zzzcomputing.com>
 
 Copyright:
 
  This is the MIT license: http://www.opensource.org/licenses/mit-license.php
 
- Copyright (C) 2006, 2007, 2008, 2009 Michael Bayer and contributors.
+ Copyright (C) 2006, 2007, 2008, 2009, 2010 Michael Bayer and contributors.
  Mako is a trademark of Michael Bayer.
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -83,5 +83,14 @@ examples/bench/basic.py file:
 
 ----------------------------------------------------------------
 
-The Debian packaging is © 2007-2009, Piotr Ożarowski <piotr@debian.org> and
+debian/mako.vim file:
+
+ License: three clause BSD
+ Maintainer: Armin Ronacher <armin.ronacher@active-4.com>
+
+ Source: http://www.vim.org/scripts/script.php?script_id=1858
+
+----------------------------------------------------------------
+
+The Debian packaging is © 2007-2010, Piotr Ożarowski <piotr@debian.org> and
 is licensed under the MIT License as well.

@@ -18,6 +18,8 @@ clean:
 build:
 
 install: $(PYVERS:%=install-python%)
+	dh_install
+
 install-python%:
 	python$* setup.py install --prefix=/usr \
 		--single-version-externally-managed \
