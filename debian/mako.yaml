@@ -1,4 +1,5 @@
 addon: mako
-description: "allow syntax highlighting for Mako templates"
+description: "syntax highlighting and indenting support for Mako templates"
 files: 
   - syntax/mako.vim
+  - indent/mako.vim

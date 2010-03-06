@@ -1,8 +1,8 @@
-mako (0.3.0-1) UNRELEASED; urgency=low
+mako (0.3.0-1) unstable; urgency=low
 
   * New upstream release
   * Move python-beaker from Recommends to Suggests (closes: #569986)
-  * Install Vim syntax file in /usr/share/vim/addons/syntax/
+  * Install Vim syntax and indent files in /usr/share/vim/addons/
     Use `vim-addons install mako` to enable it
   * Standards-Version bumped to 3.8.4 (no changes needed)
 
