@@ -225,7 +225,6 @@ class Template(object):
     @property
     def last_modified(self): 
         return self.module._modified_time    
-    last_modified = property(last_modified)
     
 class ModuleTemplate(Template):
     """A Template which is constructed given an existing Python module.
@@ -391,7 +390,11 @@ def _compile_module_file(template, text, filename, outputpath):
                                 imports=template.imports,
                                 source_encoding=lexer.encoding,
                                 generate_magic_comment=True)
-    (dest, name) = tempfile.mkstemp()
+                                
+    # make tempfiles in the same location as the ultimate 
+    # location.   this ensures they're on the same filesystem,
+    # avoiding synchronization issues.
+    (dest, name) = tempfile.mkstemp(dir=os.path.dirname(outputpath))
     
     if isinstance(source, unicode):
         source = source.encode(lexer.encoding or 'ascii')

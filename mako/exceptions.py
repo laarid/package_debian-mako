@@ -48,8 +48,8 @@ class TopLevelLookupException(TemplateLookupException):
     pass
     
 class RichTraceback(object):
-    """pulls the current exception from the sys traceback and extracts Mako-specific 
-    template information.
+    """pulls the current exception from the sys traceback and extracts
+    Mako-specific template information.
     
     Usage:
     
@@ -59,15 +59,20 @@ class RichTraceback(object):
     
     error - the exception instance.  
     message - the exception error message as unicode
-    source - source code of the file where the error occured.  if the error occured within a compiled template,
-    this is the template source.
-    lineno - line number where the error occured.  if the error occured within a compiled template, the line number
-    is adjusted to that of the template source
-    records - a list of 8-tuples containing the original python traceback elements, plus the 
-    filename, line number, source line, and full template source for the traceline mapped back to its originating source
-    template, if any for that traceline (else the fields are None).
+    source - source code of the file where the error occured.  
+        if the error occured within a compiled template,
+        this is the template source.
+    lineno - line number where the error occured.  if the error 
+        occured within a compiled template, the line number
+        is adjusted to that of the template source
+    records - a list of 8-tuples containing the original 
+        python traceback elements, plus the 
+    filename, line number, source line, and full template source 
+        for the traceline mapped back to its originating source
+        template, if any for that traceline (else the fields are None).
     reverse_records - the list of records in reverse
-    traceback - a list of 4-tuples, in the same format as a regular python traceback, with template-corresponding 
+    traceback - a list of 4-tuples, in the same format as a regular 
+        python traceback, with template-corresponding 
     traceback records replacing the originals
     reverse_traceback - the traceback list in reverse
     
@@ -94,7 +99,11 @@ class RichTraceback(object):
             self._has_source = True
             
         self._init_message()
-
+    
+    @property
+    def errorname(self):
+        return util.exception_name(self.error)
+        
     def _init_message(self):
         """Find a unicode representation of self.error"""
         try:
@@ -118,8 +127,10 @@ class RichTraceback(object):
                 
     @property
     def traceback(self):
-        """return a list of 4-tuple traceback records (i.e. normal python format)
-            with template-corresponding lines remapped to the originating template
+        """return a list of 4-tuple traceback records (i.e. normal python
+        format) with template-corresponding lines remapped to the originating
+        template.
+        
         """
         return list(self._get_reformatted_records(self.records))
     
@@ -129,20 +140,24 @@ class RichTraceback(object):
         
     @property
     def reverse_traceback(self):
-        """return the same data as traceback, except in reverse order
+        """return the same data as traceback, except in reverse order.
         """
+        
         return list(self._get_reformatted_records(self.reverse_records))
 
     def _init(self, trcback):
-        """format a traceback from sys.exc_info() into 7-item tuples, containing
-        the regular four traceback tuple items, plus the original template 
-        filename, the line number adjusted relative to the template source, and
-        code line from that line number of the template."""
+        """format a traceback from sys.exc_info() into 7-item tuples,
+        containing the regular four traceback tuple items, plus the original
+        template filename, the line number adjusted relative to the template
+        source, and code line from that line number of the template."""
+
         import mako.template
         mods = {}
         rawrecords = traceback.extract_tb(trcback)
         new_trcback = []
         for filename, lineno, function, line in rawrecords:
+            if not line:
+                line = ''
             try:
                 (line_map, template_lines) = mods[filename]
             except KeyError:
@@ -178,7 +193,8 @@ class RichTraceback(object):
                         template_ln += 1
                     module_ln += 1
                     line_map[module_ln] = template_ln
-                template_lines = [line for line in template_source.split("\n")]
+                template_lines = [line for line in
+                                    template_source.split("\n")]
                 mods[filename] = (line_map, template_lines)
 
             template_ln = line_map[lineno]
@@ -196,25 +212,29 @@ class RichTraceback(object):
                     self.lineno = new_trcback[l][5]
                     break
             else:
-                try:
-                    # A normal .py file (not a Template)
-                    fp = open(new_trcback[-1][0], 'rb')
-                    encoding = util.parse_encoding(fp)
-                    fp.seek(0)
-                    self.source = fp.read()
-                    fp.close()
-                    if encoding:
-                        self.source = self.source.decode(encoding)
-                except IOError:
-                    self.source = ''
-                self.lineno = new_trcback[-1][1]
+                if new_trcback:
+                    try:
+                        # A normal .py file (not a Template)
+                        fp = open(new_trcback[-1][0], 'rb')
+                        encoding = util.parse_encoding(fp)
+                        fp.seek(0)
+                        self.source = fp.read()
+                        fp.close()
+                        if encoding:
+                            self.source = self.source.decode(encoding)
+                    except IOError:
+                        self.source = ''
+                    self.lineno = new_trcback[-1][1]
         return new_trcback
 
                 
 def text_error_template(lookup=None):
-    """provides a template that renders a stack trace in a similar format to the Python interpreter,
-    substituting source template filenames, line numbers and code for that of the originating
-    source template, as applicable."""
+    """Provides a template that renders a stack trace in a similar format to
+    the Python interpreter, substituting source template filenames, line
+    numbers and code for that of the originating source template, as
+    applicable.
+    
+    """
     import mako.template
     return mako.template.Template(r"""
 <%page args="error=None, traceback=None"/>
@@ -229,19 +249,21 @@ Traceback (most recent call last):
   File "${filename}", line ${lineno}, in ${function or '?'}
     ${line | unicode.strip}
 % endfor
-${str(tback.error.__class__.__name__)}: ${tback.message}
+${tback.errorname}: ${tback.message}
 """)
 
 def html_error_template():
-    """provides a template that renders a stack trace in an HTML format, providing an excerpt of 
-    code as well as substituting source template filenames, line numbers and code 
-    for that of the originating source template, as applicable.
+    """Provides a template that renders a stack trace in an HTML format,
+    providing an excerpt of code as well as substituting source template
+    filenames, line numbers and code for that of the originating source
+    template, as applicable.
 
-    the template's default encoding_errors value is 'htmlentityreplace'. the template has
-    two options:
-
-    with the full option disabled, only a section of an HTML document is returned.
-    with the css option disabled, the default stylesheet won't be included."""
+    The template's default encoding_errors value is 'htmlentityreplace'. the
+    template has two options. With the full option disabled, only a section of
+    an HTML document is returned. with the css option disabled, the default
+    stylesheet won't be included.
+    
+    """
     import mako.template
     return mako.template.Template(r"""
 <%!
@@ -280,7 +302,7 @@ def html_error_template():
     else:
         lines = None
 %>
-<h3>${str(tback.error.__class__.__name__)}: ${tback.message}</h3>
+<h3>${tback.errorname}: ${tback.message}</h3>
 
 % if lines:
     <div class="sample">
