@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.3.3   Last Updated: 05/31/10 16:21:29</div>
+<div class="versionheader">Version: 0.3.4   Last Updated: 06/22/10 17:39:23</div>
 
 
 
@@ -147,11 +147,11 @@
 </p>
 <ul>
  <li>
-     <code>u</code> : URL escaping, provided by <code>urllib.quote_plus(string.encode('utf-8'))</code>
+     <code>u</code> : URL escaping, provided by <code>urllib.quote_plus(string.encode(&#39;utf-8&#39;))</code>
  </li>
 
  <li>
-     <code>h</code> : HTML escaping, provided by <code>cgi.escape(string, True)</code>
+     <code>h</code> : HTML escaping, provided by <code>markupsafe.escape(string)</code>  (new as of 0.3.4 - prior versions use <code>cgi.escape(string, True)</code>)
  </li>
 
  <li>
@@ -258,7 +258,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
     
     
 
-<p>In addition to the <code>expression_filter</code> argument, the <code>default_filters</code> argument to both <code>Template</code> and <code>TemplateLookup</code> can specify filtering for all expression tags at the programmatic level.  This array-based argument, when given its default argument of <code>None</code>, will be internally set to <code>[&quot;unicode&quot;]</code> (or <code>[&quot;str&quot;]</code> on Python 3), except when <code>disable_unicode=True</code> is set in which case it defaults to <code>[&quot;str&quot;]</code>:
+<p>In addition to the <code>expression_filter</code> argument, the <code>default_filters</code> argument to both <code>Template</code> and <code>TemplateLookup</code> can specify filtering for all expression tags at the programmatic level.  This array-based argument, when given its default argument of <code>None</code>, will be internally set to <code>[&#34;unicode&#34;]</code> (or <code>[&#34;str&#34;]</code> on Python 3), except when <code>disable_unicode=True</code> is set in which case it defaults to <code>[&#34;str&#34;]</code>:
 </p>
 
     
@@ -428,7 +428,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
     
     
 
-<p>One of Mako's central design goals is speed.  To this end, all of the textual content within a template and its various callables is by default piped directly to the single buffer that is stored within the <code>Context</code> object.  While this normally is easy to miss, it has certain side effects.  The main one is that when you call a def using the normal expression syntax, i.e. <code>${somedef()}</code>, it may appear that the return value of the function is the content it produced, which is then delivered to your template just like any other expression substitution, except that  normally, this is not the case; the return value of <code>${somedef()}</code> is simply the empty string <code>''</code>.  By the time you receive this empty string, the output of <code>somedef()</code> has been sent to the underlying buffer.
+<p>One of Mako's central design goals is speed.  To this end, all of the textual content within a template and its various callables is by default piped directly to the single buffer that is stored within the <code>Context</code> object.  While this normally is easy to miss, it has certain side effects.  The main one is that when you call a def using the normal expression syntax, i.e. <code>${somedef()}</code>, it may appear that the return value of the function is the content it produced, which is then delivered to your template just like any other expression substitution, except that  normally, this is not the case; the return value of <code>${somedef()}</code> is simply the empty string <code>&#39;&#39;</code>.  By the time you receive this empty string, the output of <code>somedef()</code> has been sent to the underlying buffer.
 </p>
 <p>You may not want this effect, if for example you are doing something like this:
 </p>
@@ -441,7 +441,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
 </pre></div>
 
     </div>
-<p>If the <code>somedef()</code> function produced the content "<code>somedef's results</code>", the above template would produce this output:
+<p>If the <code>somedef()</code> function produced the content "<code>somedef&#39;s results</code>", the above template would produce this output:
 </p>
 
     
@@ -506,7 +506,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
     
 
     <div class="code">
-        <div class="highlight"><pre><span class="cp">${</span><span class="n">capture</span><span class="p">(</span><span class="n">somedef</span><span class="p">,</span> <span class="mf">17</span><span class="p">,</span> <span class="s">&#39;hi&#39;</span><span class="p">,</span> <span class="n">use_paging</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="cp">}</span>
+        <div class="highlight"><pre><span class="cp">${</span><span class="n">capture</span><span class="p">(</span><span class="n">somedef</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="s">&#39;hi&#39;</span><span class="p">,</span> <span class="n">use_paging</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="cp">}</span>
 </pre></div>
 
     </div>
@@ -517,7 +517,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
     
 
     <div class="code">
-        <div class="highlight"><pre><span class="cp">${</span><span class="n">somedef</span><span class="p">(</span><span class="mf">17</span><span class="p">,</span> <span class="s">&#39;hi&#39;</span><span class="p">,</span> <span class="n">use_paging</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="cp">}</span>
+        <div class="highlight"><pre><span class="cp">${</span><span class="n">somedef</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="s">&#39;hi&#39;</span><span class="p">,</span> <span class="n">use_paging</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="cp">}</span>
 </pre></div>
 
     </div>
@@ -566,7 +566,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
 </pre></div>
 
     </div>
-<p>The above template will return, with more whitespace than this, <code>&quot;BAR this is foo BAR&quot;</code>.  The function is the render callable itself (or possibly a wrapper around it), and by default will write to the context.  To capture its output, use the <code>capture</code> callable in the <code>mako.runtime</code> module (available in templates as just  <code>runtime</code>):
+<p>The above template will return, with more whitespace than this, <code>&#34;BAR this is foo BAR&#34;</code>.  The function is the render callable itself (or possibly a wrapper around it), and by default will write to the context.  To capture its output, use the <code>capture</code> callable in the <code>mako.runtime</code> module (available in templates as just  <code>runtime</code>):
 </p>
 
     
@@ -588,7 +588,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
 </pre></div>
 
     </div>
-<p>The decorator can be used with top-level defs as well as nested defs.  Note that when calling a top-level def from the <code>Template</code> api, i.e. <code>template.get_def('somedef').render()</code>, the decorator has to write the output to the <code>context</code>, i.e. as in the first example.  The return value gets discarded.
+<p>The decorator can be used with top-level defs as well as nested defs.  Note that when calling a top-level def from the <code>Template</code> api, i.e. <code>template.get_def(&#39;somedef&#39;).render()</code>, the decorator has to write the output to the <code>context</code>, i.e. as in the first example.  The return value gets discarded.
 </p>
 
 

@@ -145,6 +145,8 @@ def render_body(context,**pageargs):
 </p>
 <p>When <code><%text filter='h'>disable_unicode=True</%text></code> is turned on, the <code><%text filter='h'>default_filters</%text></code> argument which normally defaults to <code><%text filter='h'>["unicode"]</%text></code> now defaults to <code><%text filter='h'>["str"]</%text></code> instead.  Setting default_filters to the empty list <code><%text filter='h'>[]</%text></code> can remove the overhead of the <code><%text filter='h'>str</%text></code> call.  Also, in this mode you <strong>cannot</strong> safely call <code><%text filter='h'>render_unicode()</%text></code> - you'll get unicode/decode errors.
 </p>
+<p>The <code><%text filter='h'>h</%text></code> filter (html escape) uses a less performant pure Python escape function in non-unicode mode (note that in versions prior to 0.3.4, it used cgi.escape(), which has been replaced with a function that also escapes single quotes).  This because MarkupSafe only supports Python unicode objects for non-ascii strings.
+</p>
 <p><strong>Rules for using disable_unicode=True</strong>
 </p>
 <ul>
