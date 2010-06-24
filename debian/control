@@ -13,7 +13,8 @@ Vcs-Browser: http://svn.debian.org/viewsvn/python-modules/packages/mako/trunk/
 
 Package: python-mako
 Architecture: all
-Depends: ${python:Depends}, ${misc:Depends}, pyhon-markupsafe
+Depends: ${python:Depends}, ${misc:Depends}
+Recommends: python-markupsafe
 Suggests: python-beaker (>= 1.1)
 Enhances: python-pylons, python-turbogears, python-pygments
 XB-Python-Version: ${python:Versions}
