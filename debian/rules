@@ -2,9 +2,6 @@
 
 #export DH_VERBOSE=1
 
-DEB_UPSTREAM_VERSION=$(shell dpkg-parsechangelog \
-	| sed -rne 's,^Version: ([^-]+).*,\1,p')
-
 PYVERS=$(shell pyversions -vr)
 
 clean:
@@ -38,8 +35,6 @@ binary-indep: build install
 	dh_installexamples -i
 	dh_installman -i
 	rm -rf debian/python-mako/usr/share/doc/python-mako/doc/build
-	# add jwilk's hack for one PKG-INFO file (until I will figure out why it changes)
-	find debian/ -name PKG-INFO | tail -n +2 | xargs -r -n1 cp -vf $(shell find debian/ -name PKG-INFO | head -n 1)
 	dh_pysupport -i
 	dh_compress -i -X.py -Xmakotemplates.txt
 	dh_fixperms -i
@@ -52,4 +47,4 @@ binary-arch:
 
 binary: binary-indep binary-arch
 
-.PHONY: build clean binary-indep binary-arch binary install configure
+.PHONY: build clean binary-indep binary-arch binary install
