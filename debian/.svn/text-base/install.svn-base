@@ -1,3 +1,0 @@
-debian/mako.vim		/usr/share/vim/addons/syntax/
-debian/mako_indent.vim	/usr/share/vim/addons/indent/
-debian/mako.yaml	/usr/share/vim/registry

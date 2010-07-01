@@ -1,3 +1,10 @@
+mako (0.3.4-2) unstable; urgency=low
+
+  * Move python-markupsafe to Depends (closes: #587760)
+  * Standards-Version bumped to 3.9.0 (no changes needed)
+
+ -- Piotr Ożarowski <piotr@debian.org>  Thu, 01 Jul 2010 18:49:09 +0200
+
 mako (0.3.4-1) unstable; urgency=low
 
   * New upstream release
