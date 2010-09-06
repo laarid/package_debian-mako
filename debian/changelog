@@ -1,3 +1,11 @@
+mako (0.3.4-3) experimental; urgency=low
+
+  * Add python3-mako binary package
+  * make_sure_2to3_is_used.patch added
+  * Source format changed to 3.0 (quilt)
+
+ -- Piotr Ożarowski <piotr@debian.org>  Mon, 06 Sep 2010 23:04:39 +0200
+
 mako (0.3.4-2) unstable; urgency=low
 
   * Move python-markupsafe to Depends (closes: #587760)
