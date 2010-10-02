@@ -1,3 +1,9 @@
+mako (0.3.4-5) unstable; urgency=low
+
+  * Upload to unstable 
+
+ -- Piotr Ożarowski <piotr@debian.org>  Sat, 02 Oct 2010 20:14:46 +0200
+
 mako (0.3.4-4) experimental; urgency=low
 
   * Rebuild against newer python3-all package (python3.1 now uses
