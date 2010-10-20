@@ -10,7 +10,7 @@
 ## This file is generated.  Edit the .txt files instead of this one.
 
 
-<%call expr="formatting.section(path='namespaces',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='namespaces')">
 
 <p>Namespaces are used to organize groups of components into categories, and also to "import" components from other files.
 </p>
@@ -49,8 +49,11 @@ Heres comp2:  ${comp2(x=5)}
 </p>
 <p><strong>Note</strong> - in current versions of Mako, usage of "import='*'" is known to decrease performance of the template.  This will be fixed in a future release.
 </p>
-
-<%call expr="formatting.section(path='namespaces_howtocall',paged=paged,extension=extension,toc=toc)">
+<p>The <code><%text filter='h'>file</%text></code> argument allows expressions - if looking for context variables, the <code><%text filter='h'>context</%text></code> must be named explicitly:
+</p>
+<%call expr="formatting.code()"><%text><%namespace name="dyn" file="${context['namespace_name']}"/>
+</%text></%call>
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='namespaces_howtocall')">
 
 <p>There are essentially four ways to call a function from a namespace.
 </p>
@@ -74,11 +77,11 @@ Heres comp2:  ${comp2(x=5)}
 <%call expr="formatting.code()"><%text><%call expr="mynamespace.somefunction(arg1='some argument')" args="x, y">
     Some record: ${x}, ${y}
 </%call>
-</%text></%call><p>For information on how to construct defs that embed content from the caller, see <%call expr="nav.toclink(path='defs_defswithcontent',paged=paged,extension=extension,toc=toc)"></%call>.
+</%text></%call><p>For information on how to construct defs that embed content from the caller, see <%call expr="nav.toclink(toc=toc,paged=paged,extension=extension,path='defs_defswithcontent')"></%call>.
 </p>
 
 </%call>
-<%call expr="formatting.section(path='namespaces_frommodules',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='namespaces_frommodules')">
 
 <p>Namespaces can also import regular Python functions from modules.  These callables need to take at least one argument, <code><%text filter='h'>context</%text></code>:
 </p>
@@ -95,7 +98,7 @@ def my_tag(context):
 ${hw.my_tag()}
 </%text></%call><p>Note that the <code><%text filter='h'>context</%text></code> argument is not needed in the call; the <code><%text filter='h'>namespace</%text></code> tag creates a locally-scoped callable which takes care of it.   The <code><%text filter='h'>return ''</%text></code> is so that the def does not dump a <code><%text filter='h'>None</%text></code> into the output stream - the return value of any def is rendered after the def completes, in addition to whatever was passed to <code><%text filter='h'>context.write()</%text></code> within its body.
 </p>
-<p>If your def is to be called in an "embedded content" context, that is as described in <%call expr="nav.toclink(path='defs_defswithcontent',paged=paged,extension=extension,toc=toc)"></%call>, you should use the <code><%text filter='h'>@supports_caller</%text></code> decorator, which will ensure that Mako will ensure the correct "caller" variable is available when your def is called, supporting embedded content:
+<p>If your def is to be called in an "embedded content" context, that is as described in <%call expr="nav.toclink(toc=toc,paged=paged,extension=extension,path='defs_defswithcontent')"></%call>, you should use the <code><%text filter='h'>@supports_caller</%text></code> decorator, which will ensure that Mako will ensure the correct "caller" variable is available when your def is called, supporting embedded content:
 </p>
 <%call expr="formatting.code(syntaxtype='python')"><%text>
 from mako.runtime import supports_caller
@@ -117,7 +120,7 @@ def my_tag(context):
             capture(context, context['caller'].body, x="foo", y="bar")
 </%text></%call>
 </%call>
-<%call expr="formatting.section(path='namespaces_declaring',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='namespaces_declaring')">
 
 <p>The <code><%text filter='h'><%namespace></%text></code> tag supports the definition of <code><%text filter='h'><%defs></%text></code> directly inside the tag.  These defs become part of the namespace like any other function, and will override the definitions pulled in from a remote template or module:
 </p>
@@ -132,7 +135,7 @@ def my_tag(context):
 ${stuff.comp1()}
 </%text></%call>
 </%call>
-<%call expr="formatting.section(path='namespaces_body',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='namespaces_body')">
 
 <p>Every namespace that is generated from a template contains a method called <code><%text filter='h'>body()</%text></code>.  This method corresponds to the main body of the template, and plays its most important roles when using inheritance relationships as well as def-calls-with-content.
 </p>
@@ -145,17 +148,17 @@ ${stuff.comp1()}
 </%text></%call><p>The <code><%text filter='h'>Context</%text></code> object also supplies a <code><%text filter='h'>kwargs</%text></code> accessor, for cases when youd like to pass along whatever is in the context to a <code><%text filter='h'>body()</%text></code> callable:
 </p>
 <%call expr="formatting.code()"><%text>${next.body(**context.kwargs)}
-</%text></%call><p>The usefulness of calls like the above become more apparent when one works with inheriting templates.  For more information on this, as well as the meanings of the names <code><%text filter='h'>self</%text></code> and <code><%text filter='h'>next</%text></code>, see <%call expr="nav.toclink(path='inheritance',paged=paged,extension=extension,toc=toc)"></%call>.
+</%text></%call><p>The usefulness of calls like the above become more apparent when one works with inheriting templates.  For more information on this, as well as the meanings of the names <code><%text filter='h'>self</%text></code> and <code><%text filter='h'>next</%text></code>, see <%call expr="nav.toclink(toc=toc,paged=paged,extension=extension,path='inheritance')"></%call>.
 </p>
 
 </%call>
-<%call expr="formatting.section(path='namespaces_properties',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='namespaces_properties')">
 
 <p>The <code><%text filter='h'>Namespace</%text></code> class includes helpful accessors and methods:
 </p>
 <ul>
  <li>
-     <code><%text filter='h'>attr</%text></code> - allows access module level attributes by name.  This accessor allows templates to supply "scalar" attributes which are particularly handy in inheritance relationships.  See the example in <%call expr="nav.toclink(path='inheritance',paged=paged,extension=extension,toc=toc)"></%call>.
+     <code><%text filter='h'>attr</%text></code> - allows access module level attributes by name.  This accessor allows templates to supply "scalar" attributes which are particularly handy in inheritance relationships.  See the example in <%call expr="nav.toclink(toc=toc,paged=paged,extension=extension,path='inheritance')"></%call>.
  </li>
 
  <li>
@@ -184,12 +187,12 @@ ${stuff.comp1()}
 </ul>
 
 </%call>
-<%call expr="formatting.section(path='namespaces_builtin',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='namespaces_builtin')">
 
-<p>The namespace is so great that Mako gives your template one (or two) for free.  The names of these namespaces are <code><%text filter='h'>local</%text></code> and <code><%text filter='h'>self</%text></code>.  Other built-in namespaces include <code><%text filter='h'>parent</%text></code> and <code><%text filter='h'>next</%text></code>, which are optional and are described in <%call expr="nav.toclink(path='inheritance',paged=paged,extension=extension,toc=toc)"></%call>.
+<p>The namespace is so great that Mako gives your template one (or two) for free.  The names of these namespaces are <code><%text filter='h'>local</%text></code> and <code><%text filter='h'>self</%text></code>.  Other built-in namespaces include <code><%text filter='h'>parent</%text></code> and <code><%text filter='h'>next</%text></code>, which are optional and are described in <%call expr="nav.toclink(toc=toc,paged=paged,extension=extension,path='inheritance')"></%call>.
 </p>
 
-<%call expr="formatting.section(path='namespaces_builtin_local',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='namespaces_builtin_local')">
 
 <p>The <code><%text filter='h'>local</%text></code> namespace is basically the namespace for the currently executing template.  This means that all of the top level defs defined in your template, as well as your template's <code><%text filter='h'>body()</%text></code> function, are also available off of the <code><%text filter='h'>local</%text></code> namespace.
 </p>
@@ -197,14 +200,14 @@ ${stuff.comp1()}
 </p>
 
 </%call>
-<%call expr="formatting.section(path='namespaces_builtin_self',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='namespaces_builtin_self')">
 
-<p>The <code><%text filter='h'>self</%text></code> namespace, in the case of a template that does not use inheritance, is synonomous with <code><%text filter='h'>local</%text></code>.  If inheritance is used, then <code><%text filter='h'>self</%text></code> references the topmost template in the inheritance chain, where it is most useful for providing the ultimate form of various "method" calls which may have been overridden at various points in an inheritance chain.  See <%call expr="nav.toclink(path='inheritance',paged=paged,extension=extension,toc=toc)"></%call>.
+<p>The <code><%text filter='h'>self</%text></code> namespace, in the case of a template that does not use inheritance, is synonomous with <code><%text filter='h'>local</%text></code>.  If inheritance is used, then <code><%text filter='h'>self</%text></code> references the topmost template in the inheritance chain, where it is most useful for providing the ultimate form of various "method" calls which may have been overridden at various points in an inheritance chain.  See <%call expr="nav.toclink(toc=toc,paged=paged,extension=extension,path='inheritance')"></%call>.
 </p>
 
 </%call>
 </%call>
-<%call expr="formatting.section(path='namespaces_inheritable',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='namespaces_inheritable')">
 
 <p>The <code><%text filter='h'><%namespace></%text></code> tag includes an optional attribute <code><%text filter='h'>inheritable="True"</%text></code>, which will cause the namespace to be attached to the <code><%text filter='h'>self</%text></code> namespace.  Since <code><%text filter='h'>self</%text></code> is globally available throughout an inheritance chain (described in the next section), all the templates in an inheritance chain can get at the namespace imported in a super-template via <code><%text filter='h'>self</%text></code>.
 </p>

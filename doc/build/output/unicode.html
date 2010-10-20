@@ -10,7 +10,7 @@
 ## This file is generated.  Edit the .txt files instead of this one.
 
 
-<%call expr="formatting.section(path='unicode',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='unicode')">
 
 <p>The Python language supports two ways of representing what we know as "strings", i.e. series of characters.   In Python 2, the two types are <code><%text filter='h'>string</%text></code> and <code><%text filter='h'>unicode</%text></code>, and in Python 3 they are <code><%text filter='h'>bytes</%text></code> and <code><%text filter='h'>string</%text></code>.   A key aspect of the Python 2 <code><%text filter='h'>string</%text></code> and Python 3 <code><%text filter='h'>bytes</%text></code> types are that they  contain no information regarding what <strong>encoding</strong> the data is stored in.   For this reason they were commonly referred to as <strong>byte strings</strong> on Python 2, and Python 3 makes this name more explicit.  The origins of this come from Python's background of being developed before the Unicode standard was even available, back when strings were C-style strings and were just that, a series of bytes.  Strings that had only values below 128 just happened to be <strong>ascii</strong> strings and were printable on the console, whereas strings with values above 128 would produce all kinds of graphical characters and bells.
 </p>
@@ -25,13 +25,13 @@
 <p>In normal Mako operation, all parsed template constructs and output streams are handled internally as Python <code><%text filter='h'>unicode</%text></code> objects.  Its only at the point of <code><%text filter='h'>render()</%text></code> that this unicode stream may be rendered into whatever the desired output encoding is.  The implication here is that the template developer must ensure that the encoding of all non-ascii templates is explicit (still required in Python 3), that all non-ascii-encoded expressions are in one way or another converted to unicode (not much of a burden in Python 3), and that the output stream of the template is handled as a unicode stream being encoded to some encoding (still required in Python 3).
 </p>
 
-<%call expr="formatting.section(path='unicode_specifying',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='unicode_specifying')">
 
 <p>This is the most basic encoding-related setting, and it is equivalent to Python's "magic encoding comment", as described in <a href='http://www.python.org/dev/peps/pep-0263/'>pep-0263</a>.  Any template that contains non-ascii characters  requires that this comment be present so that Mako can decode to unicode (and also make usage of Python's AST parsing services).  Mako's lexer will use this encoding in order to convert the template source into a <code><%text filter='h'>unicode</%text></code> object before continuing its parsing:
 </p>
 <%call expr="formatting.code()"><%text>## -*- coding: utf-8 -*-
 
-Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »
+Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petite voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »
 </%text></%call><p>For the picky, the regular expression used is derived from that of the abovementioned pep:
 </p>
 <%call expr="formatting.code(syntaxtype='python')"><%text>
@@ -46,7 +46,7 @@ t = TemplateLookup(directories=['./'], input_encoding='utf-8')
 </p>
 
 </%call>
-<%call expr="formatting.section(path='unicode_handling',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='unicode_handling')">
 
 <p>The next area that encoding comes into play is in expression constructs.  By default, Mako's treatment of an expression like this:
 </p>
@@ -76,11 +76,11 @@ context.write(str("hello world"))
 t = Template(templatetext, default_filters=['decode.utf8'])
 </%text></%call><p>Note that the built-in <code><%text filter='h'>decode</%text></code> object is slower than the <code><%text filter='h'>unicode</%text></code> function, since unlike <code><%text filter='h'>unicode</%text></code> its not a Python builtin, and it also checks the type of the incoming data to determine if string conversion is needed first.
 </p>
-<p>The <code><%text filter='h'>default_filters</%text></code> argument can be used to entirely customize the filtering process of expressions.  This argument is described in <%call expr="nav.toclink(path='filtering_expression_defaultfilters',paged=paged,extension=extension,toc=toc)"></%call>.
+<p>The <code><%text filter='h'>default_filters</%text></code> argument can be used to entirely customize the filtering process of expressions.  This argument is described in <%call expr="nav.toclink(toc=toc,paged=paged,extension=extension,path='filtering_expression_defaultfilters')"></%call>.
 </p>
 
 </%call>
-<%call expr="formatting.section(path='unicode_defining',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='unicode_defining')">
 
 <p>Now that we have a template which produces a pure unicode output stream, all the hard work is done.  We can take the output and do anything with it.
 </p>
@@ -105,7 +105,7 @@ print mytemplate.render_unicode()
 <%call expr="formatting.code(syntaxtype='python')"><%text>
 print mytemplate.render_unicode().encode('utf-8', 'replace')
 </%text></%call>
-<%call expr="formatting.section(path='unicode_defining_buffer',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='unicode_defining_buffer')">
 
 <p>Mako does play some games with the style of buffering used internally, to maximize performance.  Since the buffer is by far the most heavily used object in a render operation, its important!
 </p>
@@ -114,7 +114,7 @@ print mytemplate.render_unicode().encode('utf-8', 'replace')
 
 </%call>
 </%call>
-<%call expr="formatting.section(path='unicode_saying',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='unicode_saying')">
 
 <p>Some segements of Mako's userbase choose to make no usage of Unicode whatsoever, and instead would prefer the "passthru" approach; all string expressions in their templates return encoded bytestrings, and they would like these strings to pass right through.   The only advantage to this approach is that templates need not use <code><%text filter='h'>u""</%text></code> for literal strings; there's an arguable speed improvement as well since raw bytestrings generally perform slightly faster than unicode objects in Python.  For these users, assuming they're sticking with Python 2, they can hit the <code><%text filter='h'>disable_unicode=True</%text></code> flag as so:
 </p>
@@ -122,7 +122,7 @@ print mytemplate.render_unicode().encode('utf-8', 'replace')
 # -*- encoding:utf-8 -*-
 from mako.template import Template
 
-t = Template("drôle de petit voix m’a réveillé.", disable_unicode=True, input_encoding='utf-8')
+t = Template("drôle de petite voix m’a réveillé.", disable_unicode=True, input_encoding='utf-8')
 print t.code
 </%text></%call><p>The <code><%text filter='h'>disable_unicode</%text></code> mode is strictly a Python 2 thing.  It is not supported at all in Python 3.
 </p>
@@ -137,7 +137,7 @@ def render_body(context,**pageargs):
     try:
         __M_locals = dict(pageargs=pageargs)
         # SOURCE LINE 1
-        context.write('dr\xc3\xb4le de petit voix m\xe2\x80\x99a r\xc3\xa9veill\xc3\xa9.')
+        context.write('dr\xc3\xb4le de petite voix m\xe2\x80\x99a r\xc3\xa9veill\xc3\xa9.')
         return ''
     finally:
         context.caller_stack.pop_frame()

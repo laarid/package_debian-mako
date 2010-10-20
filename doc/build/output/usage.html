@@ -10,9 +10,9 @@
 ## This file is generated.  Edit the .txt files instead of this one.
 
 
-<%call expr="formatting.section(path='usage',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='usage')">
 
-<p>This section describes the Python API for Mako templates.  If you are using Mako within a web framework such as Pylons, the work of integrating Mako's API is already done for you, in which case you can skip to the next section, <%call expr="nav.toclink(path='syntax',paged=paged,extension=extension,toc=toc)"></%call>.
+<p>This section describes the Python API for Mako templates.  If you are using Mako within a web framework such as Pylons, the work of integrating Mako's API is already done for you, in which case you can skip to the next section, <%call expr="nav.toclink(toc=toc,paged=paged,extension=extension,path='syntax')"></%call>.
 </p>
 <p>The most basic way to create a template and render it is through the <code><%text filter='h'>Template</%text></code> class:
 </p>
@@ -43,7 +43,7 @@ ctx = Context(buf, name="jack")
 mytemplate.render_context(ctx)
 print buf.getvalue()
 </%text></%call>
-<%call expr="formatting.section(path='usage_file',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='usage_file')">
 
 <p>A <code><%text filter='h'>Template</%text></code> can also load its template source code from a file, using the <code><%text filter='h'>filename</%text></code> keyword argument:
 </p>
@@ -63,7 +63,7 @@ print mytemplate.render()
 </p>
 
 </%call>
-<%call expr="formatting.section(path='usage_lookup',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='usage_lookup')">
 
 <p>All of the examples thus far have dealt with the usage of a single <code><%text filter='h'>Template</%text></code> object.  If the code within those templates tries to locate another template resource, it will need some way to find them, using simple URI strings.  For this need, the resolution of other templates from within a template is accomplished by the <code><%text filter='h'>TemplateLookup</%text></code> class.   This class is constructed given a list of directories in which to search for templates, as well as keyword arguments that will be passed to the <code><%text filter='h'>Template</%text></code> objects it creates.
 </p>
@@ -91,7 +91,7 @@ def serve_template(templatename, **kwargs):
 <p>When the lookup locates templates, it will also assign a <code><%text filter='h'>uri</%text></code> property to the <code><%text filter='h'>Template</%text></code> which is the uri passed to the <code><%text filter='h'>get_template()</%text></code> call.  <code><%text filter='h'>Template</%text></code> uses this uri to calculate the name of its module file.  So in the above example, a <code><%text filter='h'>templatename</%text></code> argument of <code><%text filter='h'>/etc/beans/info.txt</%text></code> will create a module file <code><%text filter='h'>/tmp/mako_modules/etc/beans/info.txt.py</%text></code>.
 </p>
 
-<%call expr="formatting.section(path='usage_lookup_size',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='usage_lookup_size')">
 
 <p>The <code><%text filter='h'>TemplateLookup</%text></code> also serves the important need of caching a fixed set of templates in memory at a given time, so that successive uri lookups do not result in full template compilations and/or module reloads on each request.  By default, the <code><%text filter='h'>TemplateLookup</%text></code> size is unbounded.  You can specify a fixed size using the <code><%text filter='h'>collection_size</%text></code> argument:
 </p>
@@ -102,14 +102,14 @@ mylookup = TemplateLookup(directories=['/docs'],
 </p>
 
 </%call>
-<%call expr="formatting.section(path='usage_lookup_checks',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='usage_lookup_checks')">
 
 <p>Another important flag on <code><%text filter='h'>TemplateLookup</%text></code> is <code><%text filter='h'>filesystem_checks</%text></code>. This defaults to <code><%text filter='h'>True</%text></code>, and says that each time a template is returned by the <code><%text filter='h'>get_template()</%text></code> method, the revision time of the original template file is checked against the last time the template was loaded, and if the file is newer will reload its contents and recompile the template. On a production system, setting <code><%text filter='h'>filesystem_checks</%text></code> to <code><%text filter='h'>False</%text></code> can afford a small to moderate performance increase (depending on the type of filesystem used).
 </p>
 
 </%call>
 </%call>
-<%call expr="formatting.section(path='usage_using',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='usage_using')">
 
 <p>Both <code><%text filter='h'>Template</%text></code> and <code><%text filter='h'>TemplateLookup</%text></code> accept <code><%text filter='h'>output_encoding</%text></code> and <code><%text filter='h'>encoding_errors</%text></code> parameters which can be used to encode the output in any Python supported codec:
 </p>
@@ -131,11 +131,11 @@ print mytemplate.render_unicode()
 </p>
 <%call expr="formatting.code(syntaxtype='python')"><%text>
 print mytemplate.render_unicode().encode('utf-8', 'replace')
-</%text></%call><p>Note that Mako's ability to return data in any encoding and/or <code><%text filter='h'>unicode</%text></code> implies that the underlying output stream of the template is a Python unicode object.  This behavior is described fully in <%call expr="nav.toclink(path='unicode',paged=paged,extension=extension,toc=toc)"></%call>.
+</%text></%call><p>Note that Mako's ability to return data in any encoding and/or <code><%text filter='h'>unicode</%text></code> implies that the underlying output stream of the template is a Python unicode object.  This behavior is described fully in <%call expr="nav.toclink(toc=toc,paged=paged,extension=extension,path='unicode')"></%call>.
 </p>
 
 </%call>
-<%call expr="formatting.section(path='usage_handling',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='usage_handling')">
 
 <p>Template exceptions can occur in two distinct places.  One is when you <strong>lookup, parse and compile</strong> the template, the other is when you <strong>run</strong> the template.  Within the running of a template, exceptions are thrown normally from whatever Python code originated the issue.  Mako has its own set of exception classes which mostly apply to the lookup and lexer/compiler stages of template construction.  Mako provides some library routines that can be used to help provide Mako-specific information about any exception's stack trace, as well as formatting the exception within textual or HTML format.  In all cases, the main value of these handlers is that of converting Python filenames, line numbers, and code samples into Mako template filenames, line numbers, and code samples.  All lines within a stack trace which correspond to a Mako template module will be converted to be against the originating template file.
 </p>
@@ -189,34 +189,34 @@ except:
 </p>
 
 </%call>
-<%call expr="formatting.section(path='usage_common',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='usage_common')">
 
 <p>The Mako distribution includes a little bit of helper code for the purpose of using Mako in some popular web framework scenarios.  This is a brief description of whats included.
 </p>
 
-<%call expr="formatting.section(path='usage_common_turbogears/pylons',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='usage_common_turbogears/pylons')">
 
 <p>The standard plugin methodology used by <a href='http://www.turbogears.org'>Turbogears</a> as well as <a href='http://www.pylonshq.com'>Pylons</a> is included in the module <code><%text filter='h'>mako.ext.turbogears</%text></code>, using the <code><%text filter='h'>TGPlugin</%text></code> class.  This is also a setuptools entrypoint under the heading <code><%text filter='h'>python.templating.engines</%text></code> with the name <code><%text filter='h'>mako</%text></code>.
 </p>
 
 </%call>
-<%call expr="formatting.section(path='usage_common_wsgi',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='usage_common_wsgi')">
 
 <p>A sample WSGI application is included in the distrubution in the file <code><%text filter='h'>examples/wsgi/run_wsgi.py</%text></code>.  This runner is set up to pull files from a <code><%text filter='h'>templates</%text></code> as well as an <code><%text filter='h'>htdocs</%text></code> directory and includes a rudimental two-file layout.  The WSGI runner acts as a fully functional standalone web server, using <code><%text filter='h'>wsgiutils</%text></code> to run itself, and propagates GET and POST arguments from the request into the <code><%text filter='h'>Context</%text></code>, can serve images, css files and other kinds of files, and also displays errors using Mako's included exception-handling utilities.
 </p>
 
 </%call>
-<%call expr="formatting.section(path='usage_common_pygments',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='usage_common_pygments')">
 
 <p>A <a href='http://pygments.pocoo.org'>Pygments</a>-compatible syntax highlighting module is included under <code><%text filter='h'>mako.ext.pygmentplugin</%text></code>.  This module is used in the generation of Mako documentation and also contains various setuptools entry points under the heading <code><%text filter='h'>pygments.lexers</%text></code>, including <code><%text filter='h'>mako</%text></code>, <code><%text filter='h'>html+mako</%text></code>, <code><%text filter='h'>xml+mako</%text></code> (see the <code><%text filter='h'>setup.py</%text></code> file for all the entry points).
 </p>
 
 </%call>
-<%call expr="formatting.section(path='usage_common_babel',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='usage_common_babel')">
 
 <p>Mako provides support for extracting gettext messages from templates via a <a href='http://babel.edgewall.org/'>Babel</a> extractor entry point under <code><%text filter='h'>mako.ext.babelplugin</%text></code>.
 </p>
-<p>Gettext messages are extracted from all Python code sections, even the more obscure ones such as <%call expr="nav.toclink(path='syntax_control',paged=paged,description='control structures',extension=extension,toc=toc)"></%call>, <%call expr="nav.toclink(path='defs',paged=paged,description='def tag function declarations',extension=extension,toc=toc)"></%call>, <%call expr="nav.toclink(path='defs_defswithcontent',paged=paged,description='call tag exprs',extension=extension,toc=toc)"></%call> and even <%call expr="nav.toclink(path='syntax_tags_page',paged=paged,description='page tag args',extension=extension,toc=toc)"></%call>.
+<p>Gettext messages are extracted from all Python code sections, even the more obscure ones such as <%call expr="nav.toclink(toc=toc,paged=paged,description='control structures',extension=extension,path='syntax_control')"></%call>, <%call expr="nav.toclink(toc=toc,paged=paged,description='def tag function declarations',extension=extension,path='defs')"></%call>, <%call expr="nav.toclink(toc=toc,paged=paged,description='call tag exprs',extension=extension,path='defs_defswithcontent')"></%call> and even <%call expr="nav.toclink(toc=toc,paged=paged,description='page tag args',extension=extension,path='syntax_tags_page')"></%call>.
 </p>
 <p><a href='http://babel.edgewall.org/wiki/Documentation/messages.html#comments-tags-and-translator-comments-explanation'>Translator comments</a> may also be extracted from Mako templates when a comment tag is specified to <a href='http://babel.edgewall.org/'>Babel</a> (such as with the -c option).
 </p>

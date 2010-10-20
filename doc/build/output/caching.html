@@ -10,7 +10,7 @@
 ## This file is generated.  Edit the .txt files instead of this one.
 
 
-<%call expr="formatting.section(path='caching',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='caching')">
 
 <p>Any template or component can be cached using the <code><%text filter='h'>cache</%text></code> argument to the <code><%text filter='h'><%page></%text></code> or <code><%text filter='h'><%def></%text></code> directives:
 </p>
@@ -27,7 +27,7 @@ template text
     other text
 </%def>
 </%text></%call>
-<%call expr="formatting.section(path='caching_arguments',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='caching_arguments')">
 
 <p>The various cache arguments are cascaded from their default values, to the arguments specified programmatically to the <code><%text filter='h'>Template</%text></code> or its originating <code><%text filter='h'>TemplateLookup</%text></code>, then to those defined in the <code><%text filter='h'><%page></%text></code> tag of an individual template, and finally to an individual <code><%text filter='h'><%def></%text></code> tag within the template.  This means you can define, for example, a cache type of <code><%text filter='h'>dbm</%text></code> on your <code><%text filter='h'>TemplateLookup</%text></code>, a cache timeout of 60 seconds in a particular template's <code><%text filter='h'><%page></%text></code> tag, and within one of that template's <code><%text filter='h'><%def></%text></code> tags <code><%text filter='h'>cache=True</%text></code>, and that one particular def will then cache its data using a <code><%text filter='h'>dbm</%text></code> cache and a data timeout of 60 seconds.
 </p>
@@ -72,7 +72,7 @@ ${next.body()}
 </ul>
 
 </%call>
-<%call expr="formatting.section(path='caching_accessing',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='caching_accessing')">
 
 <p>The <code><%text filter='h'>Template</%text></code>, as well as any template-derived namespace, has an accessor called <code><%text filter='h'>cache</%text></code> which returns the <code><%text filter='h'>Cache</%text></code> object for that template.   This object is a facade on top of the Beaker internal cache object, and provides some very rudimental capabilities, such as the ability to get and put arbitrary values:
 </p>
