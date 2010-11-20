@@ -14,7 +14,113 @@ import imp, os, re, shutil, stat, sys, tempfile, time, types, weakref
 
     
 class Template(object):
-    """a compiled template"""
+    """Represents a compiled template.
+    
+    :class:`.Template` includes a reference to the original
+    template source (via the ``.source`` attribute) 
+    as well as the source code of the
+    generated Python module (i.e. the ``.code`` attribute), 
+    as well as a reference to an actual Python module.
+
+    :class:`.Template` is constructed using either a literal string
+    representing the template text, or a filename representing a filesystem
+    path to a source file.
+    
+    :param text: textual template source.  This argument is mutually
+     exclusive versus the "filename" parameter.
+
+    :param filename: filename of the source template.  This argument is 
+     mutually exclusive versus the "text" parameter.
+
+    :param buffer_filters: string list of filters to be applied
+     to the output of %defs which are buffered, cached, or otherwise
+     filtered, after all filters
+     defined with the %def itself have been applied. Allows the
+     creation of default expression filters that let the output
+     of return-valued %defs "opt out" of that filtering via
+     passing special attributes or objects.
+    
+    :param cache_dir: Filesystem directory where cache files will be
+     placed.  See :ref:`caching_toplevel`.
+    
+    :param cache_enabled: Boolean flag which enables caching of this
+     template.  See :ref:`caching_toplevel`.
+    
+    :param cache_type: Type of Beaker caching to be applied to the 
+     template. See :ref:`caching_toplevel`.
+    
+    :param cache_url: URL of a memcached server with which to use
+     for caching.  See :ref:`caching_toplevel`.
+
+    :param default_filters: List of string filter names that will
+     be applied to all expressions.  See :ref:`filtering_default_filters`.
+
+    :param disable_unicode: Disables all awareness of Python Unicode
+     objects.  See :ref:`unicode_disabled`.
+
+    :param encoding_errors: Error parameter passed to ``encode()`` when
+     string encoding is performed. See :ref:`usage_unicode`.
+    
+    :param error_handler: Python callable which is called whenever
+     compile or runtime exceptions occur. The callable is passed
+     the current context as well as the exception. If the
+     callable returns ``True``, the exception is considered to
+     be handled, else it is re-raised after the function
+     completes. Is used to provide custom error-rendering
+     functions.
+    
+    :param format_exceptions: if ``True``, exceptions which occur during
+     the render phase of this template will be caught and
+     formatted into an HTML error page, which then becomes the
+     rendered result of the :meth:`render` call. Otherwise,
+     runtime exceptions are propagated outwards.
+     
+    :param imports: String list of Python statements, typically individual
+     "import" lines, which will be placed into the module level
+     preamble of all generated Python modules. See the example
+     in :ref:`filtering_default_filters`.
+
+    :param input_encoding: Encoding of the template's source code.  Can
+     be used in lieu of the coding comment. See
+     :ref:`usage_unicode` as well as :ref:`unicode_toplevel` for
+     details on source encoding.
+    
+    :param lookup: a :class:`.TemplateLookup` instance that will be used
+     for all file lookups via the ``<%namespace>``,
+     ``<%include>``, and ``<%inherit>`` tags. See
+     :ref:`usage_templatelookup`.
+    
+    :param module_directory: Filesystem location where generated 
+     Python module files will be placed.
+
+    :param module_filename: Overrides the filename of the generated 
+     Python module file. For advanced usage only.
+    
+    :param output_encoding: The encoding to use when :meth:`.render` 
+     is called. See :ref:`usage_unicode` as well as
+     :ref:`unicode_toplevel`.
+    
+    :param preprocessor: Python callable which will be passed 
+     the full template source before it is parsed. The return
+     result of the callable will be used as the template source
+     code.
+     
+    :param strict_undefined: Replaces the automatic usage of 
+     ``UNDEFINED`` for any undeclared variables not located in
+     the :class:`.Context` with an immediate raise of
+     ``NameError``. The advantage is immediate reporting of
+     missing variables which include the name. New in 0.3.6.
+    
+    :param uri: string uri or other identifier for this template.  
+     If not provided, the uri is generated from the filesystem
+     path, or from the in-memory identity of a non-file-based
+     template. The primary usage of the uri is to provide a key
+     within :class:`.TemplateLookup`, as well as to generate the
+     file path of the generated Python module file, if
+     ``module_directory`` is specified.
+    
+    """
+    
     def __init__(self, 
                     text=None, 
                     filename=None, 
@@ -33,25 +139,10 @@ class Template(object):
                     disable_unicode=False, 
                     default_filters=None, 
                     buffer_filters=(), 
+                    strict_undefined=False,
                     imports=None, 
                     preprocessor=None, 
                     cache_enabled=True):
-        """Construct a new Template instance using either literal template
-        text, or a previously loaded template module
-        
-        :param text: textual template source, or None if a module is to be
-            provided
-        
-        :param uri: the uri of this template, or some identifying string.
-            defaults to the full filename given, or "memory:(hex id of this
-            Template)" if no filename
-        
-        :param filename: filename of the source template, if any
-        
-        :param format_exceptions: catch exceptions and format them into an
-            error display template
-        """
-        
         if uri:
             self.module_id = re.sub(r'\W', "_", uri)
             self.uri = uri
@@ -68,6 +159,7 @@ class Template(object):
         self.output_encoding = output_encoding
         self.encoding_errors = encoding_errors
         self.disable_unicode = disable_unicode
+        self.strict_undefined = strict_undefined
 
         if util.py3k and disable_unicode:
             raise exceptions.UnsupportedError(
@@ -125,7 +217,7 @@ class Template(object):
         self.cache_dir = cache_dir
         self.cache_url = cache_url
         self.cache_enabled = cache_enabled
-    
+        
     def _compile_from_file(self, path, filename):
         if path is not None:
             util.verify_directory(os.path.dirname(path))
@@ -159,6 +251,7 @@ class Template(object):
             self._code = code
             ModuleInfo(module, None, self, filename, code, None)
         return module
+        
     @property
     def source(self):
         """return the template source code for this Template."""
@@ -178,12 +271,13 @@ class Template(object):
     def render(self, *args, **data):
         """Render the output of this template as a string.
         
-        if the template specifies an output encoding, the string will be
-        encoded accordingly, else the output is raw (raw output uses cStringIO
-        and can't handle multibyte characters). a Context object is created
-        corresponding to the given data. Arguments that are explictly declared
-        by this template's internal rendering method are also pulled from the
-        given \*args, \**data members.
+        if the template specifies an output encoding, the string
+        will be encoded accordingly, else the output is raw (raw
+        output uses cStringIO and can't handle multibyte
+        characters). a Context object is created corresponding
+        to the given data. Arguments that are explictly declared
+        by this template's internal rendering method are also
+        pulled from the given \*args, \**data members.
         
         """
         return runtime._render(self, self.callable_, args, data)
@@ -215,7 +309,7 @@ class Template(object):
         return hasattr(self.module, "render_%s" % name)
         
     def get_def(self, name):
-        """Return a def of this template as a DefTemplate."""
+        """Return a def of this template as a :class:`.DefTemplate`."""
         
         return DefTemplate(self, getattr(self.module, "render_%s" % name))
 
@@ -285,7 +379,8 @@ class ModuleTemplate(Template):
         self.cache_enabled = cache_enabled
         
 class DefTemplate(Template):
-    """a Template which represents a callable def in a parent template."""
+    """a Template which represents a callable def in a parent
+    template."""
     
     def __init__(self, parent, callable_):
         self.parent = parent
@@ -301,11 +396,11 @@ class DefTemplate(Template):
         return self.parent.get_def(name)
 
 class ModuleInfo(object):
-    """Stores information about a module currently loaded into memory,
-    provides reverse lookups of template source, module source code based on
-    a module's identifier.
+    """Stores information about a module currently loaded into
+    memory, provides reverse lookups of template source, module
+    source code based on a module's identifier.
     
-    """
+     """
     _modules = weakref.WeakValueDictionary()
 
     def __init__(self, 
@@ -364,7 +459,8 @@ def _compile_text(template, text, filename):
                             imports=template.imports, 
                             source_encoding=lexer.encoding,
                             generate_magic_comment=template.disable_unicode,
-                            disable_unicode=template.disable_unicode)
+                            disable_unicode=template.disable_unicode,
+                            strict_undefined=template.strict_undefined)
 
     cid = identifier
     if not util.py3k and isinstance(cid, unicode):
@@ -391,7 +487,8 @@ def _compile_module_file(template, text, filename, outputpath):
                                 imports=template.imports,
                                 source_encoding=lexer.encoding,
                                 generate_magic_comment=True,
-                                disable_unicode=template.disable_unicode)
+                                disable_unicode=template.disable_unicode,
+                                strict_undefined=template.strict_undefined)
                                 
     # make tempfiles in the same location as the ultimate 
     # location.   this ensures they're on the same filesystem,

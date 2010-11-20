@@ -7,8 +7,7 @@ from mako import exceptions, util
 import re, os
 from util import flatten_result, result_lines
 import codecs
-
-from test import TemplateTest, eq_, template_base, module_base, skip_if
+from test import TemplateTest, eq_, template_base, module_base, skip_if, assert_raises
 
 class EncodingTest(TemplateTest):
     def test_unicode(self):
@@ -544,6 +543,151 @@ class IncludeTest(TemplateTest):
         </%b:bar>
         """)
         assert flatten_result(lookup.get_template("c").render()) == "bar: calling bar this is a"
+
+class UndefinedVarsTest(TemplateTest):
+    def test_undefined(self):
+        t = Template("""
+            % if x is UNDEFINED:
+                undefined
+            % else:
+                x: ${x}
+            % endif
+        """)
+        
+        assert result_lines(t.render(x=12)) == ["x: 12"]
+        assert result_lines(t.render(y=12)) == ["undefined"]
+
+    def test_strict(self):
+        t = Template("""
+            % if x is UNDEFINED:
+                undefined
+            % else:
+                x: ${x}
+            % endif
+        """, strict_undefined=True)
+        
+        assert result_lines(t.render(x=12)) == ['x: 12']
+        
+        assert_raises(
+            NameError,
+            t.render, y=12
+        )
+        
+        l = TemplateLookup(strict_undefined=True)
+        l.put_string("a", "some template")
+        l.put_string("b", """
+            <%namespace name='a' file='a' import='*'/>
+            % if x is UNDEFINED:
+                undefined
+            % else:
+                x: ${x}
+            % endif
+        """)
+
+        assert result_lines(t.render(x=12)) == ['x: 12']
+        
+        assert_raises(
+            NameError,
+            t.render, y=12
+        )
+    
+    def test_expression_declared(self):
+        t = Template("""
+            ${",".join([t for t in ("a", "b", "c")])}
+        """, strict_undefined=True)
+        
+        eq_(result_lines(t.render()), ['a,b,c'])
+
+        t = Template("""
+            <%self:foo value="${[(val, n) for val, n in [(1, 2)]]}"/>
+            
+            <%def name="foo(value)">
+                ${value}
+            </%def>
+            
+        """, strict_undefined=True)
+        
+        eq_(result_lines(t.render()), ['[(1, 2)]'])
+
+        t = Template("""
+            <%call expr="foo(value=[(val, n) for val, n in [(1, 2)]])" />
+            
+            <%def name="foo(value)">
+                ${value}
+            </%def>
+            
+        """, strict_undefined=True)
+        
+        eq_(result_lines(t.render()), ['[(1, 2)]'])
+        
+        l = TemplateLookup(strict_undefined=True)
+        l.put_string("i", "hi, ${pageargs['y']}")
+        l.put_string("t", """
+            <%include file="i" args="y=[x for x in range(3)]" />
+        """)
+        eq_(
+            result_lines(l.get_template("t").render()), ['hi, [0, 1, 2]']
+        )
+        
+        l.put_string('q', """
+            <%namespace name="i" file="${(str([x for x in range(3)][2]) + 'i')[-1]}" />
+            ${i.body(y='x')}
+        """)
+        eq_(
+            result_lines(l.get_template("q").render()), ['hi, x']
+        )
+
+        t = Template("""
+            <%
+                y = lambda q: str(q)
+            %>
+            ${y('hi')}
+        """, strict_undefined=True)
+        eq_(
+            result_lines(t.render()), ["hi"]
+        )
+
+    def test_list_comprehensions_plus_undeclared_nonstrict(self):
+        # traditional behavior.  variable inside a list comprehension
+        # is treated as an "undefined", so is pulled from the context.
+        t = Template("""
+            t is: ${t}
+        
+            ${",".join([t for t in ("a", "b", "c")])}
+        """)
+        
+        eq_(
+            result_lines(t.render(t="T")),
+            ['t is: T', 'a,b,c'] 
+        )
+    
+    def test_traditional_assignment_plus_undeclared(self):
+        t = Template("""
+            t is: ${t}
+            
+            <%
+                t = 12
+            %>
+        """)
+        assert_raises(
+            UnboundLocalError,
+            t.render, t="T"
+        )
+        
+    def test_list_comprehensions_plus_undeclared_strict(self):
+        # with strict, a list comprehension now behaves
+        # like the undeclared case above.
+        t = Template("""
+            t is: ${t}
+        
+            ${",".join([t for t in ("a", "b", "c")])}
+        """, strict_undefined=True)
+        
+        eq_(
+            result_lines(t.render(t="T")),
+            ['t is: T', 'a,b,c']
+        )
+    
         
 class ControlTest(TemplateTest):
     def test_control(self):

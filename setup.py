@@ -47,9 +47,9 @@ ties to Python calling and scoping semantics.
       test_suite = "nose.collector",
       zip_safe=False,
       install_requires=[
-          'Beaker>=1.1',
           'MarkupSafe>=0.9.2',
       ],
+      extras_require = {'beaker':['Beaker>=1.1']},
       entry_points="""
       [python.templating.engines]
       mako = mako.ext.turbogears:TGPlugin
@@ -64,4 +64,5 @@ ties to Python calling and scoping semantics.
       [babel.extractors]
       mako = mako.ext.babelplugin:extract
       """,
+      **extra
 )
