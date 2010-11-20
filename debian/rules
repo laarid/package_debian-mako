@@ -17,32 +17,45 @@ clean:
 
 build:
 
-install: $(PYVERS:%=install-python%) $(PY3VERS:%=install-python%)
+test: $(PYVERS:%=test-python%)
+test-python%:
+ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
+	python$* setup.py test --quiet
+endif
+
+build-docs:
+	dh_testdir
+	dh_installdirs -i
+	cd doc/build && sphinx-build -N -q -E -b html . \
+	 $(call pkgdir,2.X)-doc/usr/share/doc/python-mako-doc/html/
+	rm -rf $(call pkgdir,2.X)-doc/usr/share/doc/python-mako-doc/html/.doctrees
+	touch $@
+
+install: $(PYVERS:%=install-python%) $(PY3VERS:%=install-python%) build-docs test
 	dh_install
-	mv $(CURDIR)/debian/python-mako/usr/share/vim/addons/indent/mako_indent.vim \
-	   $(CURDIR)/debian/python-mako/usr/share/vim/addons/indent/mako.vim
+	mv $(CURDIR)/debian/python-mako-doc/usr/share/vim/addons/indent/mako_indent.vim \
+	   $(CURDIR)/debian/python-mako-doc/usr/share/vim/addons/indent/mako.vim
+	#rm -rf debian/python-mako-doc/usr/share/doc/python-mako/doc/build
 
 install-python%:
 	python$* setup.py build_scripts	--executable=/usr/bin/python
 	python$* setup.py install $(py_setup_install_args) \
-		--single-version-externally-managed \
 		--root $(call pkgdir,$*)
-	# dpkg handles dependencies way better than Python
-	find $(call pkgdir,$*) -name requires.txt -type f -delete
 
 binary-indep: build install
 	dh_testdir -i
 	dh_testroot -i
-	dh_installchangelogs -i CHANGES
+	dh_installchangelogs -i
+	dh_installchangelogs -p python-mako-doc CHANGES
 	dh_installdocs -i
 	dh_installexamples -i
+	dh_link -i
 	dh_installman -i
-	rm -rf debian/python-mako/usr/share/doc/python-mako/doc/build
-	dh_pysupport -i
+	dh_python2 -i
 	# TODO: new name for Py3k's mako-render
 	rm -f $(call pkgdir,3.X)/usr/bin/mako-render
 	dh_python3 -i
-	dh_compress -i -X.py -Xmakotemplates.txt
+	dh_compress -i -X.py -X.js -Xmakotemplates.txt
 	dh_fixperms -i
 	dh_installdeb -i
 	dh_gencontrol -i
