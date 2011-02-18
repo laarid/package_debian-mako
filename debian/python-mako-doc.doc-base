@@ -12,5 +12,5 @@ Abstract: This document describes Mako - a template library written in Python.
 Section: Programming/Python
 
 Format: HTML
-Index: /usr/share/doc/python-mako/doc/index.html
-Files: /usr/share/doc/python-mako/doc/*.html
+Index: /usr/share/doc/python-mako/html/index.html
+Files: /usr/share/doc/python-mako/html/*.html
