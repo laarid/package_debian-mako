@@ -7,7 +7,7 @@
         
         <title>
     Usage
- &mdash; Mako 0.3.6 Documentation</title>
+ &mdash; Mako 0.4.0 Documentation</title>
         
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/docs.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
           URL_ROOT:    '#',
-          VERSION:     '0.3.6',
+          VERSION:     '0.4.0',
           COLLAPSE_MODINDEX: false,
           FILE_SUFFIX: '.html'
       };
@@ -26,7 +26,7 @@
     <script type="text/javascript" src="_static/init.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="Mako 0.3.6 Documentation" href="index.html" />
+    <link rel="top" title="Mako 0.4.0 Documentation" href="index.html" />
         <link rel="next" title="Syntax" href="syntax.html" />
         <link rel="prev" title="Table of Contents" href="index.html" />
     
@@ -38,7 +38,7 @@
 
 
 
-        <h1>Mako 0.3.6 Documentation</h1>
+        <h1>Mako 0.4.0 Documentation</h1>
 
         <div id="search">
         Search:
@@ -50,23 +50,23 @@
         </div>
 
         <div class="versionheader">
-            Version: <span class="versionnum">0.3.6</span> Last Updated: 11/13/2010 16:04:30
+            Version: <span class="versionnum">0.4.0</span> Last Updated: 02/21/2011 12:13:43
         </div>
         <div class="clearboth"></div>
 
         <div class="topnav">
             <div id="pagecontrol">
                 <a href="genindex.html">Index</a>
-            
+ 
                 <div class="sourcelink">(<a href="_sources/usage.txt">view source)</div>
             </div>
-            
+ 
             <div class="navbanner">
                 <a class="totoc" href="index.html">Table of Contents</a>
                 » 
     Usage
  
-                
+ 
                 
 <div class="prevnext">
         Previous:
@@ -105,7 +105,7 @@
 
             <div class="clearboth"></div>
         </div>
-        
+ 
         <div class="document">
             <div class="body">
                 
@@ -487,7 +487,7 @@ for more information.</p>
 <h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="mako.template.Template">
-<em class="property">class </em><tt class="descclassname">mako.template.</tt><tt class="descname">Template</tt><big>(</big><em>text=None</em>, <em>filename=None</em>, <em>uri=None</em>, <em>format_exceptions=False</em>, <em>error_handler=None</em>, <em>lookup=None</em>, <em>output_encoding=None</em>, <em>encoding_errors='strict'</em>, <em>module_directory=None</em>, <em>cache_type=None</em>, <em>cache_dir=None</em>, <em>cache_url=None</em>, <em>module_filename=None</em>, <em>input_encoding=None</em>, <em>disable_unicode=False</em>, <em>default_filters=None</em>, <em>buffer_filters=()</em>, <em>strict_undefined=False</em>, <em>imports=None</em>, <em>preprocessor=None</em>, <em>cache_enabled=True</em><big>)</big><a class="headerlink" href="#mako.template.Template" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">mako.template.</tt><tt class="descname">Template</tt><big>(</big><em>text=None</em>, <em>filename=None</em>, <em>uri=None</em>, <em>format_exceptions=False</em>, <em>error_handler=None</em>, <em>lookup=None</em>, <em>output_encoding=None</em>, <em>encoding_errors='strict'</em>, <em>module_directory=None</em>, <em>cache_type=None</em>, <em>cache_dir=None</em>, <em>cache_url=None</em>, <em>module_filename=None</em>, <em>input_encoding=None</em>, <em>disable_unicode=False</em>, <em>bytestring_passthrough=False</em>, <em>default_filters=None</em>, <em>buffer_filters=()</em>, <em>strict_undefined=False</em>, <em>imports=None</em>, <em>preprocessor=None</em>, <em>cache_enabled=True</em><big>)</big><a class="headerlink" href="#mako.template.Template" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>Represents a compiled template.</p>
 <p><a class="reference internal" href="#mako.template.Template" title="mako.template.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a> includes a reference to the original
@@ -514,6 +514,14 @@ defined with the %def itself have been applied. Allows the
 creation of default expression filters that let the output
 of return-valued %defs &#8220;opt out&#8221; of that filtering via
 passing special attributes or objects.</li>
+<li><strong>bytestring_passthrough</strong> &#8211; When True, and output_encoding is 
+set to None, and <a class="reference internal" href="#mako.template.Template.render" title="mako.template.Template.render"><tt class="xref py py-meth docutils literal"><span class="pre">Template.render()</span></tt></a> is used to render,
+the StringIO or cStringIO buffer will be used instead of the
+default &#8220;fast&#8221; buffer.   This allows raw bytestrings in the
+output stream, such as in expressions, to pass straight
+through to the buffer.   New in 0.4 to provide the same
+behavior as that of the previous series.  This flag is forced
+to True if disable_unicode is also configured.</li>
 <li><strong>cache_dir</strong> &#8211; Filesystem directory where cache files will be
 placed.  See <a class="reference internal" href="caching.html"><em>Caching</em></a>.</li>
 <li><strong>cache_enabled</strong> &#8211; Boolean flag which enables caching of this
@@ -557,8 +565,8 @@ Python module files will be placed.</li>
 <li><strong>module_filename</strong> &#8211; Overrides the filename of the generated 
 Python module file. For advanced usage only.</li>
 <li><strong>output_encoding</strong> &#8211; The encoding to use when <a class="reference internal" href="#mako.template.Template.render" title="mako.template.Template.render"><tt class="xref py py-meth docutils literal"><span class="pre">render()</span></tt></a> 
-is called. See <a class="reference internal" href="#usage-unicode"><em>Using Unicode and Encoding</em></a> as well as
-<a class="reference internal" href="unicode.html"><em>The Unicode Chapter</em></a>.</li>
+is called.  
+See <a class="reference internal" href="#usage-unicode"><em>Using Unicode and Encoding</em></a> as well as <a class="reference internal" href="unicode.html"><em>The Unicode Chapter</em></a>.</li>
 <li><strong>preprocessor</strong> &#8211; Python callable which will be passed 
 the full template source before it is parsed. The return
 result of the callable will be used as the template source
@@ -568,7 +576,7 @@ code.</li>
 the <a class="reference internal" href="runtime.html#mako.runtime.Context" title="mako.runtime.Context"><tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt></a> with an immediate raise of
 <tt class="docutils literal"><span class="pre">NameError</span></tt>. The advantage is immediate reporting of
 missing variables which include the name. New in 0.3.6.</li>
-<li><strong>uri</strong> &#8211; string uri or other identifier for this template.  
+<li><strong>uri</strong> &#8211; string uri or other identifier for this template. 
 If not provided, the uri is generated from the filesystem
 path, or from the in-memory identity of a non-file-based
 template. The primary usage of the uri is to provide a key
@@ -715,7 +723,7 @@ given URL.</p>
 
 <dl class="class">
 <dt id="mako.lookup.TemplateLookup">
-<em class="property">class </em><tt class="descclassname">mako.lookup.</tt><tt class="descname">TemplateLookup</tt><big>(</big><em>directories=None</em>, <em>module_directory=None</em>, <em>filesystem_checks=True</em>, <em>collection_size=-1</em>, <em>format_exceptions=False</em>, <em>error_handler=None</em>, <em>disable_unicode=False</em>, <em>output_encoding=None</em>, <em>encoding_errors='strict'</em>, <em>cache_type=None</em>, <em>cache_dir=None</em>, <em>cache_url=None</em>, <em>cache_enabled=True</em>, <em>modulename_callable=None</em>, <em>default_filters=None</em>, <em>buffer_filters=()</em>, <em>strict_undefined=False</em>, <em>imports=None</em>, <em>input_encoding=None</em>, <em>preprocessor=None</em><big>)</big><a class="headerlink" href="#mako.lookup.TemplateLookup" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">mako.lookup.</tt><tt class="descname">TemplateLookup</tt><big>(</big><em>directories=None</em>, <em>module_directory=None</em>, <em>filesystem_checks=True</em>, <em>collection_size=-1</em>, <em>format_exceptions=False</em>, <em>error_handler=None</em>, <em>disable_unicode=False</em>, <em>bytestring_passthrough=False</em>, <em>output_encoding=None</em>, <em>encoding_errors='strict'</em>, <em>cache_type=None</em>, <em>cache_dir=None</em>, <em>cache_url=None</em>, <em>cache_enabled=True</em>, <em>modulename_callable=None</em>, <em>default_filters=None</em>, <em>buffer_filters=()</em>, <em>strict_undefined=False</em>, <em>imports=None</em>, <em>input_encoding=None</em>, <em>preprocessor=None</em><big>)</big><a class="headerlink" href="#mako.lookup.TemplateLookup" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#mako.lookup.TemplateCollection" title="mako.lookup.TemplateCollection"><tt class="xref py py-class docutils literal"><span class="pre">mako.lookup.TemplateCollection</span></tt></a></p>
 <p>Represent a collection of templates that locates template source files
 from the local filesystem.</p>
@@ -733,7 +741,7 @@ programatically using <a class="reference internal" href="#mako.lookup.TemplateL
 <span class="s">&#39;&#39;&#39;</span><span class="p">)</span>
 <span class="n">lookup</span><span class="o">.</span><span class="n">put_string</span><span class="p">(</span><span class="s">&quot;hello.html&quot;</span><span class="p">,</span> <span class="s">&#39;&#39;&#39;</span>
 <span class="s">    &lt;</span><span class="si">%i</span><span class="s">nclude file=&#39;base.html&#39;/&gt;</span>
-<span class="s">    </span>
+
 <span class="s">    Hello, world !</span>
 <span class="s">&#39;&#39;&#39;</span><span class="p">)</span>
 </pre></div>

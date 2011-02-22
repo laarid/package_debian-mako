@@ -1,6 +1,7 @@
 from mako.template import Template
 import unittest, os
 from mako.util import function_named, py3k
+import re
 
 from nose import SkipTest
 
@@ -9,34 +10,34 @@ template_base = os.path.join(os.path.dirname(__file__), 'templates')
 module_base = os.path.join(template_base, 'modules')
 
 class TemplateTest(unittest.TestCase):
-    
+ 
     def _file_template(self, filename, **kw):
         filepath = self._file_path(filename)
         return Template(uri=filename, filename=filepath,
                             module_directory=module_base, **kw)
-    
+ 
     def _file_path(self, filename):
         name, ext = os.path.splitext(filename)
-        
+ 
         if py3k:
             py3k_path = os.path.join(template_base, name + "_py3k" + ext)
             if os.path.exists(py3k_path):
                 return py3k_path
-        
+ 
         return os.path.join(template_base, filename)
-        
+ 
     def _do_file_test(self, filename, expected, filters=None, 
                         unicode_=True, template_args=None, **kw):
         t1 = self._file_template(filename, **kw)
         self._do_test(t1, expected, filters=filters, 
                         unicode_=unicode_, template_args=template_args)
-    
+ 
     def _do_memory_test(self, source, expected, filters=None, 
                         unicode_=True, template_args=None, **kw):
         t1 = Template(text=source, **kw)
         self._do_test(t1, expected, filters=filters, 
                         unicode_=unicode_, template_args=template_args)
-    
+ 
     def _do_test(self, template, expected, filters=None, template_args=None, unicode_=True):
         if template_args is None:
             template_args = {}
@@ -44,11 +45,11 @@ class TemplateTest(unittest.TestCase):
             output = template.render_unicode(**template_args)
         else:
             output = template.render(**template_args)
-            
+ 
         if filters:
             output = filters(output)
         eq_(output, expected)
-    
+ 
 def eq_(a, b, msg=None):
     """Assert a == b, with repr messaging on failure."""
     assert a == b, msg or "%r != %r" % (a, b)
@@ -63,9 +64,17 @@ def assert_raises(except_cls, callable_, *args, **kw):
         success = False
     except except_cls, e:
         success = True
-    
+ 
     # assert outside the block so it works for AssertionError too !
     assert success, "Callable did not raise an exception"
+
+def assert_raises_message(except_cls, msg, callable_, *args, **kwargs):
+    try:
+        callable_(*args, **kwargs)
+        assert False, "Callable did not raise an exception"
+    except except_cls, e:
+        assert re.search(msg, str(e)), "%r !~ %s" % (msg, e)
+        print str(e)
 
 def skip_if(predicate, reason=None):
     """Skip a test if predicate is true."""

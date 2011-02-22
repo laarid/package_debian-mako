@@ -7,7 +7,7 @@
         
         <title>
     Namespaces
- &mdash; Mako 0.3.6 Documentation</title>
+ &mdash; Mako 0.4.0 Documentation</title>
         
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/docs.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
           URL_ROOT:    '#',
-          VERSION:     '0.3.6',
+          VERSION:     '0.4.0',
           COLLAPSE_MODINDEX: false,
           FILE_SUFFIX: '.html'
       };
@@ -26,7 +26,7 @@
     <script type="text/javascript" src="_static/init.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="Mako 0.3.6 Documentation" href="index.html" />
+    <link rel="top" title="Mako 0.4.0 Documentation" href="index.html" />
         <link rel="next" title="Inheritance" href="inheritance.html" />
         <link rel="prev" title="The Mako Runtime Environment" href="runtime.html" />
     
@@ -38,7 +38,7 @@
 
 
 
-        <h1>Mako 0.3.6 Documentation</h1>
+        <h1>Mako 0.4.0 Documentation</h1>
 
         <div id="search">
         Search:
@@ -50,23 +50,23 @@
         </div>
 
         <div class="versionheader">
-            Version: <span class="versionnum">0.3.6</span> Last Updated: 11/13/2010 16:04:30
+            Version: <span class="versionnum">0.4.0</span> Last Updated: 02/21/2011 12:13:43
         </div>
         <div class="clearboth"></div>
 
         <div class="topnav">
             <div id="pagecontrol">
                 <a href="genindex.html">Index</a>
-            
+ 
                 <div class="sourcelink">(<a href="_sources/namespaces.txt">view source)</div>
             </div>
-            
+ 
             <div class="navbanner">
                 <a class="totoc" href="index.html">Table of Contents</a>
                 » 
     Namespaces
  
-                
+ 
                 
 <div class="prevnext">
         Previous:
@@ -100,7 +100,7 @@
 
             <div class="clearboth"></div>
         </div>
-        
+ 
         <div class="document">
             <div class="body">
                 
@@ -374,7 +374,7 @@ desired function name. But more on this in a future release.</p>
 <h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="mako.runtime.Namespace">
-<em class="property">class </em><tt class="descclassname">mako.runtime.</tt><tt class="descname">Namespace</tt><big>(</big><em>name</em>, <em>context</em>, <em>module=None</em>, <em>template=None</em>, <em>templateuri=None</em>, <em>callables=None</em>, <em>inherits=None</em>, <em>populate_self=True</em>, <em>calling_uri=None</em><big>)</big><a class="headerlink" href="#mako.runtime.Namespace" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">mako.runtime.</tt><tt class="descname">Namespace</tt><big>(</big><em>name</em>, <em>context</em>, <em>callables=None</em>, <em>inherits=None</em>, <em>populate_self=True</em>, <em>calling_uri=None</em><big>)</big><a class="headerlink" href="#mako.runtime.Namespace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>Provides access to collections of rendering methods, which 
 can be local, from other templates, or from imported modules.</p>
@@ -397,8 +397,11 @@ relationships. See the example in
 <dl class="attribute">
 <dt id="mako.runtime.Namespace.cache">
 <tt class="descname">cache</tt><a class="headerlink" href="#mako.runtime.Namespace.cache" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the <a class="reference internal" href="caching.html#mako.cache.Cache" title="mako.cache.Cache"><tt class="xref py py-class docutils literal"><span class="pre">Cache</span></tt></a> object referenced by this <a class="reference internal" href="#mako.runtime.Namespace" title="mako.runtime.Namespace"><tt class="xref py py-class docutils literal"><span class="pre">Namespace</span></tt></a> object&#8217;s
-<a class="reference internal" href="usage.html#mako.template.Template" title="mako.template.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a>.</p>
+<dd><dl class="docutils">
+<dt>Return the <a class="reference internal" href="caching.html#mako.cache.Cache" title="mako.cache.Cache"><tt class="xref py py-class docutils literal"><span class="pre">Cache</span></tt></a> object referenced </dt>
+<dd>by this <a class="reference internal" href="#mako.runtime.Namespace" title="mako.runtime.Namespace"><tt class="xref py py-class docutils literal"><span class="pre">Namespace</span></tt></a> object&#8217;s</dd>
+</dl>
+<p><a class="reference internal" href="usage.html#mako.template.Template" title="mako.template.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -491,6 +494,51 @@ i.e. the generated module for the template.</p>
 <dd><p>The uri for this Namespace&#8217;s template.</p>
 <p>I.e. whatever was sent to <a class="reference internal" href="usage.html#mako.lookup.TemplateLookup.get_template" title="mako.lookup.TemplateLookup.get_template"><tt class="xref py py-meth docutils literal"><span class="pre">TemplateLookup.get_template()</span></tt></a>.</p>
 <p>This is the equivalent of <tt class="xref py py-attr docutils literal"><span class="pre">Template.uri</span></tt>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mako.runtime.TemplateNamespace">
+<em class="property">class </em><tt class="descclassname">mako.runtime.</tt><tt class="descname">TemplateNamespace</tt><big>(</big><em>name</em>, <em>context</em>, <em>template=None</em>, <em>templateuri=None</em>, <em>callables=None</em>, <em>inherits=None</em>, <em>populate_self=True</em>, <em>calling_uri=None</em><big>)</big><a class="headerlink" href="#mako.runtime.TemplateNamespace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mako.runtime.Namespace" title="mako.runtime.Namespace"><tt class="xref py py-class docutils literal"><span class="pre">mako.runtime.Namespace</span></tt></a></p>
+<p>A <a class="reference internal" href="#mako.runtime.Namespace" title="mako.runtime.Namespace"><tt class="xref py py-class docutils literal"><span class="pre">Namespace</span></tt></a> specific to a <a class="reference internal" href="usage.html#mako.template.Template" title="mako.template.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a> instance.</p>
+<dl class="attribute">
+<dt id="mako.runtime.TemplateNamespace.filename">
+<tt class="descname">filename</tt><a class="headerlink" href="#mako.runtime.TemplateNamespace.filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>The path of the filesystem file used for this
+Namespace&#8217;s module or template.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mako.runtime.TemplateNamespace.module">
+<tt class="descname">module</tt><a class="headerlink" href="#mako.runtime.TemplateNamespace.module" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Python module referenced by this Namespace.</p>
+<p>If the namespace references a <a class="reference internal" href="usage.html#mako.template.Template" title="mako.template.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a>, then
+this module is the equivalent of <tt class="docutils literal"><span class="pre">template.module</span></tt>,
+i.e. the generated module for the template.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mako.runtime.TemplateNamespace.uri">
+<tt class="descname">uri</tt><a class="headerlink" href="#mako.runtime.TemplateNamespace.uri" title="Permalink to this definition">¶</a></dt>
+<dd><p>The uri for this Namespace&#8217;s template.</p>
+<p>I.e. whatever was sent to <a class="reference internal" href="usage.html#mako.lookup.TemplateLookup.get_template" title="mako.lookup.TemplateLookup.get_template"><tt class="xref py py-meth docutils literal"><span class="pre">TemplateLookup.get_template()</span></tt></a>.</p>
+<p>This is the equivalent of <tt class="xref py py-attr docutils literal"><span class="pre">Template.uri</span></tt>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mako.runtime.ModuleNamespace">
+<em class="property">class </em><tt class="descclassname">mako.runtime.</tt><tt class="descname">ModuleNamespace</tt><big>(</big><em>name</em>, <em>context</em>, <em>module</em>, <em>callables=None</em>, <em>inherits=None</em>, <em>populate_self=True</em>, <em>calling_uri=None</em><big>)</big><a class="headerlink" href="#mako.runtime.ModuleNamespace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mako.runtime.Namespace" title="mako.runtime.Namespace"><tt class="xref py py-class docutils literal"><span class="pre">mako.runtime.Namespace</span></tt></a></p>
+<p>A <a class="reference internal" href="#mako.runtime.Namespace" title="mako.runtime.Namespace"><tt class="xref py py-class docutils literal"><span class="pre">Namespace</span></tt></a> specific to a Python module instance.</p>
+<dl class="attribute">
+<dt id="mako.runtime.ModuleNamespace.filename">
+<tt class="descname">filename</tt><a class="headerlink" href="#mako.runtime.ModuleNamespace.filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>The path of the filesystem file used for this
+Namespace&#8217;s module or template.</p>
 </dd></dl>
 
 </dd></dl>

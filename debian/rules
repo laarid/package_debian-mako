@@ -19,6 +19,7 @@ build:
 
 test: $(PYVERS:%=test-python%)
 test-python%:
+	-
 ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
 	python$* setup.py test --quiet
 endif
