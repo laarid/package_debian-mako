@@ -42,6 +42,7 @@ install-python%:
 	python$* setup.py build_scripts	--executable=/usr/bin/python
 	python$* setup.py install $(py_setup_install_args) \
 		--root $(call pkgdir,$*)
+	([ -d build/lib ] && mv build/lib $(shell python$* -c 'from distutils.command.build import build; from distutils.core import Distribution; b = build(Distribution()); b.finalize_options(); print(b.build_platlib)')) || true
 
 binary-indep: build install
 	dh_testdir -i

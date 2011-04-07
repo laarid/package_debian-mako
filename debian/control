@@ -10,7 +10,7 @@ Build-Depends-Indep: python-all, python-setuptools,
  python-sphinx,
 # for tests:
  python-nose, python-markupsafe
-Standards-Version: 3.9.1
+Standards-Version: 3.9.2
 Homepage: http://www.makotemplates.org/
 X-Python-Version: >= 2.4
 X-Python3-Version: >= 3.0

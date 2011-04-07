@@ -1,3 +1,11 @@
+mako (0.4.1-1) unstable; urgency=low
+
+  * New upstream release
+  * Add workaround for "build/lib" bug in Python/distribute
+  * Standards-Version bumped to 3.9.2 (no changes needed)
+
+ -- Piotr Ożarowski <piotr@debian.org>  Thu, 07 Apr 2011 22:31:45 +0200
+
 mako (0.4.0-1) unstable; urgency=low
 
   * New upstream release
