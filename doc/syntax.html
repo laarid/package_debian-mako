@@ -6,8 +6,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         
         <title>
-    Syntax
- &mdash; Mako 0.4.0 Documentation</title>
+                        Syntax
+                     &mdash; Mako 0.4.1 Documentation</title>
         
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/docs.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
           URL_ROOT:    '#',
-          VERSION:     '0.4.0',
+          VERSION:     '0.4.1',
           COLLAPSE_MODINDEX: false,
           FILE_SUFFIX: '.html'
       };
@@ -26,9 +26,11 @@
     <script type="text/javascript" src="_static/init.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="Mako 0.4.0 Documentation" href="index.html" />
-        <link rel="next" title="Defs" href="defs.html" />
+    <link rel="top" title="Mako 0.4.1 Documentation" href="index.html" />
+        <link rel="next" title="Defs and Blocks" href="defs.html" />
         <link rel="prev" title="Usage" href="usage.html" />
+
+    
     
 
     </head>
@@ -37,8 +39,7 @@
 
 
 
-
-        <h1>Mako 0.4.0 Documentation</h1>
+        <h1>Mako 0.4.1 Documentation</h1>
 
         <div id="search">
         Search:
@@ -50,7 +51,7 @@
         </div>
 
         <div class="versionheader">
-            Version: <span class="versionnum">0.4.0</span> Last Updated: 02/21/2011 12:13:43
+            Version: <span class="versionnum">0.4.1</span> Last Updated: 04/06/2011 19:09:35
         </div>
         <div class="clearboth"></div>
 
@@ -64,21 +65,21 @@
             <div class="navbanner">
                 <a class="totoc" href="index.html">Table of Contents</a>
                 » 
-    Syntax
- 
- 
+                        Syntax
+                     
+
                 
 <div class="prevnext">
         Previous:
         <a href="usage.html" title="previous chapter">Usage</a>
         Next:
-        <a href="defs.html" title="next chapter">Defs</a>
+        <a href="defs.html" title="next chapter">Defs and Blocks</a>
 </div>
 
                 <h2>
                     
-    Syntax
- 
+                        Syntax
+                    
                 </h2>
             </div>
                 <ul>
@@ -94,6 +95,7 @@
 <li><a class="reference internal" href="#page">&lt;%page&gt;</a></li>
 <li><a class="reference internal" href="#include">&lt;%include&gt;</a></li>
 <li><a class="reference internal" href="#def">&lt;%def&gt;</a></li>
+<li><a class="reference internal" href="#block">&lt;%block&gt;</a></li>
 <li><a class="reference internal" href="#namespace">&lt;%namespace&gt;</a></li>
 <li><a class="reference internal" href="#inherit">&lt;%inherit&gt;</a></li>
 <li><a class="reference internal" href="#namespacename-defname">&lt;%namespacename:defname&gt;</a></li>
@@ -359,7 +361,31 @@ as template &#8220;methods&#8221;, automatic propagation of the current
 <tt class="docutils literal"><span class="pre">Context</span></tt>, buffering/filtering/caching flags, and def calls
 with content, which enable packages of defs to be sent as
 arguments to other def calls (not as hard as it sounds). Get the
-full deal on what %def can do in <a class="reference internal" href="defs.html"><em>Defs</em></a>.</p>
+full deal on what %def can do in <a class="reference internal" href="defs.html"><em>Defs and Blocks</em></a>.</p>
+</div>
+<div class="section" id="block">
+<h3>&lt;%block&gt;<a class="headerlink" href="#block" title="Permalink to this headline">¶</a></h3>
+<p><tt class="docutils literal"><span class="pre">%block</span></tt> is a tag that&#8217;s new as of Mako 0.4.1.   It&#8217;s close to
+a <tt class="docutils literal"><span class="pre">%def</span></tt>, except executes itself immediately in its base-most scope,
+and can also be anonymous (i.e. with no name):</p>
+<div class="highlight-mako"><div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">block</span> <span class="na">filter=</span><span class="s">&quot;h&quot;</span><span class="cp">&gt;</span><span class="x"></span>
+<span class="x">    some &lt;html&gt; stuff.</span>
+<span class="cp">&lt;/%</span><span class="nb">block</span><span class="cp">&gt;</span><span class="x"></span>
+</pre></div>
+</div>
+<p>Inspired by Jinja2 blocks, named blocks offer a syntactically pleasing way
+to do inheritance:</p>
+<div class="highlight-mako"><div class="highlight"><pre><span class="x">&lt;html&gt;</span>
+<span class="x">    &lt;body&gt;</span>
+<span class="x">    </span><span class="cp">&lt;%</span><span class="nb">block</span> <span class="na">name=</span><span class="s">&quot;header&quot;</span><span class="cp">&gt;</span><span class="x"></span>
+<span class="x">        &lt;h2&gt;</span><span class="cp">&lt;%</span><span class="nb">block</span> <span class="na">name=</span><span class="s">&quot;title&quot;</span><span class="cp">/&gt;</span><span class="x">&lt;/h2&gt;</span>
+<span class="x">    </span><span class="cp">&lt;/%</span><span class="nb">block</span><span class="cp">&gt;</span><span class="x"></span>
+<span class="x">    </span><span class="cp">${</span><span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="p">()</span><span class="cp">}</span><span class="x"></span>
+<span class="x">    &lt;/body&gt;</span>
+<span class="x">&lt;/html&gt;</span>
+</pre></div>
+</div>
+<p>Blocks are introduced in <a class="reference internal" href="defs.html#blocks"><em>Using Blocks</em></a> and further described in <a class="reference internal" href="inheritance.html"><em>Inheritance</em></a>.</p>
 </div>
 <div class="section" id="namespace">
 <h3>&lt;%namespace&gt;<a class="headerlink" href="#namespace" title="Permalink to this headline">¶</a></h3>
@@ -411,7 +437,7 @@ tag, respectively.</p>
 <h3>&lt;%call&gt;<a class="headerlink" href="#call" title="Permalink to this headline">¶</a></h3>
 <p>The call tag is the &#8220;classic&#8221; form of a user-defined tag, and is
 roughly equiavlent to the <tt class="docutils literal"><span class="pre">&lt;%namespacename:defname&gt;</span></tt> syntax
-described above. This tag is also described in <cite>defs_with_content</cite>.</p>
+described above. This tag is also described in <a class="reference internal" href="defs.html#defs-with-content"><em>Calling a def with embedded content and/or other defs</em></a>.</p>
 </div>
 <div class="section" id="doc">
 <h3>&lt;%doc&gt;<a class="headerlink" href="#doc" title="Permalink to this headline">¶</a></h3>
@@ -464,14 +490,13 @@ block to do that.</p>
         </div>
 
         
-        
             <div class="bottomnav">
                 
 <div class="prevnext">
         Previous:
         <a href="usage.html" title="previous chapter">Usage</a>
         Next:
-        <a href="defs.html" title="next chapter">Defs</a>
+        <a href="defs.html" title="next chapter">Defs and Blocks</a>
 </div>
 
                 <div class="doc_copyright">
@@ -480,7 +505,6 @@ block to do that.</p>
                 </div>
             </div>
         
-
 
 
 

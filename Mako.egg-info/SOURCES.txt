@@ -107,6 +107,7 @@ test/__init__.py
 test/sample_module_namespace.py
 test/test_ast.py
 test/test_babelplugin.py
+test/test_block.py
 test/test_cache.py
 test/test_call.py
 test/test_decorators.py

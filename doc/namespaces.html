@@ -6,8 +6,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         
         <title>
-    Namespaces
- &mdash; Mako 0.4.0 Documentation</title>
+                        Namespaces
+                     &mdash; Mako 0.4.1 Documentation</title>
         
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/docs.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
           URL_ROOT:    '#',
-          VERSION:     '0.4.0',
+          VERSION:     '0.4.1',
           COLLAPSE_MODINDEX: false,
           FILE_SUFFIX: '.html'
       };
@@ -26,9 +26,11 @@
     <script type="text/javascript" src="_static/init.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="Mako 0.4.0 Documentation" href="index.html" />
+    <link rel="top" title="Mako 0.4.1 Documentation" href="index.html" />
         <link rel="next" title="Inheritance" href="inheritance.html" />
         <link rel="prev" title="The Mako Runtime Environment" href="runtime.html" />
+
+    
     
 
     </head>
@@ -37,8 +39,7 @@
 
 
 
-
-        <h1>Mako 0.4.0 Documentation</h1>
+        <h1>Mako 0.4.1 Documentation</h1>
 
         <div id="search">
         Search:
@@ -50,7 +51,7 @@
         </div>
 
         <div class="versionheader">
-            Version: <span class="versionnum">0.4.0</span> Last Updated: 02/21/2011 12:13:43
+            Version: <span class="versionnum">0.4.1</span> Last Updated: 04/06/2011 19:09:35
         </div>
         <div class="clearboth"></div>
 
@@ -64,9 +65,9 @@
             <div class="navbanner">
                 <a class="totoc" href="index.html">Table of Contents</a>
                 » 
-    Namespaces
- 
- 
+                        Namespaces
+                     
+
                 
 <div class="prevnext">
         Previous:
@@ -77,8 +78,8 @@
 
                 <h2>
                     
-    Namespaces
- 
+                        Namespaces
+                    
                 </h2>
             </div>
                 <ul>
@@ -106,9 +107,9 @@
                 
 <div class="section" id="namespaces">
 <span id="namespaces-toplevel"></span><h1>Namespaces<a class="headerlink" href="#namespaces" title="Permalink to this headline">¶</a></h1>
-<p>Namespaces are used to organize groups of components into
-categories, and also to &#8220;import&#8221; components from other files.</p>
-<p>If the file <tt class="docutils literal"><span class="pre">components.html</span></tt> defines these two components:</p>
+<p>Namespaces are used to organize groups of defs into
+categories, and also to &#8220;import&#8221; defs from other files.</p>
+<p>If the file <tt class="docutils literal"><span class="pre">components.html</span></tt> defines these two defs:</p>
 <div class="highlight-mako"><div class="highlight"><pre><span class="cp">## components.html</span><span class="x"></span>
 <span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;comp1()&quot;</span><span class="cp">&gt;</span><span class="x"></span>
 <span class="x">    this is comp1</span>
@@ -120,7 +121,7 @@ categories, and also to &#8220;import&#8221; components from other files.</p>
 </pre></div>
 </div>
 <p>You can make another file, for example <tt class="docutils literal"><span class="pre">index.html</span></tt>, that
-pulls those two components into a namespace called <tt class="docutils literal"><span class="pre">comp</span></tt>:</p>
+pulls those two defs into a namespace called <tt class="docutils literal"><span class="pre">comp</span></tt>:</p>
 <div class="highlight-mako"><div class="highlight"><pre><span class="cp">## index.html</span><span class="x"></span>
 <span class="cp">&lt;%</span><span class="nb">namespace</span> <span class="na">name=</span><span class="s">&quot;comp&quot;</span> <span class="na">file=</span><span class="s">&quot;components.html&quot;</span><span class="cp">/&gt;</span><span class="x"></span>
 
@@ -566,7 +567,6 @@ a buffer.</p>
         </div>
 
         
-        
             <div class="bottomnav">
                 
 <div class="prevnext">
@@ -582,7 +582,6 @@ a buffer.</p>
                 </div>
             </div>
         
-
 
 
 

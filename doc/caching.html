@@ -6,8 +6,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         
         <title>
-    Caching
- &mdash; Mako 0.4.0 Documentation</title>
+                        Caching
+                     &mdash; Mako 0.4.1 Documentation</title>
         
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/docs.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
           URL_ROOT:    '#',
-          VERSION:     '0.4.0',
+          VERSION:     '0.4.1',
           COLLAPSE_MODINDEX: false,
           FILE_SUFFIX: '.html'
       };
@@ -26,8 +26,10 @@
     <script type="text/javascript" src="_static/init.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="Mako 0.4.0 Documentation" href="index.html" />
+    <link rel="top" title="Mako 0.4.1 Documentation" href="index.html" />
         <link rel="prev" title="The Unicode Chapter" href="unicode.html" />
+
+    
     
 
     </head>
@@ -36,8 +38,7 @@
 
 
 
-
-        <h1>Mako 0.4.0 Documentation</h1>
+        <h1>Mako 0.4.1 Documentation</h1>
 
         <div id="search">
         Search:
@@ -49,7 +50,7 @@
         </div>
 
         <div class="versionheader">
-            Version: <span class="versionnum">0.4.0</span> Last Updated: 02/21/2011 12:13:43
+            Version: <span class="versionnum">0.4.1</span> Last Updated: 04/06/2011 19:09:35
         </div>
         <div class="clearboth"></div>
 
@@ -63,9 +64,9 @@
             <div class="navbanner">
                 <a class="totoc" href="index.html">Table of Contents</a>
                 » 
-    Caching
- 
- 
+                        Caching
+                     
+
                 
 <div class="prevnext">
         Previous:
@@ -74,8 +75,8 @@
 
                 <h2>
                     
-    Caching
- 
+                        Caching
+                    
                 </h2>
             </div>
                 <ul>
@@ -96,7 +97,7 @@
 <div class="section" id="caching">
 <span id="caching-toplevel"></span><h1>Caching<a class="headerlink" href="#caching" title="Permalink to this headline">¶</a></h1>
 <p>Any template or component can be cached using the <tt class="docutils literal"><span class="pre">cache</span></tt>
-argument to the <tt class="docutils literal"><span class="pre">&lt;%page&gt;</span></tt> or <tt class="docutils literal"><span class="pre">&lt;%def&gt;</span></tt> directives:</p>
+argument to the <tt class="docutils literal"><span class="pre">&lt;%page&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;%def&gt;</span></tt> or <tt class="docutils literal"><span class="pre">&lt;%block&gt;</span></tt> directives:</p>
 <div class="highlight-mako"><div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">page</span> <span class="na">cached=</span><span class="s">&quot;True&quot;</span><span class="cp">/&gt;</span><span class="x"></span>
 
 <span class="x">template text</span>
@@ -115,6 +116,12 @@ system.</p>
 <div class="highlight-mako"><div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;mycomp&quot;</span> <span class="na">cached=</span><span class="s">&quot;True&quot;</span> <span class="na">cache_timeout=</span><span class="s">&quot;30&quot;</span> <span class="na">cache_type=</span><span class="s">&quot;memory&quot;</span><span class="cp">&gt;</span><span class="x"></span>
 <span class="x">    other text</span>
 <span class="cp">&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span><span class="x"></span>
+</pre></div>
+</div>
+<p>... and equivalently with the <tt class="docutils literal"><span class="pre">&lt;%block&gt;</span></tt> tag, anonymous or named:</p>
+<div class="highlight-mako"><div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">block</span> <span class="na">cached=</span><span class="s">&quot;True&quot;</span> <span class="na">cache_timeout=</span><span class="s">&quot;30&quot;</span> <span class="na">cache_type=</span><span class="s">&quot;memory&quot;</span><span class="cp">&gt;</span><span class="x"></span>
+<span class="x">    other text</span>
+<span class="cp">&lt;/%</span><span class="nb">block</span><span class="cp">&gt;</span><span class="x"></span>
 </pre></div>
 </div>
 <div class="section" id="cache-arguments">
@@ -310,7 +317,6 @@ values will use that same backend.</li>
         </div>
 
         
-        
             <div class="bottomnav">
                 
 <div class="prevnext">
@@ -324,7 +330,6 @@ values will use that same backend.</li>
                 </div>
             </div>
         
-
 
 
 
