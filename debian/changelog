@@ -1,3 +1,9 @@
+mako (0.4.2-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Piotr Ożarowski <piotr@debian.org>  Sat, 06 Aug 2011 23:16:07 +0200
+
 mako (0.4.1-1) unstable; urgency=low
 
   * New upstream release
