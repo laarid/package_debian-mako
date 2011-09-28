@@ -1,3 +1,11 @@
+mako (0.5.0-1) unstable; urgency=low
+
+  * New upstream release
+  * Add build-arch and build-indep targets to debian/rules
+  * Add libjs-underscore to python-mako-doc's Depends
+
+ -- Piotr Ożarowski <piotr@debian.org>  Wed, 28 Sep 2011 22:38:26 +0200
+
 mako (0.4.2-1) unstable; urgency=low
 
   * New upstream release

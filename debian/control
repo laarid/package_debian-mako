@@ -52,7 +52,7 @@ Package: python-mako-doc
 Section: doc
 Architecture: all
 Priority: extra
-Depends: libjs-jquery, ${misc:Depends}
+Depends: libjs-jquery, libjs-underscore, ${misc:Depends}
 Breaks: python-mako (<< 0.3.6-1)
 Replaces: python-mako (<< 0.3.6-1)
 Suggests: python-mako, python3-mako

@@ -16,6 +16,8 @@ clean:
 	dh_clean
 
 build:
+build-indep:
+build-arch:
 
 test: $(PYVERS:%=test-python%)
 test-python%:
@@ -55,7 +57,7 @@ binary-indep: build install
 	dh_installman -i
 	dh_python2 -i
 	# TODO: new name for Py3k's mako-render
-	rm -f $(call pkgdir,3.X)/usr/bin/mako-render
+	rm -rf $(call pkgdir,3.X)/usr/bin
 	dh_python3 -i
 	dh_compress -i -X.py -X.js -Xmakotemplates.txt
 	dh_fixperms -i
@@ -68,4 +70,4 @@ binary-arch:
 
 binary: binary-indep binary-arch
 
-.PHONY: build clean binary-indep binary-arch binary install
+.PHONY: clean build-arch build-indep binary binary-arch binary-indep install
