@@ -1,21 +1,21 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        
-        <title>
-                        Syntax
-                     &mdash; Mako 0.5.0 Documentation</title>
-        
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<head>
+<title>
+    
+                Syntax
+             &mdash; 
+    Mako 0.6.0 Documentation
+</title>
+
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/docs.css" type="text/css" />
 
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
           URL_ROOT:    '#',
-          VERSION:     '0.5.0',
+          VERSION:     '0.6.0',
           COLLAPSE_MODINDEX: false,
           FILE_SUFFIX: '.html'
       };
@@ -23,66 +23,101 @@
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/init.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="Mako 0.5.0 Documentation" href="index.html" />
+    <link rel="top" title="Mako 0.6.0 Documentation" href="index.html" />
         <link rel="next" title="Defs and Blocks" href="defs.html" />
         <link rel="prev" title="Usage" href="usage.html" />
 
+<link rel="stylesheet" href="_static/site.css"></link>
+
+
+</head>
+<body>
+    <div id="wrap">
+    <div class="rightbar">
+    <div class="slogan">
+    Hyperfast and lightweight templating for the Python platform.
+    </div>
+
+
+    </div>
+
+    <a href="http://www.makotemplates.org/"><img src="_static/makoLogo.png" /></a>
+
+    <hr/>
+
     
-    
-
-    </head>
-    <body>
-        
 
 
 
-        <h1>Mako 0.5.0 Documentation</h1>
 
-        <div id="search">
-        Search:
-        <form class="search" action="search.html" method="get">
-          <input type="text" name="q" size="18" /> <input type="submit" value="Search" />
-          <input type="hidden" name="check_keywords" value="yes" />
-          <input type="hidden" name="area" value="default" />
-        </form>
-        </div>
 
-        <div class="versionheader">
-            Version: <span class="versionnum">0.5.0</span> Last Updated: 09/27/2011 20:26:30
-        </div>
-        <div class="clearboth"></div>
 
-        <div class="topnav">
-            <div id="pagecontrol">
-                <a href="genindex.html">Index</a>
- 
-                <div class="sourcelink">(<a href="_sources/syntax.txt">view source)</div>
-            </div>
- 
-            <div class="navbanner">
-                <a class="totoc" href="index.html">Table of Contents</a>
-                » 
-                        Syntax
-                     
 
-                
-<div class="prevnext">
-        Previous:
-        <a href="usage.html" title="previous chapter">Usage</a>
-        Next:
-        <a href="defs.html" title="next chapter">Defs and Blocks</a>
+
+
+<div id="docs-container">
+
+
+
+<div id="docs-header">
+    <h1>Mako 0.6.0 Documentation</h1>
+
+    <div id="docs-search">
+    Search:
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" /> <input type="submit" value="Search" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+
+    <div id="docs-version-header">
+        Release: <span class="version-num">0.6.0</span>
+
+    </div>
+
 </div>
 
-                <h2>
-                    
-                        Syntax
-                    
-                </h2>
-            </div>
-                <ul>
+<div id="docs-top-navigation">
+    <div id="docs-top-page-control" class="docs-navigation-links">
+        <ul>
+            <li>Prev:
+            <a href="usage.html" title="previous chapter">Usage</a>
+            </li>
+            <li>Next:
+            <a href="defs.html" title="next chapter">Defs and Blocks</a>
+            </li>
+
+        <li>
+            <a href="index.html">Table of Contents</a> |
+            <a href="genindex.html">Index</a>
+            | <a href="_sources/syntax.txt">view source
+        </li>
+        </ul>
+    </div>
+
+    <div id="docs-navigation-banner">
+        <a href="index.html">Mako 0.6.0 Documentation</a>
+        » 
+                Syntax
+             
+
+        <h2>
+            
+                Syntax
+            
+        </h2>
+    </div>
+
+</div>
+
+<div id="docs-body-container">
+
+    <div id="docs-sidebar">
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">Syntax</a><ul>
 <li><a class="reference internal" href="#expression-substitution">Expression Substitution</a></li>
 <li><a class="reference internal" href="#expression-escaping">Expression Escaping</a></li>
@@ -98,7 +133,7 @@
 <li><a class="reference internal" href="#block">&lt;%block&gt;</a></li>
 <li><a class="reference internal" href="#namespace">&lt;%namespace&gt;</a></li>
 <li><a class="reference internal" href="#inherit">&lt;%inherit&gt;</a></li>
-<li><a class="reference internal" href="#namespacename-defname">&lt;%namespacename:defname&gt;</a></li>
+<li><a class="reference internal" href="#nsname-defname">&lt;%nsname:defname&gt;</a></li>
 <li><a class="reference internal" href="#call">&lt;%call&gt;</a></li>
 <li><a class="reference internal" href="#doc">&lt;%doc&gt;</a></li>
 <li><a class="reference internal" href="#text">&lt;%text&gt;</a></li>
@@ -109,12 +144,29 @@
 </li>
 </ul>
 
-            <div class="clearboth"></div>
-        </div>
- 
-        <div class="document">
-            <div class="body">
-                
+
+    <h4>Previous Topic</h4>
+    <p>
+    <a href="usage.html" title="previous chapter">Usage</a>
+    </p>
+    <h4>Next Topic</h4>
+    <p>
+    <a href="defs.html" title="next chapter">Defs and Blocks</a>
+    </p>
+
+    <h4>Quick Search</h4>
+    <p>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" /> <input type="submit" value="Search" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </p>
+
+    </div>
+
+    <div id="docs-body" class="withsidebar" >
+        
 <div class="section" id="syntax">
 <span id="syntax-toplevel"></span><h1>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline">¶</a></h1>
 <p>A Mako template is parsed from a text stream containing any kind
@@ -418,8 +470,8 @@ offers a lot of flexbility in this area, including dynamic
 inheritance, content wrapping, and polymorphic method calls.
 Check it out in <a class="reference internal" href="inheritance.html"><em>Inheritance</em></a>.</p>
 </div>
-<div class="section" id="namespacename-defname">
-<h3>&lt;%namespacename:defname&gt;<a class="headerlink" href="#namespacename-defname" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="nsname-defname">
+<h3>&lt;%nsname:defname&gt;<a class="headerlink" href="#nsname-defname" title="Permalink to this headline">¶</a></h3>
 <p>As of Mako 0.2.3, any user-defined &#8220;tag&#8221; can be created against
 a namespace by using a tag with a name of the form
 <tt class="docutils literal"><span class="pre">&lt;%&lt;namespacename&gt;:&lt;defname&gt;&gt;</span></tt>. The closed and open formats of such a
@@ -486,32 +538,34 @@ block to do that.</p>
 </div>
 </div>
 
-            </div>
-        </div>
+    </div>
 
-        
-            <div class="bottomnav">
-                
-<div class="prevnext">
+</div>
+
+<div id="docs-bottom-navigation" class="docs-navigation-links">
         Previous:
         <a href="usage.html" title="previous chapter">Usage</a>
         Next:
         <a href="defs.html" title="next chapter">Defs and Blocks</a>
+
+    <div id="docs-copyright">
+        &copy; Copyright the Mako authors and contributors.
+        Documentation generated using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2 
+        with Mako templates.
+    </div>
 </div>
 
-                <div class="doc_copyright">
-                    &copy; Copyright the Mako authors and contributors.
-                    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
-                </div>
-            </div>
-        
+</div>
 
+<div class="clearfix">
 
+<hr/>
 
+<div class="copyright">Website content copyright &copy; by Michael Bayer. 
+    All rights reserved.  Mako and its documentation are licensed 
+    under the MIT license.  mike(&)zzzcomputing.com</div>
 
-
-    </body>
+</div>
+</div>
+</body>
 </html>
-
-
-

@@ -30,13 +30,15 @@ import mako
 #extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode',
 #                'sphinx.ext.doctest', 'builder.builders']
 
-extensions = ['sphinx.ext.autodoc',
+extensions = ['sphinx.ext.autodoc','sphinx.ext.intersphinx',
                 'sphinx.ext.doctest', 'builder.builders']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['templates']
 
 nitpicky = True
+
+site_base = "http://www.makotemplates.org"
 
 # The suffix of source filenames.
 source_suffix = '.rst'
@@ -278,3 +280,8 @@ epub_copyright = u'Mako authors'
 
 # Allow duplicate toc entries.
 #epub_tocdup = True
+
+intersphinx_mapping = {
+    'dogpile.cache':('http://dogpilecache.readthedocs.org/en/latest', None),
+    'beaker':('http://beaker.readthedocs.org/en/latest',None),
+}

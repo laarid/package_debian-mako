@@ -1,5 +1,5 @@
 # mako/codegen.py
-# Copyright (C) 2006-2011 the Mako authors and contributors <see AUTHORS file>
+# Copyright (C) 2006-2012 the Mako authors and contributors <see AUTHORS file>
 #
 # This module is part of Mako and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
@@ -11,7 +11,7 @@ import re
 from mako.pygen import PythonPrinter
 from mako import util, ast, parsetree, filters, exceptions
 
-MAGIC_NUMBER = 6
+MAGIC_NUMBER = 7
 
 def compile(node, 
                 uri, 
@@ -176,12 +176,10 @@ class _GenerateRenderMethod(object):
         self.printer.writeline("_magic_number = %r" % MAGIC_NUMBER)
         self.printer.writeline("_modified_time = %r" % time.time())
         self.printer.writeline(
-                            "_template_filename=%r" % self.compiler.filename)
-        self.printer.writeline("_template_uri=%r" % self.compiler.uri)
+                            "_template_filename = %r" % self.compiler.filename)
+        self.printer.writeline("_template_uri = %r" % self.compiler.uri)
         self.printer.writeline(
-                    "_template_cache=cache.Cache(__name__, _modified_time)")
-        self.printer.writeline(
-                    "_source_encoding=%r" % self.compiler.source_encoding)
+                    "_source_encoding = %r" % self.compiler.source_encoding)
         if self.compiler.imports:
             buf = ''
             for imp in self.compiler.imports:
@@ -416,7 +414,7 @@ class _GenerateRenderMethod(object):
         # (this is used for the caching decorator)
         if limit is not None:
             to_write = to_write.intersection(limit)
- 
+
         if toplevel and getattr(self.compiler, 'has_ns_imports', False):
             self.printer.writeline("_import_ns = {}")
             self.compiler.has_imports = True
@@ -599,24 +597,26 @@ class _GenerateRenderMethod(object):
  
         self.printer.writeline("__M_%s = %s" % (name, name))
         cachekey = node_or_pagetag.parsed_attributes.get('cache_key', repr(name))
-        cacheargs = {}
-        for arg in (
-                        ('cache_type', 'type'), ('cache_dir', 'data_dir'), 
-                        ('cache_timeout', 'expiretime'), ('cache_url', 'url')):
-            val = node_or_pagetag.parsed_attributes.get(arg[0], None)
-            if val is not None:
-                if arg[1] == 'expiretime':
-                    cacheargs[arg[1]] = int(eval(val))
-                else:
-                    cacheargs[arg[1]] = val
-            else:
-                if self.compiler.pagetag is not None:
-                    val = self.compiler.pagetag.parsed_attributes.get(arg[0], None)
-                    if val is not None:
-                        if arg[1] == 'expiretime':
-                            cacheargs[arg[1]] == int(eval(val))
-                        else:
-                            cacheargs[arg[1]] = val
+
+        cache_args = {}
+        if self.compiler.pagetag is not None:
+            cache_args.update(
+                (
+                    pa[6:], 
+                    self.compiler.pagetag.parsed_attributes[pa]
+                ) 
+                for pa in self.compiler.pagetag.parsed_attributes 
+                if pa.startswith('cache_') and pa != 'cache_key'
+            )
+        cache_args.update(
+            (
+                pa[6:], 
+                node_or_pagetag.parsed_attributes[pa]
+            ) for pa in node_or_pagetag.parsed_attributes 
+            if pa.startswith('cache_') and pa != 'cache_key'
+        )
+        if 'timeout' in cache_args:
+            cache_args['timeout'] = int(eval(cache_args['timeout']))
  
         self.printer.writeline("def %s(%s):" % (name, ','.join(args)))
  
@@ -633,20 +633,22 @@ class _GenerateRenderMethod(object):
                         )
         if buffered:
             s = "context.get('local')."\
-                "get_cached(%s, defname=%r, %screatefunc=lambda:__M_%s(%s))" % \
-                            (cachekey, name, 
-                            ''.join(["%s=%s, " % (k,v) for k, v in cacheargs.iteritems()]), 
-                            name, ','.join(pass_args))
+                "cache.get_or_create(%s, lambda:__M_%s(%s),  %s__M_defname=%r)" % \
+                            (cachekey, name, ','.join(pass_args), 
+                            ''.join(["%s=%s, " % (k,v) for k, v in cache_args.items()]), 
+                            name
+                            )
             # apply buffer_filters
             s = self.create_filter_callable(self.compiler.buffer_filters, s, False)
             self.printer.writelines("return " + s,None)
         else:
             self.printer.writelines(
                     "__M_writer(context.get('local')."
-                    "get_cached(%s, defname=%r, %screatefunc=lambda:__M_%s(%s)))" % 
-                    (cachekey, name, 
-                    ''.join(["%s=%s, " % (k,v) for k, v in cacheargs.iteritems()]), 
-                    name, ','.join(pass_args)),
+                    "cache.get_or_create(%s, lambda:__M_%s(%s), %s__M_defname=%r))" % 
+                    (cachekey, name, ','.join(pass_args), 
+                    ''.join(["%s=%s, " % (k,v) for k, v in cache_args.items()]), 
+                    name, 
+                    ),
                     "return ''",
                 None
             )
@@ -864,7 +866,6 @@ class _Identifiers(object):
     """tracks the status of identifier names as template code is rendered."""
  
     def __init__(self, node=None, parent=None, nested=False):
- 
         if parent is not None:
             # if we are the branch created in write_namespaces(),
             # we don't share any context from the main body().
@@ -998,6 +999,7 @@ class _Identifiers(object):
         if node is self.node:
             for ident in node.declared_identifiers():
                 self.argument_declared.add(ident)
+
             for n in node.nodes:
                 n.accept_visitor(self)
 
@@ -1014,6 +1016,10 @@ class _Identifiers(object):
                         "Named block '%s' not allowed inside of <%%call> tag" 
                         % (node.name, ), **node.exception_kwargs)
 
+        for ident in node.undeclared_identifiers():
+            if ident != 'context' and ident not in self.declared.union(self.locally_declared):
+                self.undeclared.add(ident)
+ 
         if not node.is_anonymous:
             self._check_name_exists(self.topleveldefs, node)
             self.undeclared.add(node.funcname)

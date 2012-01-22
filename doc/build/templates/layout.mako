@@ -1,5 +1,41 @@
 ## coding: utf-8
-<%inherit file="${context['mako_layout']}"/>
+<%!
+    local_script_files = []
+%>
+<%doc>
+    Structural elements are all prefixed with "docs-"
+    to prevent conflicts when the structure is integrated into the 
+    main site.
+    
+    docs-container ->
+        docs-header ->
+            docs-search
+            docs-version-header
+        docs-top-navigation
+            docs-top-page-control
+            docs-navigation-banner
+        docs-body-container ->
+            docs-sidebar
+            docs-body
+        docs-bottom-navigation
+            docs-copyright
+</%doc>
+
+<%inherit file="base.mako"/>
+
+<%
+withsidebar = bool(toc) and current_page_name != 'index'
+%>
+
+<%block name="head_title">
+    % if current_page_name != 'index':
+    ${capture(self.show_title) | util.striptags} &mdash; 
+    % endif
+    ${docstitle|h}
+</%block>
+
+
+<div id="docs-container">
 
 <%block name="headers">
     <link rel="stylesheet" href="${pathto('_static/pygments.css', 1)}" type="text/css" />
@@ -16,7 +52,6 @@
     % for scriptfile in script_files + self.attr.local_script_files:
         <script type="text/javascript" src="${pathto(scriptfile, 1)}"></script>
     % endfor
-    <script type="text/javascript" src="${pathto('_static/init.js', 1)}"></script>
     % if hasdoc('about'):
         <link rel="author" title="${_('About these documents')}" href="${pathto('about')}" />
     % endif
@@ -35,86 +70,110 @@
     % if prevtopic:
         <link rel="prev" title="${prevtopic['title']|util.striptags}" href="${prevtopic['link']|h}" />
     % endif
-
-    <%block name="extrahead">
-    </%block>
 </%block>
 
-        <h1>${docstitle|h}</h1>
+<div id="docs-header">
+    <h1>${docstitle|h}</h1>
 
-        <div id="search">
-        Search:
-        <form class="search" action="${pathto('search')}" method="get">
-          <input type="text" name="q" size="18" /> <input type="submit" value="${_('Search')}" />
-          <input type="hidden" name="check_keywords" value="yes" />
-          <input type="hidden" name="area" value="default" />
-        </form>
-        </div>
+    <div id="docs-search">
+    Search:
+    <form class="search" action="${pathto('search')}" method="get">
+      <input type="text" name="q" size="18" /> <input type="submit" value="${_('Search')}" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
 
-        <div class="versionheader">
-            Version: <span class="versionnum">${release}</span> Last Updated: ${last_updated}
-        </div>
-        <div class="clearboth"></div>
+    <div id="docs-version-header">
+        Release: <span class="version-num">${release}</span>
 
-        <div class="topnav">
-            <div id="pagecontrol">
-                <a href="${pathto('genindex')}">Index</a>
- 
-                % if sourcename:
-                <div class="sourcelink">(<a href="${pathto('_sources/' + sourcename, True)|h}">${_('view source')})</div>
-                % endif
-            </div>
- 
-            <div class="navbanner">
-                <a class="totoc" href="${pathto(master_doc)}">Table of Contents</a>
-                % if parents:
-                    % for parent in parents:
-                        » <a href="${parent['link']|h}" title="${parent['title']}">${parent['title']}</a>
-                    % endfor
-                % endif
-                % if current_page_name != master_doc:
-                » ${self.show_title()} 
-                % endif
+    </div>
 
-                ${prevnext()}
-                <h2>
-                    <%block name="show_title" filter="util.striptags">
-                    % if title:
-                        ${title}
-                    % endif
-                    </%block>
-                </h2>
-            </div>
-            % if display_toc and not current_page_name.startswith('index'):
-                ${toc}
+</div>
+
+<div id="docs-top-navigation">
+    <div id="docs-top-page-control" class="docs-navigation-links">
+        <ul>
+        % if prevtopic:
+            <li>Prev:
+            <a href="${prevtopic['link']|h}" title="${_('previous chapter')}">${prevtopic['title']}</a>
+            </li>
+        % endif
+        % if nexttopic:
+            <li>Next:
+            <a href="${nexttopic['link']|h}" title="${_('next chapter')}">${nexttopic['title']}</a>
+            </li>
+        % endif
+
+        <li>
+            <a href="${pathto('index')}">Table of Contents</a> |
+            <a href="${pathto('genindex')}">Index</a>
+            % if sourcename:
+            | <a href="${pathto('_sources/' + sourcename, True)|h}">${_('view source')}
             % endif
-            <div class="clearboth"></div>
-        </div>
- 
-        <div class="document">
-            <div class="body">
-                ${next.body()}
-            </div>
-        </div>
+        </li>
+        </ul>
+    </div>
 
-        <%block name="footer">
-            <div class="bottomnav">
-                ${prevnext()}
-                <div class="doc_copyright">
-                % if hasdoc('copyright'):
-                    &copy; <a href="${pathto('copyright')}">Copyright</a> ${copyright|h}.
-                % else:
-                    &copy; Copyright ${copyright|h}.
-                % endif
-                % if show_sphinx:
-                    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> ${sphinx_version|h}.
-                % endif
-                </div>
-            </div>
-        </%block>
+    <div id="docs-navigation-banner">
+        <a href="${pathto('index')}">${docstitle|h}</a>
+        % if parents:
+            % for parent in parents:
+                » <a href="${parent['link']|h}" title="${parent['title']}">${parent['title']}</a>
+            % endfor
+        % endif
+        % if current_page_name != 'index':
+        » ${self.show_title()} 
+        % endif
 
-<%def name="prevnext()">
-<div class="prevnext">
+        <h2>
+            <%block name="show_title">
+                ${title}
+            </%block>
+        </h2>
+    </div>
+
+</div>
+
+<div id="docs-body-container">
+
+% if withsidebar:
+    <div id="docs-sidebar">
+    <h3><a href="${pathto('index')}">Table of Contents</a></h3>
+    ${toc}
+
+    % if prevtopic:
+    <h4>Previous Topic</h4>
+    <p>
+    <a href="${prevtopic['link']|h}" title="${_('previous chapter')}">${prevtopic['title']}</a>
+    </p>
+    % endif
+    % if nexttopic:
+    <h4>Next Topic</h4>
+    <p>
+    <a href="${nexttopic['link']|h}" title="${_('next chapter')}">${nexttopic['title']}</a>
+    </p>
+    % endif
+
+    <h4>Quick Search</h4>
+    <p>
+    <form class="search" action="${pathto('search')}" method="get">
+      <input type="text" name="q" size="18" /> <input type="submit" value="${_('Search')}" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </p>
+
+    </div>
+% endif
+
+    <div id="docs-body" class="${'withsidebar' if withsidebar else ''}" >
+        ${next.body()}
+    </div>
+
+</div>
+
+<div id="docs-bottom-navigation" class="docs-navigation-links">
     % if prevtopic:
         Previous:
         <a href="${prevtopic['link']|h}" title="${_('previous chapter')}">${prevtopic['title']}</a>
@@ -123,7 +182,18 @@
         Next:
         <a href="${nexttopic['link']|h}" title="${_('next chapter')}">${nexttopic['title']}</a>
     % endif
+
+    <div id="docs-copyright">
+    % if hasdoc('copyright'):
+        &copy; <a href="${pathto('copyright')}">Copyright</a> ${copyright|h}.
+    % else:
+        &copy; Copyright ${copyright|h}.
+    % endif
+    % if show_sphinx:
+        Documentation generated using <a href="http://sphinx.pocoo.org/">Sphinx</a> ${sphinx_version|h} 
+        with Mako templates.
+    % endif
+    </div>
 </div>
-</%def>
 
-
+</div>

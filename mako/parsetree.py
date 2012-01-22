@@ -1,5 +1,5 @@
 # mako/parsetree.py
-# Copyright (C) 2006-2011 the Mako authors and contributors <see AUTHORS file>
+# Copyright (C) 2006-2012 the Mako authors and contributors <see AUTHORS file>
 #
 # This module is part of Mako and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
@@ -389,11 +389,14 @@ class DefTag(Tag):
     __keyword__ = 'def'
 
     def __init__(self, keyword, attributes, **kwargs):
+        expressions = ['buffered', 'cached'] + [
+                c for c in attributes if c.startswith('cache_')]
+
+
         super(DefTag, self).__init__(
                 keyword, 
                 attributes, 
-                ('buffered', 'cached', 'cache_key', 'cache_timeout', 
-                    'cache_type', 'cache_dir', 'cache_url'), 
+                expressions, 
                 ('name','filter', 'decorator'), 
                 ('name',), 
                 **kwargs)
@@ -428,20 +431,25 @@ class DefTag(Tag):
         for c in self.function_decl.defaults:
             res += list(ast.PythonCode(c, **self.exception_kwargs).
                                     undeclared_identifiers)
-        return res + list(self.filter_args.\
+        return set(res).union(
+            self.filter_args.\
                             undeclared_identifiers.\
                             difference(filters.DEFAULT_ESCAPES.keys())
-                        )
+        ).union(
+            self.expression_undeclared_identifiers
+        )
 
 class BlockTag(Tag):
     __keyword__ = 'block'
 
     def __init__(self, keyword, attributes, **kwargs):
+        expressions = ['buffered', 'cached', 'args'] + [
+                 c for c in attributes if c.startswith('cache_')]
+
         super(BlockTag, self).__init__(
                 keyword, 
                 attributes, 
-                ('buffered', 'cached', 'cache_key', 'cache_timeout', 
-                    'cache_type', 'cache_dir', 'cache_url', 'args'), 
+                expressions,
                 ('name','filter', 'decorator'), 
                 (), 
                 **kwargs)
@@ -482,7 +490,12 @@ class BlockTag(Tag):
         return self.body_decl.argnames
 
     def undeclared_identifiers(self):
-        return []
+        return (self.filter_args.\
+                            undeclared_identifiers.\
+                            difference(filters.DEFAULT_ESCAPES.keys())
+                ).union(self.expression_undeclared_identifiers)
+
+
 
 class CallTag(Tag):
     __keyword__ = 'call'
@@ -544,12 +557,13 @@ class PageTag(Tag):
     __keyword__ = 'page'
 
     def __init__(self, keyword, attributes, **kwargs):
+        expressions =   ['cached', 'args', 'expression_filter'] + [
+                    c for c in attributes if c.startswith('cache_')]
+
         super(PageTag, self).__init__(
                 keyword, 
                 attributes, 
-                ('cached', 'cache_key', 'cache_timeout', 
-                'cache_type', 'cache_dir', 'cache_url', 
-                'args', 'expression_filter'), 
+                expressions,
                 (), 
                 (), 
                 **kwargs)
