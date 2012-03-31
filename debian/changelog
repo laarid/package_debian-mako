@@ -1,3 +1,10 @@
+mako (0.7.0-1) unstable; urgency=low
+
+  * New upstream release
+  * Standards-Version bumped to 3.9.3 (no changes needed)
+
+ -- Piotr Ożarowski <piotr@debian.org>  Sat, 31 Mar 2012 20:03:29 +0200
+
 mako (0.6.2-1) unstable; urgency=low
 
   * New upstream release

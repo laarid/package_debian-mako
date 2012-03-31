@@ -16,7 +16,7 @@ clean:
 	dh_clean
 
 build:
-build-indep:
+build-indep: build-docs
 build-arch:
 
 test: $(PYVERS:%=test-python%)
