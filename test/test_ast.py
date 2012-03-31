@@ -189,6 +189,8 @@ def x(q):
         eq_(parsed.declared_identifiers, set(['x']))
         eq_(parsed.undeclared_identifiers, set())
 
+
+
     def test_no_global_imports(self):
         code = """
 from foo import *

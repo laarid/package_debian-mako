@@ -129,6 +129,7 @@ test/test_filters.py
 test/test_inheritance.py
 test/test_lexer.py
 test/test_lookup.py
+test/test_loop.py
 test/test_lru.py
 test/test_namespace.py
 test/test_pygen.py

@@ -6,7 +6,7 @@
     
                 Syntax
              &mdash; 
-    Mako 0.6.2 Documentation
+    Mako 0.7.0 Documentation
 </title>
 
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
           URL_ROOT:    '#',
-          VERSION:     '0.6.2',
+          VERSION:     '0.7.0',
           COLLAPSE_MODINDEX: false,
           FILE_SUFFIX: '.html'
       };
@@ -25,7 +25,7 @@
         <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="Mako 0.6.2 Documentation" href="index.html" />
+    <link rel="top" title="Mako 0.7.0 Documentation" href="index.html" />
         <link rel="next" title="Defs and Blocks" href="defs.html" />
         <link rel="prev" title="Usage" href="usage.html" />
 
@@ -62,7 +62,7 @@
 
 
 <div id="docs-header">
-    <h1>Mako 0.6.2 Documentation</h1>
+    <h1>Mako 0.7.0 Documentation</h1>
 
     <div id="docs-search">
     Search:
@@ -74,7 +74,7 @@
     </div>
 
     <div id="docs-version-header">
-        Release: <span class="version-num">0.6.2</span>
+        Release: <span class="version-num">0.7.0</span>
 
     </div>
 
@@ -99,7 +99,7 @@
     </div>
 
     <div id="docs-navigation-banner">
-        <a href="index.html">Mako 0.6.2 Documentation</a>
+        <a href="index.html">Mako 0.7.0 Documentation</a>
         » 
                 Syntax
              
@@ -121,7 +121,10 @@
 <li><a class="reference internal" href="#">Syntax</a><ul>
 <li><a class="reference internal" href="#expression-substitution">Expression Substitution</a></li>
 <li><a class="reference internal" href="#expression-escaping">Expression Escaping</a></li>
-<li><a class="reference internal" href="#control-structures">Control Structures</a></li>
+<li><a class="reference internal" href="#control-structures">Control Structures</a><ul>
+<li><a class="reference internal" href="#the-loop-context">The Loop Context</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#comments">Comments</a></li>
 <li><a class="reference internal" href="#newline-filters">Newline Filters</a></li>
 <li><a class="reference internal" href="#python-blocks">Python Blocks</a></li>
@@ -255,6 +258,20 @@ line, by escaping it as in <tt class="docutils literal"><span class="pre">%%</sp
 
 <span class="x">    %% some more text</span>
 </pre></div>
+</div>
+<div class="section" id="the-loop-context">
+<h3>The Loop Context<a class="headerlink" href="#the-loop-context" title="Permalink to this headline">¶</a></h3>
+<p>Mako 0.7 includes a new feature called the <strong>loop context</strong> which
+provides additional information about a loop while inside of a <tt class="docutils literal"><span class="pre">%</span> <span class="pre">for</span></tt>
+structure:</p>
+<div class="highlight-mako"><div class="highlight"><pre><span class="x">&lt;ul&gt;</span>
+<span class="cp">%</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&quot;one&quot;</span><span class="p">,</span> <span class="s">&quot;two&quot;</span><span class="p">,</span> <span class="s">&quot;three&quot;</span><span class="p">):</span><span class="x"></span>
+<span class="x">    &lt;li&gt;Item </span><span class="cp">${</span><span class="n">loop</span><span class="o">.</span><span class="n">index</span><span class="cp">}</span><span class="x">: </span><span class="cp">${</span><span class="n">a</span><span class="cp">}</span><span class="x">&lt;/li&gt;</span>
+<span class="cp">%</span><span class="k"> endfor</span><span class="x"></span>
+<span class="x">&lt;/ul&gt;</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="runtime.html#loop-context"><em>The Loop Context</em></a> for more information on this feature.</p>
 </div>
 </div>
 <div class="section" id="comments">
