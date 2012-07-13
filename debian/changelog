@@ -1,3 +1,10 @@
+mako (0.7.1-1) experimental; urgency=low
+
+  * New upstream release
+    (upload to experimental due to Wheezy freeze)
+
+ -- Piotr Ożarowski <piotr@debian.org>  Fri, 13 Jul 2012 14:31:05 -0600
+
 mako (0.7.0-1) unstable; urgency=low
 
   * New upstream release
