@@ -6,7 +6,7 @@
     
                 Defs and Blocks
              &mdash; 
-    Mako 0.7.0 Documentation
+    Mako 0.7.1 Documentation
 </title>
 
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
           URL_ROOT:    '#',
-          VERSION:     '0.7.0',
+          VERSION:     '0.7.1',
           COLLAPSE_MODINDEX: false,
           FILE_SUFFIX: '.html'
       };
@@ -25,7 +25,7 @@
         <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="Mako 0.7.0 Documentation" href="index.html" />
+    <link rel="top" title="Mako 0.7.1 Documentation" href="index.html" />
         <link rel="next" title="The Mako Runtime Environment" href="runtime.html" />
         <link rel="prev" title="Syntax" href="syntax.html" />
 
@@ -62,7 +62,7 @@
 
 
 <div id="docs-header">
-    <h1>Mako 0.7.0 Documentation</h1>
+    <h1>Mako 0.7.1 Documentation</h1>
 
     <div id="docs-search">
     Search:
@@ -74,7 +74,7 @@
     </div>
 
     <div id="docs-version-header">
-        Release: <span class="version-num">0.7.0</span>
+        Release: <span class="version-num">0.7.1</span>
 
     </div>
 
@@ -99,7 +99,7 @@
     </div>
 
     <div id="docs-navigation-banner">
-        <a href="index.html">Mako 0.7.0 Documentation</a>
+        <a href="index.html">Mako 0.7.1 Documentation</a>
         » 
                 Defs and Blocks
              
@@ -120,15 +120,15 @@
     <ul>
 <li><a class="reference internal" href="#">Defs and Blocks</a><ul>
 <li><a class="reference internal" href="#using-defs">Using Defs</a><ul>
-<li><a class="reference internal" href="#calling-defs-from-other-files">Calling defs from Other Files</a></li>
-<li><a class="reference internal" href="#calling-defs-programmatically">Calling defs programmatically</a></li>
+<li><a class="reference internal" href="#calling-defs-from-other-files">Calling Defs from Other Files</a></li>
+<li><a class="reference internal" href="#calling-defs-programmatically">Calling Defs Programmatically</a></li>
 <li><a class="reference internal" href="#defs-within-defs">Defs within Defs</a></li>
-<li><a class="reference internal" href="#calling-a-def-with-embedded-content-and-or-other-defs">Calling a def with embedded content and/or other defs</a></li>
+<li><a class="reference internal" href="#calling-a-def-with-embedded-content-and-or-other-defs">Calling a Def with Embedded Content and/or Other Defs</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#using-blocks">Using Blocks</a><ul>
 <li><a class="reference internal" href="#using-named-blocks">Using Named Blocks</a></li>
-<li><a class="reference internal" href="#using-page-arguments-in-named-blocks">Using page arguments in named blocks</a></li>
+<li><a class="reference internal" href="#using-page-arguments-in-named-blocks">Using Page Arguments in Named Blocks</a></li>
 </ul>
 </li>
 </ul>
@@ -179,7 +179,7 @@ a Python function signature:</p>
 </pre></div>
 </div>
 <p>If the <tt class="docutils literal"><span class="pre">&lt;%def&gt;</span></tt> is not nested inside of another <tt class="docutils literal"><span class="pre">&lt;%def&gt;</span></tt>,
-its known as a <strong>top level def</strong> and can be accessed anywhere in
+it&#8217;s known as a <strong>top level def</strong> and can be accessed anywhere in
 the template, including above where it was defined.</p>
 <p>All defs, top level or not, have access to the current
 contextual namespace in exactly the same way their containing
@@ -206,7 +206,7 @@ arguments to them as well:</p>
 <div class="highlight-mako"><div class="highlight"><pre><span class="cp">${</span><span class="n">account</span><span class="p">(</span><span class="n">accountname</span><span class="o">=</span><span class="s">&#39;john&#39;</span><span class="p">)</span><span class="cp">}</span><span class="x"></span>
 
 <span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;account(accountname, type=&#39;regular&#39;)&quot;</span><span class="cp">&gt;</span><span class="x"></span>
-<span class="x">    account name: </span><span class="cp">${</span><span class="n">accountname</span><span class="cp">}</span><span class="x">, type </span><span class="cp">${</span><span class="nb">type</span><span class="cp">}</span><span class="x"></span>
+<span class="x">    account name: </span><span class="cp">${</span><span class="n">accountname</span><span class="cp">}</span><span class="x">, type: </span><span class="cp">${</span><span class="nb">type</span><span class="cp">}</span><span class="x"></span>
 <span class="cp">&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span><span class="x"></span>
 </pre></div>
 </div>
@@ -217,12 +217,12 @@ value). This is in contrast to using context-level variables,
 which evaluate to <tt class="docutils literal"><span class="pre">UNDEFINED</span></tt> if you reference a name that
 does not exist.</p>
 <div class="section" id="calling-defs-from-other-files">
-<h3>Calling defs from Other Files<a class="headerlink" href="#calling-defs-from-other-files" title="Permalink to this headline">¶</a></h3>
-<p>Top level <tt class="docutils literal"><span class="pre">&lt;%defs&gt;</span></tt> are <strong>exported</strong> by your template&#8217;s
+<h3>Calling Defs from Other Files<a class="headerlink" href="#calling-defs-from-other-files" title="Permalink to this headline">¶</a></h3>
+<p>Top level <tt class="docutils literal"><span class="pre">&lt;%def&gt;</span></tt>s are <strong>exported</strong> by your template&#8217;s
 module, and can be called from the outside; including from other
 templates, as well as normal Python code. Calling a <tt class="docutils literal"><span class="pre">&lt;%def&gt;</span></tt>
 from another template is something like using an <tt class="docutils literal"><span class="pre">&lt;%include&gt;</span></tt>
-- except you are calling a specific function within the
+&#8211; except you are calling a specific function within the
 template, not the whole template.</p>
 <p>The remote <tt class="docutils literal"><span class="pre">&lt;%def&gt;</span></tt> call is also a little bit like calling
 functions from other modules in Python. There is an &#8220;import&#8221;
@@ -232,7 +232,7 @@ template; then the function or functions are available.</p>
 <div class="highlight-mako"><div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">namespace</span> <span class="na">name=</span><span class="s">&quot;mystuff&quot;</span> <span class="na">file=</span><span class="s">&quot;mystuff.html&quot;</span><span class="cp">/&gt;</span><span class="x"></span>
 </pre></div>
 </div>
-<p>The above tag adds a local variable &#8220;mystuff&#8221; to the current
+<p>The above tag adds a local variable <tt class="docutils literal"><span class="pre">mystuff</span></tt> to the current
 scope.</p>
 <p>Then, just call the defs off of <tt class="docutils literal"><span class="pre">mystuff</span></tt>:</p>
 <div class="highlight-mako"><div class="highlight"><pre><span class="cp">${</span><span class="n">mystuff</span><span class="o">.</span><span class="n">somedef</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span><span class="cp">}</span><span class="x"></span>
@@ -251,8 +251,8 @@ these docs. For more detail and examples, see
 <a class="reference internal" href="namespaces.html"><em>Namespaces</em></a>.</p>
 </div>
 <div class="section" id="calling-defs-programmatically">
-<h3>Calling defs programmatically<a class="headerlink" href="#calling-defs-programmatically" title="Permalink to this headline">¶</a></h3>
-<p>You can call def&#8217;s programmatically from any <a class="reference internal" href="usage.html#mako.template.Template" title="mako.template.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a> object
+<h3>Calling Defs Programmatically<a class="headerlink" href="#calling-defs-programmatically" title="Permalink to this headline">¶</a></h3>
+<p>You can call defs programmatically from any <a class="reference internal" href="usage.html#mako.template.Template" title="mako.template.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a> object
 using the <a class="reference internal" href="usage.html#mako.template.Template.get_def" title="mako.template.Template.get_def"><tt class="xref py py-meth docutils literal"><span class="pre">get_def()</span></tt></a> method, which returns a <a class="reference internal" href="usage.html#mako.template.DefTemplate" title="mako.template.DefTemplate"><tt class="xref py py-class docutils literal"><span class="pre">DefTemplate</span></tt></a>
 object. This is a <a class="reference internal" href="usage.html#mako.template.Template" title="mako.template.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a> subclass which the parent
 <a class="reference internal" href="usage.html#mako.template.Template" title="mako.template.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a> creates, and is usable like any other template:</p>
@@ -283,7 +283,7 @@ within the parent&#8217;s <strong>enclosing scope</strong>:</p>
 <span class="x">        a sub def</span>
 <span class="x">    </span><span class="cp">&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span><span class="x"></span>
 
-<span class="x">    im the def, and the subcomponent is </span><span class="cp">${</span><span class="n">subdef</span><span class="p">()</span><span class="cp">}</span><span class="x"></span>
+<span class="x">    i&#39;m the def, and the subcomponent is </span><span class="cp">${</span><span class="n">subdef</span><span class="p">()</span><span class="cp">}</span><span class="x"></span>
 <span class="cp">&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span><span class="x"></span>
 </pre></div>
 </div>
@@ -319,18 +319,18 @@ the following code will raise an error:</p>
 <span class="cp">&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span><span class="x"></span>
 </pre></div>
 </div>
-<p>...because the assignment to <tt class="docutils literal"><span class="pre">x</span></tt> declares x as local to the
+<p>...because the assignment to <tt class="docutils literal"><span class="pre">x</span></tt> declares <tt class="docutils literal"><span class="pre">x</span></tt> as local to the
 scope of <tt class="docutils literal"><span class="pre">somedef</span></tt>, rendering the &#8220;outer&#8221; version unreachable
 in the expression that tries to render it.</p>
 </div>
 <div class="section" id="calling-a-def-with-embedded-content-and-or-other-defs">
-<span id="defs-with-content"></span><h3>Calling a def with embedded content and/or other defs<a class="headerlink" href="#calling-a-def-with-embedded-content-and-or-other-defs" title="Permalink to this headline">¶</a></h3>
+<span id="defs-with-content"></span><h3>Calling a Def with Embedded Content and/or Other Defs<a class="headerlink" href="#calling-a-def-with-embedded-content-and-or-other-defs" title="Permalink to this headline">¶</a></h3>
 <p>A flip-side to def within def is a def call with content. This
 is where you call a def, and at the same time declare a block of
 content (or multiple blocks) that can be used by the def being
 called. The main point of such a call is to create custom,
 nestable tags, just like any other template language&#8217;s
-custom-tag creation system - where the external tag controls the
+custom-tag creation system &#8211; where the external tag controls the
 execution of the nested tags and can communicate state to them.
 Only with Mako, you don&#8217;t have to use any external Python
 modules, you can define arbitrarily nestable tags right in your
@@ -338,15 +338,15 @@ templates.</p>
 <p>To achieve this, the target def is invoked using the form
 <tt class="docutils literal"><span class="pre">&lt;%namepacename:defname&gt;</span></tt> instead of the normal <tt class="docutils literal"><span class="pre">${}</span></tt>
 syntax. This syntax, introduced in Mako 0.2.3, is functionally
-equivalent another tag known as <tt class="docutils literal"><span class="pre">call</span></tt>, which takes the form
+equivalent to another tag known as <tt class="docutils literal"><span class="pre">%call</span></tt>, which takes the form
 <tt class="docutils literal"><span class="pre">&lt;%call</span> <span class="pre">expr='namespacename.defname(args)'&gt;</span></tt>. While <tt class="docutils literal"><span class="pre">%call</span></tt>
 is available in all versions of Mako, the newer style is
 probably more familiar looking. The <tt class="docutils literal"><span class="pre">namespace</span></tt> portion of the
 call is the name of the <strong>namespace</strong> in which the def is
-defined - in the most simple cases, this can be <tt class="docutils literal"><span class="pre">local</span></tt> or
+defined &#8211; in the most simple cases, this can be <tt class="docutils literal"><span class="pre">local</span></tt> or
 <tt class="docutils literal"><span class="pre">self</span></tt> to reference the current template&#8217;s namespace (the
 difference between <tt class="docutils literal"><span class="pre">local</span></tt> and <tt class="docutils literal"><span class="pre">self</span></tt> is one of inheritance
-- see <a class="reference internal" href="namespaces.html#namespaces-builtin"><em>Built-in Namespaces</em></a> for details).</p>
+&#8211; see <a class="reference internal" href="namespaces.html#namespaces-builtin"><em>Built-in Namespaces</em></a> for details).</p>
 <p>When the target def is invoked, a variable <tt class="docutils literal"><span class="pre">caller</span></tt> is placed
 in its context which contains another namespace containing the
 body and other defs defined by the caller. The body itself is
@@ -418,12 +418,12 @@ remains as an integer.</p>
 <span class="cp">&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span><span class="x"></span>
 
 <span class="cp">&lt;%</span><span class="nb">self:conditional</span> <span class="na">expression=</span><span class="s">&quot;${4==4}&quot;</span><span class="cp">&gt;</span><span class="x"></span>
-<span class="x">    im the result</span>
+<span class="x">    i&#39;m the result</span>
 <span class="cp">&lt;/%</span><span class="nb">self:conditional</span><span class="cp">&gt;</span><span class="x"></span>
 </pre></div>
 </div>
 <p>Produces:</p>
-<div class="highlight-html"><div class="highlight"><pre>im the result
+<div class="highlight-html"><div class="highlight"><pre>i&#39;m the result
 </pre></div>
 </div>
 <p>But that&#8217;s not all. The <tt class="docutils literal"><span class="pre">body()</span></tt> function also can handle
@@ -452,21 +452,21 @@ element of data from its argument:</p>
 </div>
 <p>Produces:</p>
 <div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;table&gt;</span>
-   <span class="nt">&lt;tr&gt;</span>
-       <span class="nt">&lt;td&gt;</span>Body data: 1<span class="nt">&lt;/td&gt;</span>
-       <span class="nt">&lt;td&gt;</span>Body data: 2<span class="nt">&lt;/td&gt;</span>
-       <span class="nt">&lt;td&gt;</span>Body data: 3<span class="nt">&lt;/td&gt;</span>
-   <span class="nt">&lt;/tr&gt;</span>
-   <span class="nt">&lt;tr&gt;</span>
-       <span class="nt">&lt;td&gt;</span>Body data: 4<span class="nt">&lt;/td&gt;</span>
-       <span class="nt">&lt;td&gt;</span>Body data: 5<span class="nt">&lt;/td&gt;</span>
-       <span class="nt">&lt;td&gt;</span>Body data: 6<span class="nt">&lt;/td&gt;</span>
-   <span class="nt">&lt;/tr&gt;</span>
-   <span class="nt">&lt;tr&gt;</span>
-       <span class="nt">&lt;td&gt;</span>Body data: 7<span class="nt">&lt;/td&gt;</span>
-       <span class="nt">&lt;td&gt;</span>Body data: 8<span class="nt">&lt;/td&gt;</span>
-       <span class="nt">&lt;td&gt;</span>Body data: 9<span class="nt">&lt;/td&gt;</span>
-   <span class="nt">&lt;/tr&gt;</span>
+    <span class="nt">&lt;tr&gt;</span>
+        <span class="nt">&lt;td&gt;</span>Body data: 1<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td&gt;</span>Body data: 2<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td&gt;</span>Body data: 3<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;/tr&gt;</span>
+    <span class="nt">&lt;tr&gt;</span>
+        <span class="nt">&lt;td&gt;</span>Body data: 4<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td&gt;</span>Body data: 5<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td&gt;</span>Body data: 6<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;/tr&gt;</span>
+    <span class="nt">&lt;tr&gt;</span>
+        <span class="nt">&lt;td&gt;</span>Body data: 7<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td&gt;</span>Body data: 8<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td&gt;</span>Body data: 9<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;/tr&gt;</span>
 <span class="nt">&lt;/table&gt;</span>
 </pre></div>
 </div>
@@ -479,9 +479,11 @@ The caller can define any number of callables, allowing the
 <span class="x">        &lt;div class=&quot;header&quot;&gt;</span>
 <span class="x">            </span><span class="cp">${</span><span class="n">caller</span><span class="o">.</span><span class="n">header</span><span class="p">()</span><span class="cp">}</span><span class="x"></span>
 <span class="x">        &lt;/div&gt;</span>
+
 <span class="x">        &lt;div class=&quot;sidebar&quot;&gt;</span>
 <span class="x">            </span><span class="cp">${</span><span class="n">caller</span><span class="o">.</span><span class="n">sidebar</span><span class="p">()</span><span class="cp">}</span><span class="x"></span>
 <span class="x">        &lt;/div&gt;</span>
+
 <span class="x">        &lt;div class=&quot;content&quot;&gt;</span>
 <span class="x">            </span><span class="cp">${</span><span class="n">caller</span><span class="o">.</span><span class="n">body</span><span class="p">()</span><span class="cp">}</span><span class="x"></span>
 <span class="x">        &lt;/div&gt;</span>
@@ -506,20 +508,20 @@ The caller can define any number of callables, allowing the
 </div>
 <p>The above layout would produce:</p>
 <div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;mainlayout&quot;</span><span class="nt">&gt;</span>
-   <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;header&quot;</span><span class="nt">&gt;</span>
-   I am the header
-   <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;header&quot;</span><span class="nt">&gt;</span>
+    I am the header
+    <span class="nt">&lt;/div&gt;</span>
 
-   <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;sidebar&quot;</span><span class="nt">&gt;</span>
-   <span class="nt">&lt;ul&gt;</span>
-       <span class="nt">&lt;li&gt;</span>sidebar 1<span class="nt">&lt;/li&gt;</span>
-       <span class="nt">&lt;li&gt;</span>sidebar 2<span class="nt">&lt;/li&gt;</span>
-   <span class="nt">&lt;/ul&gt;</span>
-   <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;sidebar&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;ul&gt;</span>
+        <span class="nt">&lt;li&gt;</span>sidebar 1<span class="nt">&lt;/li&gt;</span>
+        <span class="nt">&lt;li&gt;</span>sidebar 2<span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;/ul&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
 
-   <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;content&quot;</span><span class="nt">&gt;</span>
-   this is the body
-   <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;content&quot;</span><span class="nt">&gt;</span>
+    this is the body
+    <span class="nt">&lt;/div&gt;</span>
 <span class="nt">&lt;/div&gt;</span>
 </pre></div>
 </div>
@@ -538,8 +540,10 @@ invoked via <tt class="docutils literal"><span class="pre">&lt;%namespacename:de
 </div>
 <div class="section" id="using-blocks">
 <span id="blocks"></span><h2>Using Blocks<a class="headerlink" href="#using-blocks" title="Permalink to this headline">¶</a></h2>
-<p>The <tt class="docutils literal"><span class="pre">&lt;%block&gt;</span></tt> tag is new as of Mako 0.4.1, and introduces some new twists on the
+<p>The <tt class="docutils literal"><span class="pre">&lt;%block&gt;</span></tt> tag introduces some new twists on the
 <tt class="docutils literal"><span class="pre">&lt;%def&gt;</span></tt> tag which make it more closely tailored towards layout.</p>
+<p class="versionadded">
+<span class="versionmodified">New in version 0.4.1.</span></p>
 <p>An example of a block:</p>
 <div class="highlight-mako"><div class="highlight"><pre><span class="x">&lt;html&gt;</span>
 <span class="x">    &lt;body&gt;</span>
@@ -560,7 +564,7 @@ is referred to as an <strong>anonymous block</strong>.  So the output of the abo
 <span class="nt">&lt;/html&gt;</span>
 </pre></div>
 </div>
-<p>So in fact the above block has absolutely no effect.   Its usefulness comes when we start
+<p>So in fact the above block has absolutely no effect.  Its usefulness comes when we start
 using modifiers.  Such as, we can apply a filter to our block:</p>
 <div class="highlight-mako"><div class="highlight"><pre><span class="x">&lt;html&gt;</span>
 <span class="x">    &lt;body&gt;</span>
@@ -620,8 +624,8 @@ global for the entire template regardless of how deeply it&#8217;s nested:</p>
 </pre></div>
 </div>
 <p>The above example has two named blocks &#8220;<tt class="docutils literal"><span class="pre">header</span></tt>&#8221; and &#8220;<tt class="docutils literal"><span class="pre">title</span></tt>&#8221;, both of which can be referred to
-by an inheriting template.  A detailed walkthrough of this usage can be found at <a class="reference internal" href="inheritance.html"><em>Inheritance</em></a>.</p>
-<p>Note above that named blocks don&#8217;t have any argument declaration the way defs do.   They still implement themselves
+by an inheriting template. A detailed walkthrough of this usage can be found at <a class="reference internal" href="inheritance.html"><em>Inheritance</em></a>.</p>
+<p>Note above that named blocks don&#8217;t have any argument declaration the way defs do. They still implement themselves
 as Python functions, however, so they can be invoked additional times beyond their initial definition:</p>
 <div class="highlight-mako"><div class="highlight"><pre><span class="x">&lt;div name=&quot;page&quot;&gt;</span>
 <span class="x">    </span><span class="cp">&lt;%</span><span class="nb">block</span> <span class="na">name=</span><span class="s">&quot;pagecontrol&quot;</span><span class="cp">&gt;</span><span class="x"></span>
@@ -641,20 +645,20 @@ as Python functions, however, so they can be invoked additional times beyond the
 <p>To keep things sane, named blocks have restrictions that defs do not:</p>
 <ul class="simple">
 <li>The <tt class="docutils literal"><span class="pre">&lt;%block&gt;</span></tt> declaration cannot have any argument signature.</li>
-<li>The name of a <tt class="docutils literal"><span class="pre">&lt;%block&gt;</span></tt> can only be defined once in a template - an error is raised if two blocks of the same
+<li>The name of a <tt class="docutils literal"><span class="pre">&lt;%block&gt;</span></tt> can only be defined once in a template &#8211; an error is raised if two blocks of the same
 name occur anywhere in a single template, regardless of nesting.  A similar error is raised if a top level def
 shares the same name as that of a block.</li>
 <li>A named <tt class="docutils literal"><span class="pre">&lt;%block&gt;</span></tt> cannot be defined within a <tt class="docutils literal"><span class="pre">&lt;%def&gt;</span></tt>, or inside the body of a &#8220;call&#8221;, i.e.
-<tt class="docutils literal"><span class="pre">&lt;%call&gt;</span></tt> or <tt class="docutils literal"><span class="pre">&lt;%namespacename:defname&gt;</span></tt> tag.   Anonymous blocks can, however.</li>
+<tt class="docutils literal"><span class="pre">&lt;%call&gt;</span></tt> or <tt class="docutils literal"><span class="pre">&lt;%namespacename:defname&gt;</span></tt> tag.  Anonymous blocks can, however.</li>
 </ul>
 </div>
 <div class="section" id="using-page-arguments-in-named-blocks">
-<h3>Using page arguments in named blocks<a class="headerlink" href="#using-page-arguments-in-named-blocks" title="Permalink to this headline">¶</a></h3>
+<h3>Using Page Arguments in Named Blocks<a class="headerlink" href="#using-page-arguments-in-named-blocks" title="Permalink to this headline">¶</a></h3>
 <p>A named block is very much like a top level def. It has a similar
 restriction to these types of defs in that arguments passed to the
 template via the <tt class="docutils literal"><span class="pre">&lt;%page&gt;</span></tt> tag aren&#8217;t automatically available.
 Using arguments with the <tt class="docutils literal"><span class="pre">&lt;%page&gt;</span></tt> tag is described in the section
-<a class="reference internal" href="namespaces.html#namespaces-body"><em>The &#8220;body()&#8221; method</em></a>, and refers to scenarios such as when the
+<a class="reference internal" href="namespaces.html#namespaces-body"><em>The body() Method</em></a>, and refers to scenarios such as when the
 <tt class="docutils literal"><span class="pre">body()</span></tt> method of a template is called from an inherited template passing
 arguments, or the template is invoked from an <tt class="docutils literal"><span class="pre">&lt;%include&gt;</span></tt> tag
 with arguments. To allow a named block to share the same arguments
@@ -701,7 +705,7 @@ anonymous block is available inside as well.</p>
 
     <div id="docs-copyright">
         &copy; Copyright the Mako authors and contributors.
-        Documentation generated using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2 
+        Documentation generated using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3 
         with Mako templates.
     </div>
 </div>

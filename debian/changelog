@@ -1,11 +1,9 @@
-mako (0.7.0-1.1) unstable; urgency=low
+mako (0.7.1-1) experimental; urgency=low
 
-  * Non-maintainer upload.
-  * Fix "missing Breaks+Replaces: python3-mako (<< 0.3.6-1)":
-    add them for python-mako-doc.
-    (Closes: #694330)
+  * New upstream release
+    (upload to experimental due to Wheezy freeze)
 
- -- gregor herrmann <gregoa@debian.org>  Fri, 07 Dec 2012 16:44:44 +0100
+ -- Piotr Ożarowski <piotr@debian.org>  Fri, 13 Jul 2012 14:31:05 -0600
 
 mako (0.7.0-1) unstable; urgency=low
 

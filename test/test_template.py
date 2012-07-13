@@ -798,11 +798,186 @@ class ControlTest(TemplateTest):
             "yes x has test"
         ]
  
-    def test_blank_control(self):
+    def test_blank_control_1(self):
         self._do_memory_test(
             """
             % if True:
             % endif
+            """,
+            "",
+            filters=lambda s:s.strip()
+        )
+ 
+    def test_blank_control_2(self):
+        self._do_memory_test(
+            """
+            % if True:
+            % elif True:
+            % endif
+            """,
+            "",
+            filters=lambda s:s.strip()
+        )
+ 
+    def test_blank_control_3(self):
+        self._do_memory_test(
+            """
+            % if True:
+            % else:
+            % endif
+            """,
+            "",
+            filters=lambda s:s.strip()
+        )
+ 
+    def test_blank_control_4(self):
+        self._do_memory_test(
+            """
+            % if True:
+            % elif True:
+            % else:
+            % endif
+            """,
+            "",
+            filters=lambda s:s.strip()
+        )
+ 
+    def test_blank_control_5(self):
+        self._do_memory_test(
+            """
+            % for x in range(10):
+            % endfor
+            """,
+            "",
+            filters=lambda s:s.strip()
+        )
+ 
+    def test_blank_control_6(self):
+        self._do_memory_test(
+            """
+            % while False:
+            % endwhile
+            """,
+            "",
+            filters=lambda s:s.strip()
+        )
+ 
+    def test_blank_control_7(self):
+        self._do_memory_test(
+            """
+            % try:
+            % except:
+            % endtry
+            """,
+            "",
+            filters=lambda s:s.strip()
+        )
+ 
+    @skip_if(lambda: not util.py26)
+    def test_blank_control_8(self):
+        self._do_memory_test(
+            """
+            % with open('x', 'w') as fp:
+            % endwith
+            """,
+            "",
+            filters=lambda s:s.strip()
+        )
+
+    def test_commented_blank_control_1(self):
+        self._do_memory_test(
+            """
+            % if True:
+            ## comment
+            % endif
+            """,
+            "",
+            filters=lambda s:s.strip()
+        )
+ 
+    def test_commented_blank_control_2(self):
+        self._do_memory_test(
+            """
+            % if True:
+            ## comment
+            % elif True:
+            ## comment
+            % endif
+            """,
+            "",
+            filters=lambda s:s.strip()
+        )
+ 
+    def test_commented_blank_control_3(self):
+        self._do_memory_test(
+            """
+            % if True:
+            ## comment
+            % else:
+            ## comment
+            % endif
+            """,
+            "",
+            filters=lambda s:s.strip()
+        )
+ 
+    def test_commented_blank_control_4(self):
+        self._do_memory_test(
+            """
+            % if True:
+            ## comment
+            % elif True:
+            ## comment
+            % else:
+            ## comment
+            % endif
+            """,
+            "",
+            filters=lambda s:s.strip()
+        )
+ 
+    def test_commented_blank_control_5(self):
+        self._do_memory_test(
+            """
+            % for x in range(10):
+            ## comment
+            % endfor
+            """,
+            "",
+            filters=lambda s:s.strip()
+        )
+ 
+    def test_commented_blank_control_6(self):
+        self._do_memory_test(
+            """
+            % while False:
+            ## comment
+            % endwhile
+            """,
+            "",
+            filters=lambda s:s.strip()
+        )
+ 
+    def test_commented_blank_control_7(self):
+        self._do_memory_test(
+            """
+            % try:
+            ## comment
+            % except:
+            ## comment
+            % endtry
+            """,
+            "",
+            filters=lambda s:s.strip()
+        )
+ 
+    @skip_if(lambda: not util.py26)
+    def test_commented_blank_control_8(self):
+        self._do_memory_test(
+            """
+            % with open('x', 'w') as fp:
+            ## comment
+            % endwith
             """,
             "",
             filters=lambda s:s.strip()
@@ -920,9 +1095,10 @@ class ModuleDirTest(TemplateTest):
     def test_custom_writer(self):
         canary = []
         def write_module(source, outputpath):
-            with open(outputpath, 'wb') as f:
-                canary.append(outputpath)
-                f.write(source)
+            f = open(outputpath, 'wb')
+            canary.append(outputpath)
+            f.write(source)
+            f.close()
         lookup = TemplateLookup(template_base, module_writer=write_module, 
                                             module_directory=module_base)
         t = lookup.get_template('/modtest.html')

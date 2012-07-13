@@ -1,8 +1,8 @@
 .. _runtime_toplevel:
 
-=============================
-The Mako Runtime Environment 
-=============================
+============================
+The Mako Runtime Environment
+============================
 
 This section describes a little bit about the objects and
 built-in functions that are available in templates.
@@ -28,8 +28,8 @@ The Buffer
 ----------
 
 The buffer is stored within the :class:`.Context`, and writing
-to it is achieved by calling the :meth:`~.Context.write` method -
-in a template this looks like ``context.write('some string')``.
+to it is achieved by calling the :meth:`~.Context.write` method
+-- in a template this looks like ``context.write('some string')``.
 You usually don't need to care about this, as all text within a template, as
 well as all expressions provided by ``${}``, automatically send
 everything to this method. The cases you might want to be aware
@@ -55,7 +55,7 @@ buffer.
 .. _context_vars:
 
 Context Variables
-------------------
+-----------------
 
 When your template is compiled into a Python module, the body
 content is enclosed within a Python function called
@@ -72,21 +72,23 @@ automatically correspond to what was passed into the current
 :class:`.Context`.
 
 * **What happens if I reference a variable name that is not in
-  the current context?** - the value you get back is a special
+  the current context?** - The value you get back is a special
   value called ``UNDEFINED``, or if the ``strict_undefined=True`` flag
   is used a ``NameError`` is raised. ``UNDEFINED`` is just a simple global
-  variable with the class ``mako.runtime.Undefined``. The
+  variable with the class :class:`mako.runtime.Undefined`. The
   ``UNDEFINED`` object throws an error when you call ``str()`` on
   it, which is what happens if you try to use it in an
   expression.
-* **UNDEFINED makes it hard for me to find what name is missing** - An alternative 
-  introduced in version 0.3.6 is to specify the option
-  ``strict_undefined=True``
-  to the :class:`.Template` or :class:`.TemplateLookup`.   This will cause
+* **UNDEFINED makes it hard for me to find what name is missing** - An alternative
+  is to specify the option ``strict_undefined=True``
+  to the :class:`.Template` or :class:`.TemplateLookup`.  This will cause
   any non-present variables to raise an immediate ``NameError``
   which includes the name of the variable in its message
-  when :meth:`~.Template.render` is called - ``UNDEFINED`` is not used.
-* **Why not just return None?** Using ``UNDEFINED``, or 
+  when :meth:`~.Template.render` is called -- ``UNDEFINED`` is not used.
+
+  .. versionadded:: 0.3.6
+
+* **Why not just return None?** Using ``UNDEFINED``, or
   raising a ``NameError`` is more
   explicit and allows differentiation between a value of ``None``
   that was explicitly passed to the :class:`.Context` and a value that
@@ -94,20 +96,20 @@ automatically correspond to what was passed into the current
 * **Why raise an exception when you call str() on it ? Why not
   just return a blank string?** - Mako tries to stick to the
   Python philosophy of "explicit is better than implicit". In
-  this case, its decided that the template author should be made
+  this case, it's decided that the template author should be made
   to specifically handle a missing value rather than
   experiencing what may be a silent failure. Since ``UNDEFINED``
   is a singleton object just like Python's ``True`` or ``False``,
   you can use the ``is`` operator to check for it:
 
- .. sourcecode:: mako
- 
+  .. sourcecode:: mako
+
         % if someval is UNDEFINED:
             someval is: no value
         % else:
             someval is: ${someval}
         % endif
- 
+
 Another facet of the :class:`.Context` is that its dictionary of
 variables is **immutable**. Whatever is set when
 :meth:`~.Template.render` is called is what stays. Of course, since
@@ -148,7 +150,7 @@ are all stored in unique :class:`.Context` instances).
           attributes['foo'] = 'bar'
       %>
       'foo' attribute is: ${attributes['foo']}
- 
+
 * **Why can't "attributes" be a built-in feature of the
   Context?** - This is an area where Mako is trying to make as
   few decisions about your application as it possibly can.
@@ -159,17 +161,17 @@ are all stored in unique :class:`.Context` instances).
   be explicit.
 
 Context Methods and Accessors
-------------------------------
+-----------------------------
 
 Significant members of :class:`.Context` include:
 
 * ``context[key]`` / ``context.get(key, default=None)`` -
   dictionary-like accessors for the context. Normally, any
   variable you use in your template is automatically pulled from
-  the context if it isnt defined somewhere already. Use the
+  the context if it isn't defined somewhere already. Use the
   dictionary accessor and/or ``get`` method when you want a
   variable that *is* already defined somewhere else, such as in
-  the local arguments sent to a %def call. If a key is not
+  the local arguments sent to a ``%def`` call. If a key is not
   present, like a dictionary it raises ``KeyError``.
 * ``keys()`` - all the names defined within this context.
 * ``kwargs`` - this returns a **copy** of the context's
@@ -177,7 +179,7 @@ Significant members of :class:`.Context` include:
   propagate the variables in the current context to a function
   as keyword arguments, i.e.:
 
-.. sourcecode:: mako
+  .. sourcecode:: mako
 
         ${next.body(**context.kwargs)}
 
@@ -196,7 +198,7 @@ The Loop Context
 ================
 
 Within ``% for`` blocks, the :ref:`reserved name<reserved_names>` ``loop``
-is available.  A new feature of Mako 0.7, ``loop`` tracks the progress of
+is available.  ``loop`` tracks the progress of
 the ``for`` loop and makes it easy to use the iteration state to control
 template behavior:
 
@@ -208,6 +210,7 @@ template behavior:
     % endfor
     </ul>
 
+.. versionadded:: 0.7
 
 Iterations
 ----------
@@ -230,34 +233,33 @@ zebra striped list using ``enumerate``:
 
 .. sourcecode:: mako
 
-        <ul>
-        % for i, item in enumerate(('spam', 'ham', 'eggs')):
-          <li class="${'odd' if i % 2 else 'even'}">${item}</li>
-        % endfor
-        </ul>
+    <ul>
+    % for i, item in enumerate(('spam', 'ham', 'eggs')):
+      <li class="${'odd' if i % 2 else 'even'}">${item}</li>
+    % endfor
+    </ul>
 
-With ``loop``, you get the same results with cleaner code and less prep work:
+With ``loop.cycle``, you get the same results with cleaner code and less prep work:
 
 .. sourcecode:: mako
 
-        <ul>
-        % for item in ('spam', 'ham', 'eggs'):
-          <li class="${loop.cycle('even', 'odd')}">${item}</li>
-        % endfor
-        </ul>
+    <ul>
+    % for item in ('spam', 'ham', 'eggs'):
+      <li class="${loop.cycle('even', 'odd')}">${item}</li>
+    % endfor
+    </ul>
 
 Both approaches produce output like the following:
 
 .. sourcecode:: html
 
-        <ul>
-          <li class="even">spam</li>
-          <li class="odd">ham</li>
-          <li class="even">eggs</li>
-        </ul>
+    <ul>
+      <li class="even">spam</li>
+      <li class="odd">ham</li>
+      <li class="even">eggs</li>
+    </ul>
 
-
-Parent loops
+Parent Loops
 ------------
 
 Loop contexts can also be transparently nested, and the Mako runtime will do
@@ -271,74 +273,80 @@ loop to make a checkered table:
 
 .. sourcecode:: mako
 
-        <table>
-        % for consonant in 'pbj':
-          <tr>
-         % for vowel in 'iou':
-           <td class="${'black' if (loop.parent.even == loop.even) else 'red'}">
-             ${consonant + vowel}t
-           </td>
-         % endfor 
-          </tr>
-        % endfor 
-        </table>
+    <table>
+    % for consonant in 'pbj':
+      <tr>
+      % for vowel in 'iou':
+        <td class="${'black' if (loop.parent.even == loop.even) else 'red'}">
+          ${consonant + vowel}t
+        </td>
+      % endfor
+      </tr>
+    % endfor
+    </table>
 
 .. sourcecode:: html
 
-        <table>
-          <tr>
-            <td class="black">
-              pit
-            </td>
-            <td class="red">
-              pot
-            </td>
-            <td class="black">
-              put
-            </td>
-          </tr>
-          <tr>
-            <td class="red">
-              bit
-            </td>
-            <td class="black">
-              bot
-            </td>
-            <td class="red">
-              but
-            </td>
-          </tr>
-          <tr>
-            <td class="black">
-              jit
-            </td>
-            <td class="red">
-              jot
-            </td>
-            <td class="black">
-              jut
-            </td>
-          </tr>
-        </table>
-
+    <table>
+      <tr>
+        <td class="black">
+          pit
+        </td>
+        <td class="red">
+          pot
+        </td>
+        <td class="black">
+          put
+        </td>
+      </tr>
+      <tr>
+        <td class="red">
+          bit
+        </td>
+        <td class="black">
+          bot
+        </td>
+        <td class="red">
+          but
+        </td>
+      </tr>
+      <tr>
+        <td class="black">
+          jit
+        </td>
+        <td class="red">
+          jot
+        </td>
+        <td class="black">
+          jut
+        </td>
+      </tr>
+    </table>
 
 .. _migrating_loop:
 
 Migrating Legacy Templates that Use the Word "loop"
 ---------------------------------------------------
 
-The ``loop`` name is now :ref:`reserved <reserved_names>` in Mako, which means a template that refers to a
-variable named ``loop`` won't function correctly when used in Mako 0.7.  To ease 
-the transition for such systems, the feature can be disabled across the board for
+.. versionchanged:: 0.7
+   The ``loop`` name is now :ref:`reserved <reserved_names>` in Mako,
+   which means a template that refers to a variable named ``loop``
+   won't function correctly when used in Mako 0.7.
+
+To ease the transition for such systems, the feature can be disabled across the board for
 all templates, then re-enabled on a per-template basis for those templates which wish
 to make use of the new system.
 
 First, the ``enable_loop=False`` flag is passed to either the :class:`.TemplateLookup`
-or :class:`.Template` object in use::
+or :class:`.Template` object in use:
+
+.. sourcecode:: python
 
     lookup = TemplateLookup(directories=['/docs'], enable_loop=False)
 
-or::
+or:
+
+.. sourcecode:: python
 
     template = Template("some template", enable_loop=False)
 
@@ -355,11 +363,11 @@ An individual template can make usage of the feature when ``enable_loop`` is set
 
 Using the above scheme, it's safe to pass the name ``loop`` to the :meth:`.Template.render`
 method as well as to freely make usage of a variable named ``loop`` within a template, provided
-the ``<%page>`` tag doesn't override it.   New templates that want to use the ``loop`` context
+the ``<%page>`` tag doesn't override it.  New templates that want to use the ``loop`` context
 can then set up ``<%page enable_loop="True"/>`` to use the new feature without affecting
 old templates.
 
-All the built-in names
+All the Built-in Names
 ======================
 
 A one-stop shop for all the names Mako defines. Most of these
@@ -368,7 +376,7 @@ in the next section, :ref:`namespaces_toplevel`. Also, most of
 these names other than ``context``, ``UNDEFINED``, and ``loop`` are
 also present *within* the :class:`.Context` itself.   The names
 ``context``, ``loop`` and ``UNDEFINED`` themselves can't be passed
-to the context and can't be substituted  - see the section :ref:`reserved_names`.
+to the context and can't be substituted -- see the section :ref:`reserved_names`.
 
 * ``context`` - this is the :class:`.Context` object, introduced
   at :ref:`context`.
@@ -394,12 +402,12 @@ to the context and can't be substituted  - see the section :ref:`reserved_names`
 * ``UNDEFINED`` - a global singleton that is applied to all
   otherwise uninitialized template variables that were not
   located within the :class:`.Context` when rendering began,
-  unless the :class:`.Template` flag ``strict_undefined`` 
+  unless the :class:`.Template` flag ``strict_undefined``
   is set to ``True``. ``UNDEFINED`` is
   an instance of :class:`.Undefined`, and raises an
   exception when its ``__str__()`` method is called.
 * ``pageargs`` - this is a dictionary which is present in a
-  template which does not define any \**kwargs section in its
+  template which does not define any ``**kwargs`` section in its
   ``<%page>`` tag. All keyword arguments sent to the ``body()``
   function of a template (when used via namespaces) go here by
   default unless otherwise defined as a page argument. If this
@@ -408,22 +416,24 @@ to the context and can't be substituted  - see the section :ref:`reserved_names`
 
 .. _reserved_names:
 
-Reserved names
+Reserved Names
 --------------
 
 Mako has a few names that are considered to be "reserved" and can't be used
-as variable names.   As of 0.7, Mako raises an error if these words are found
-passed to the template as context arguments, whereas in previous versions they'd be silently
-ignored or lead to other error messages.  
+as variable names.
 
-* ``context`` - see :ref:`context`
-* ``UNDEFINED`` - see :ref:`context_vars`
+.. versionchanged:: 0.7
+   Mako raises an error if these words are found passed to the template
+   as context arguments, whereas in previous versions they'd be silently
+   ignored or lead to other error messages.
+
+* ``context`` - see :ref:`context`.
+* ``UNDEFINED`` - see :ref:`context_vars`.
 * ``loop`` - see :ref:`loop_context`.  Note this can be disabled for legacy templates
   via the ``enable_loop=False`` argument; see :ref:`migrating_loop`.
 
-
 API Reference
-==============
+=============
 
 .. autoclass:: mako.runtime.Context
     :show-inheritance:
@@ -435,6 +445,4 @@ API Reference
 
 .. autoclass:: mako.runtime.Undefined
     :show-inheritance:
- 
-
 

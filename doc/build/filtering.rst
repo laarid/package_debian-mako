@@ -5,7 +5,7 @@ Filtering and Buffering
 =======================
 
 Expression Filtering
-=====================
+====================
 
 As described in the chapter :ref:`syntax_toplevel`, the "``|``" operator can be
 applied to a "``${}``" expression to apply escape filters to the
@@ -23,15 +23,18 @@ The built-in escape flags are:
 * ``u`` : URL escaping, provided by
   ``urllib.quote_plus(string.encode('utf-8'))``
 * ``h`` : HTML escaping, provided by
-  ``markupsafe.escape(string)`` (new as of 0.3.4 - prior
-  versions use ``cgi.escape(string, True)``)
+  ``markupsafe.escape(string)``
+
+  .. versionadded:: 0.3.4
+     Prior versions use ``cgi.escape(string, True)``.
+
 * ``x`` : XML escaping
 * ``trim`` : whitespace trimming, provided by ``string.strip()``
 * ``entity`` : produces HTML entity references for applicable
   strings, derived from ``htmlentitydefs``
 * ``unicode`` (``str`` on Python 3): produces a Python unicode
-  string (this function is applied by default).
-* ``decode.<some encoding>`` : decode input into a Python
+  string (this function is applied by default)
+* ``decode.<some encoding>``: decode input into a Python
   unicode with the specified encoding
 * ``n`` : disable all default filtering; only filters specified
   in the local expression tag will be applied.
@@ -51,16 +54,16 @@ Python function that accepts a single string argument, and
 returns the filtered result. The expressions after the ``|``
 operator draw upon the local namespace of the template in which
 they appear, meaning you can define escaping functions locally:
- 
+
 .. sourcecode:: mako
 
     <%!
         def myescape(text):
             return "<TAG>" + text + "</TAG>"
     %>
- 
-    Heres some tagged text: ${"text" | myescape}
- 
+
+    Here's some tagged text: ${"text" | myescape}
+
 Or from any Python module:
 
 .. sourcecode:: mako
@@ -68,18 +71,18 @@ Or from any Python module:
     <%!
         import myfilters
     %>
- 
-    Heres some tagged text: ${"text" | myfilters.tagfilter}
- 
+
+    Here's some tagged text: ${"text" | myfilters.tagfilter}
+
 A page can apply a default set of filters to all expression tags
 using the ``expression_filter`` argument to the ``%page`` tag:
 
 .. sourcecode:: mako
 
     <%page expression_filter="h"/>
- 
+
     Escaped text:  ${"<html>some html</html>"}
- 
+
 Result:
 
 .. sourcecode:: html
@@ -88,12 +91,12 @@ Result:
 
 .. _filtering_default_filters:
 
-The default_filters Argument 
-----------------------------
+The ``default_filters`` Argument
+--------------------------------
 
 In addition to the ``expression_filter`` argument, the
-``default_filters`` argument to both ``Template`` and
-``TemplateLookup`` can specify filtering for all expression tags
+``default_filters`` argument to both :class:`.Template` and
+:class:`.TemplateLookup` can specify filtering for all expression tags
 at the programmatic level. This array-based argument, when given
 its default argument of ``None``, will be internally set to
 ``["unicode"]`` (or ``["str"]`` on Python 3), except when
@@ -117,7 +120,7 @@ list:
 .. sourcecode:: python
 
     t = TemplateLookup(directories=['/tmp'], default_filters=[])
- 
+
 Any string name can be added to ``default_filters`` where it
 will be added to all expressions as a filter. The filters are
 applied from left to right, meaning the leftmost filter is
@@ -126,17 +129,17 @@ applied first.
 .. sourcecode:: python
 
     t = Template(templatetext, default_filters=['unicode', 'myfilter'])
- 
+
 To ease the usage of ``default_filters`` with custom filters,
 you can also add imports (or other code) to all templates using
 the ``imports`` argument:
 
 .. sourcecode:: python
 
-    t = TemplateLookup(directories=['/tmp'], 
-        default_filters=['unicode', 'myfilter'], 
-        imports=['from mypackage import myfilter'])
- 
+    t = TemplateLookup(directories=['/tmp'],
+                       default_filters=['unicode', 'myfilter'],
+                       imports=['from mypackage import myfilter'])
+
 The above will generate templates something like this:
 
 .. sourcecode:: python
@@ -147,27 +150,27 @@ The above will generate templates something like this:
     def render_body(context):
         context.write(myfilter(unicode("some text")))
 
-Turning off Filtering with the "n" filter
-------------------------------------------
+Turning off Filtering with the ``n`` Filter
+-------------------------------------------
 
 In all cases the special ``n`` filter, used locally within an
 expression, will **disable** all filters declared in the
-``<%page>`` tag as well ``default_filters``. Such as:
+``<%page>`` tag as well as in ``default_filters``. Such as:
 
 .. sourcecode:: mako
 
     ${'myexpression' | n}
 
-Will render ``myexpression`` with no filtering of any kind, and
+will render ``myexpression`` with no filtering of any kind, and:
 
 .. sourcecode:: mako
 
-    ${'myexpression' | n, trim}
- 
-will render ``myexpression`` using the ``trim`` filter only. 
+    ${'myexpression' | n,trim}
+
+will render ``myexpression`` using the ``trim`` filter only.
 
 Filtering Defs and Blocks
-==========================
+=========================
 
 The ``%def`` and ``%block`` tags have an argument called ``filter`` which will apply the
 given list of filter functions to the output of the ``%def``:
@@ -177,17 +180,17 @@ given list of filter functions to the output of the ``%def``:
     <%def name="foo()" filter="h, trim">
         <b>this is bold</b>
     </%def>
- 
-When the filter attribute is applied to a def as above, the def
+
+When the ``filter`` attribute is applied to a def as above, the def
 is automatically **buffered** as well. This is described next.
 
 Buffering
-==========
+=========
 
 One of Mako's central design goals is speed. To this end, all of
 the textual content within a template and its various callables
 is by default piped directly to the single buffer that is stored
-within the ``Context`` object. While this normally is easy to
+within the :class:`.Context` object. While this normally is easy to
 miss, it has certain side effects. The main one is that when you
 call a def using the normal expression syntax, i.e.
 ``${somedef()}``, it may appear that the return value of the
@@ -204,14 +207,14 @@ something like this:
 .. sourcecode:: mako
 
     ${" results " + somedef() + " more results "}
- 
+
 If the ``somedef()`` function produced the content "``somedef's
 results``", the above template would produce this output:
 
 .. sourcecode:: html
 
     somedef's results results more results
- 
+
 This is because ``somedef()`` fully executes before the
 expression returns the results of its concatenation; the
 concatenation in turn receives just the empty string as its
@@ -225,7 +228,7 @@ buffering to the ``%def`` itself:
     <%def name="somedef()" buffered="True">
         somedef's results
     </%def>
- 
+
 The above definition will generate code similar to this:
 
 .. sourcecode:: python
@@ -237,14 +240,14 @@ The above definition will generate code similar to this:
         finally:
             buf = context.pop_buffer()
         return buf.getvalue()
- 
+
 So that the content of ``somedef()`` is sent to a second buffer,
 which is then popped off the stack and its value returned. The
 speed hit inherent in buffering the output of a def is also
 apparent.
 
-Note that the ``filter`` argument on %def also causes the def to
-be buffered. This is so that the final content of the %def can
+Note that the ``filter`` argument on ``%def`` also causes the def to
+be buffered. This is so that the final content of the ``%def`` can
 be delivered to the escaping function in one batch, which
 reduces method calls and also produces more deterministic
 behavior for the filtering function itself, which can possibly
@@ -259,7 +262,7 @@ except it is specified by the caller.
 .. sourcecode:: mako
 
     ${" results " + capture(somedef) + " more results "}
- 
+
 Note that the first argument to the ``capture`` function is
 **the function itself**, not the result of calling it. This is
 because the ``capture`` function takes over the job of actually
@@ -270,18 +273,19 @@ to ``capture`` instead:
 .. sourcecode:: mako
 
     ${capture(somedef, 17, 'hi', use_paging=True)}
- 
+
 The above call is equivalent to the unbuffered call:
 
 .. sourcecode:: mako
 
     ${somedef(17, 'hi', use_paging=True)}
- 
-Decorating
-===========
 
-This is a feature that's new as of version 0.2.5. Somewhat like
-a filter for a %def but more flexible, the ``decorator``
+Decorating
+==========
+
+.. versionadded:: 0.2.5
+
+Somewhat like a filter for a ``%def`` but more flexible, the ``decorator``
 argument to ``%def`` allows the creation of a function that will
 work in a similar manner to a Python decorator. The function can
 control whether or not the function executes. The original
@@ -304,17 +308,17 @@ simplicities' sake:
                 return ''
             return decorate
     %>
- 
+
     <%def name="foo()" decorator="bar">
         this is foo
     </%def>
- 
+
     ${foo()}
- 
+
 The above template will return, with more whitespace than this,
 ``"BAR this is foo BAR"``. The function is the render callable
 itself (or possibly a wrapper around it), and by default will
-write to the context. To capture its output, use the ``capture``
+write to the context. To capture its output, use the :func:`.capture`
 callable in the ``mako.runtime`` module (available in templates
 as just ``runtime``):
 
@@ -335,6 +339,6 @@ as just ``runtime``):
 
 The decorator can be used with top-level defs as well as nested
 defs, and blocks too. Note that when calling a top-level def from the
-``Template`` api, i.e. ``template.get_def('somedef').render()``,
+:class:`.Template` API, i.e. ``template.get_def('somedef').render()``,
 the decorator has to write the output to the ``context``, i.e.
 as in the first example. The return value gets discarded.

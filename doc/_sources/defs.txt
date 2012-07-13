@@ -5,7 +5,7 @@ Defs and Blocks
 ===============
 
 ``<%def>`` and ``<%block>`` are two tags that both demarcate any block of text
-and/or code.   They both exist within generated Python as a callable function, 
+and/or code.   They both exist within generated Python as a callable function,
 i.e., a Python ``def``.   They differ in their scope and calling semantics.
 Whereas ``<%def>`` provides a construct that is very much like a named Python
 ``def``, the ``<%block>`` is more layout oriented.
@@ -29,7 +29,7 @@ To invoke the ``<%def>``, it is normally called as an expression:
     the def:  ${hello()}
 
 If the ``<%def>`` is not nested inside of another ``<%def>``,
-its known as a **top level def** and can be accessed anywhere in
+it's known as a **top level def** and can be accessed anywhere in
 the template, including above where it was defined.
 
 All defs, top level or not, have access to the current
@@ -40,12 +40,12 @@ variables ``username`` and ``accountdata`` inside the context:
 .. sourcecode:: mako
 
     Hello there ${username}, how are ya.  Lets see what your account says:
- 
+
     ${account()}
 
     <%def name="account()">
         Account for ${username}:<br/>
- 
+
         % for row in accountdata:
             Value: ${row}<br/>
         % endfor
@@ -61,9 +61,9 @@ arguments to them as well:
 .. sourcecode:: mako
 
     ${account(accountname='john')}
- 
+
     <%def name="account(accountname, type='regular')">
-        account name: ${accountname}, type ${type}
+        account name: ${accountname}, type: ${type}
     </%def>
 
 When you declare an argument signature for your def, they are
@@ -73,14 +73,14 @@ value). This is in contrast to using context-level variables,
 which evaluate to ``UNDEFINED`` if you reference a name that
 does not exist.
 
-Calling defs from Other Files 
+Calling Defs from Other Files
 -----------------------------
 
-Top level ``<%defs>`` are **exported** by your template's
+Top level ``<%def>``\ s are **exported** by your template's
 module, and can be called from the outside; including from other
 templates, as well as normal Python code. Calling a ``<%def>``
 from another template is something like using an ``<%include>``
-- except you are calling a specific function within the
+-- except you are calling a specific function within the
 template, not the whole template.
 
 The remote ``<%def>`` call is also a little bit like calling
@@ -94,7 +94,7 @@ To import another template, use the ``<%namespace>`` tag:
 
     <%namespace name="mystuff" file="mystuff.html"/>
 
-The above tag adds a local variable "mystuff" to the current
+The above tag adds a local variable ``mystuff`` to the current
 scope.
 
 Then, just call the defs off of ``mystuff``:
@@ -117,10 +117,10 @@ which is a central Mako concept that has its own chapter in
 these docs. For more detail and examples, see
 :ref:`namespaces_toplevel`.
 
-Calling defs programmatically
+Calling Defs Programmatically
 -----------------------------
 
-You can call def's programmatically from any :class:`.Template` object
+You can call defs programmatically from any :class:`.Template` object
 using the :meth:`~.Template.get_def()` method, which returns a :class:`.DefTemplate`
 object. This is a :class:`.Template` subclass which the parent
 :class:`.Template` creates, and is usable like any other template:
@@ -128,20 +128,19 @@ object. This is a :class:`.Template` subclass which the parent
 .. sourcecode:: python
 
     from mako.template import Template
- 
+
     template = Template("""
         <%def name="hi(name)">
             hi ${name}!
         </%def>
- 
+
         <%def name="bye(name)">
             bye ${name}!
         </%def>
     """)
- 
+
     print template.get_def("hi").render(name="ed")
     print template.get_def("bye").render(name="ed")
- 
 
 Defs within Defs
 ----------------
@@ -156,8 +155,8 @@ within the parent's **enclosing scope**:
         <%def name="subdef()">
             a sub def
         </%def>
- 
-        im the def, and the subcomponent is ${subdef()}
+
+        i'm the def, and the subcomponent is ${subdef()}
     </%def>
 
 Just like Python, names that exist outside the inner ``<%def>``
@@ -190,19 +189,19 @@ the following code will raise an error:
     %>
     <%def name="somedef()">
         ## error !
-        somedef, x is ${x} 
+        somedef, x is ${x}
         <%
-            x = 27 
+            x = 27
         %>
     </%def>
 
-...because the assignment to ``x`` declares x as local to the
+...because the assignment to ``x`` declares ``x`` as local to the
 scope of ``somedef``, rendering the "outer" version unreachable
 in the expression that tries to render it.
 
 .. _defs_with_content:
 
-Calling a def with embedded content and/or other defs
+Calling a Def with Embedded Content and/or Other Defs
 -----------------------------------------------------
 
 A flip-side to def within def is a def call with content. This
@@ -210,7 +209,7 @@ is where you call a def, and at the same time declare a block of
 content (or multiple blocks) that can be used by the def being
 called. The main point of such a call is to create custom,
 nestable tags, just like any other template language's
-custom-tag creation system - where the external tag controls the
+custom-tag creation system -- where the external tag controls the
 execution of the nested tags and can communicate state to them.
 Only with Mako, you don't have to use any external Python
 modules, you can define arbitrarily nestable tags right in your
@@ -219,15 +218,15 @@ templates.
 To achieve this, the target def is invoked using the form
 ``<%namepacename:defname>`` instead of the normal ``${}``
 syntax. This syntax, introduced in Mako 0.2.3, is functionally
-equivalent another tag known as ``call``, which takes the form
+equivalent to another tag known as ``%call``, which takes the form
 ``<%call expr='namespacename.defname(args)'>``. While ``%call``
 is available in all versions of Mako, the newer style is
 probably more familiar looking. The ``namespace`` portion of the
 call is the name of the **namespace** in which the def is
-defined - in the most simple cases, this can be ``local`` or
+defined -- in the most simple cases, this can be ``local`` or
 ``self`` to reference the current template's namespace (the
 difference between ``local`` and ``self`` is one of inheritance
-- see :ref:`namespaces_builtin` for details).
+-- see :ref:`namespaces_builtin` for details).
 
 When the target def is invoked, a variable ``caller`` is placed
 in its context which contains another namespace containing the
@@ -245,11 +244,11 @@ custom tag:
             </td></tr>
         </table>
     </%def>
- 
+
     <%self:buildtable>
         I am the table body.
     </%self:buildtable>
- 
+
 This produces the output (whitespace formatted):
 
 .. sourcecode:: html
@@ -287,13 +286,13 @@ conditionals, etc:
             ${caller.body()}
         % endfor
     </%def>
- 
+
     <%self:lister count="${3}">
         hi
     </%self:lister>
- 
+
 Produces:
- 
+
 .. sourcecode:: html
 
     hi
@@ -304,7 +303,7 @@ Notice above we pass ``3`` as a Python expression, so that it
 remains as an integer.
 
 A custom "conditional" tag:
- 
+
 .. sourcecode:: mako
 
     <%def name="conditional(expression)">
@@ -314,14 +313,14 @@ A custom "conditional" tag:
     </%def>
 
     <%self:conditional expression="${4==4}">
-        im the result
+        i'm the result
     </%self:conditional>
 
 Produces:
 
 .. sourcecode:: html
 
-    im the result
+    i'm the result
 
 But that's not all. The ``body()`` function also can handle
 arguments, which will augment the local namespace of the body
@@ -348,29 +347,29 @@ element of data from its argument:
     <%self:layoutdata somedata="${[[1,2,3],[4,5,6],[7,8,9]]}" args="col">\
     Body data: ${col}\
     </%self:layoutdata>
- 
+
 Produces:
 
 .. sourcecode:: html
 
     <table>
-       <tr>
-           <td>Body data: 1</td>
-           <td>Body data: 2</td>
-           <td>Body data: 3</td>
-       </tr>
-       <tr>
-           <td>Body data: 4</td>
-           <td>Body data: 5</td>
-           <td>Body data: 6</td>
-       </tr>
-       <tr>
-           <td>Body data: 7</td>
-           <td>Body data: 8</td>
-           <td>Body data: 9</td>
-       </tr>
+        <tr>
+            <td>Body data: 1</td>
+            <td>Body data: 2</td>
+            <td>Body data: 3</td>
+        </tr>
+        <tr>
+            <td>Body data: 4</td>
+            <td>Body data: 5</td>
+            <td>Body data: 6</td>
+        </tr>
+        <tr>
+            <td>Body data: 7</td>
+            <td>Body data: 8</td>
+            <td>Body data: 9</td>
+        </tr>
     </table>
- 
+
 You don't have to stick to calling just the ``body()`` function.
 The caller can define any number of callables, allowing the
 ``<%call>`` tag to produce whole layouts:
@@ -383,9 +382,11 @@ The caller can define any number of callables, allowing the
             <div class="header">
                 ${caller.header()}
             </div>
+
             <div class="sidebar">
                 ${caller.sidebar()}
             </div>
+
             <div class="content">
                 ${caller.body()}
             </div>
@@ -403,29 +404,29 @@ The caller can define any number of callables, allowing the
                 <li>sidebar 2</li>
             </ul>
         </%def>
- 
+
             this is the body
     </%self:layout>
- 
+
 The above layout would produce:
 
 .. sourcecode:: html
 
     <div class="mainlayout">
-       <div class="header">
-       I am the header
-       </div>
+        <div class="header">
+        I am the header
+        </div>
 
-       <div class="sidebar">
-       <ul>
-           <li>sidebar 1</li>
-           <li>sidebar 2</li>
-       </ul>
-       </div>
+        <div class="sidebar">
+        <ul>
+            <li>sidebar 1</li>
+            <li>sidebar 2</li>
+        </ul>
+        </div>
 
-       <div class="content">
-       this is the body
-       </div>
+        <div class="content">
+        this is the body
+        </div>
     </div>
 
 The number of things you can do with ``<%call>`` and/or the
@@ -445,8 +446,10 @@ invoked via ``<%namespacename:defname>`` or ``<%call>``.
 Using Blocks
 ============
 
-The ``<%block>`` tag is new as of Mako 0.4.1, and introduces some new twists on the
+The ``<%block>`` tag introduces some new twists on the
 ``<%def>`` tag which make it more closely tailored towards layout.
+
+.. versionadded:: 0.4.1
 
 An example of a block:
 
@@ -472,7 +475,7 @@ is referred to as an **anonymous block**.  So the output of the above template w
         </body>
     </html>
 
-So in fact the above block has absolutely no effect.   Its usefulness comes when we start
+So in fact the above block has absolutely no effect.  Its usefulness comes when we start
 using modifiers.  Such as, we can apply a filter to our block:
 
 .. sourcecode:: mako
@@ -517,7 +520,6 @@ rendering body, so have access to local variable scope:
         <%block>i is ${i}</%block>
     % endfor
 
-
 Using Named Blocks
 ------------------
 
@@ -543,10 +545,10 @@ global for the entire template regardless of how deeply it's nested:
     </body>
     </html>
 
-The above example has two named blocks "``header``" and "``title``", both of which can be referred to 
-by an inheriting template.  A detailed walkthrough of this usage can be found at :ref:`inheritance_toplevel`.
+The above example has two named blocks "``header``" and "``title``", both of which can be referred to
+by an inheriting template. A detailed walkthrough of this usage can be found at :ref:`inheritance_toplevel`.
 
-Note above that named blocks don't have any argument declaration the way defs do.   They still implement themselves
+Note above that named blocks don't have any argument declaration the way defs do. They still implement themselves
 as Python functions, however, so they can be invoked additional times beyond their initial definition:
 
 .. sourcecode:: mako
@@ -569,14 +571,14 @@ The content referenced by ``pagecontrol`` above will be rendered both above and 
 To keep things sane, named blocks have restrictions that defs do not:
 
 * The ``<%block>`` declaration cannot have any argument signature.
-* The name of a ``<%block>`` can only be defined once in a template - an error is raised if two blocks of the same
-  name occur anywhere in a single template, regardless of nesting.  A similar error is raised if a top level def 
+* The name of a ``<%block>`` can only be defined once in a template -- an error is raised if two blocks of the same
+  name occur anywhere in a single template, regardless of nesting.  A similar error is raised if a top level def
   shares the same name as that of a block.
 * A named ``<%block>`` cannot be defined within a ``<%def>``, or inside the body of a "call", i.e.
-  ``<%call>`` or ``<%namespacename:defname>`` tag.   Anonymous blocks can, however.
+  ``<%call>`` or ``<%namespacename:defname>`` tag.  Anonymous blocks can, however.
 
-Using page arguments in named blocks
--------------------------------------
+Using Page Arguments in Named Blocks
+------------------------------------
 
 A named block is very much like a top level def. It has a similar
 restriction to these types of defs in that arguments passed to the
@@ -605,7 +607,7 @@ Where above, if the template is called via a directive like
 variable is available both in the main body as well as the
 ``post_prose`` block.
 
-Similarly, the ``**pageargs`` variable is present, in named blocks only, 
+Similarly, the ``**pageargs`` variable is present, in named blocks only,
 for those arguments not explicit in the ``<%page>`` tag:
 
 .. sourcecode:: mako
