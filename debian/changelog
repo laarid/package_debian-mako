@@ -1,3 +1,10 @@
+mako (0.7.2-1) UNRELEASED; urgency=low
+
+  * New upstream release
+  Not uploading yet, fix doesn't affect Debian
+
+ -- Piotr Ożarowski <piotr@debian.org>  Sun, 22 Jul 2012 00:38:56 +0200
+
 mako (0.7.1-1) experimental; urgency=low
 
   * New upstream release
