@@ -1,7 +1,7 @@
 import unittest
 
 from mako import ast, exceptions, pyparser, util
-from test import eq_
+from test import eq_, requires_python_2
 
 exception_kwargs = {
     'source': '',
@@ -209,6 +209,18 @@ print(Bat)
         parsed = ast.PythonCode(code, **exception_kwargs)
         eq_(parsed.declared_identifiers, set(['foo']))
         eq_(parsed.undeclared_identifiers, set(['Bat']))
+
+    @requires_python_2
+    def test_locate_identifiers_15(self):
+        code = """
+def t1((x,y)):
+    return x+5, y+4
+
+t2 = lambda (x,y):(x+5, y+4)
+"""
+        parsed = ast.PythonCode(code, **exception_kwargs)
+        eq_(parsed.declared_identifiers, set(['t1', 't2']))
+        eq_(parsed.undeclared_identifiers, set())
 
     def test_no_global_imports(self):
         code = """

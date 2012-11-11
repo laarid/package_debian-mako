@@ -10,9 +10,10 @@ import sys
 
 py3k = getattr(sys, 'py3kwarning', False) or sys.version_info >= (3, 0)
 py26 = sys.version_info >= (2, 6)
-py24 = sys.version_info >= (2, 4) and sys.version_info < (2, 5)
+py25 = sys.version_info >= (2, 5)
 jython = sys.platform.startswith('java')
 win32 = sys.platform.startswith('win')
+pypy = hasattr(sys, 'pypy_version_info')
 
 if py3k:
     from io import StringIO
@@ -57,7 +58,7 @@ except:
             return func(*(args + fargs), **newkeywords)
         return newfunc
 
-if py24:
+if not py25:
     def all(iterable):
         for i in iterable:
             if not i:
@@ -83,7 +84,7 @@ class PluginLoader(object):
 
     def load(self, name):
         if name in self.impls:
-             return self.impls[name]()
+            return self.impls[name]()
         else:
             import pkg_resources
             for impl in pkg_resources.iter_entry_points(
@@ -92,6 +93,7 @@ class PluginLoader(object):
                 self.impls[name] = impl.load
                 return impl.load()
             else:
+                from mako import exceptions
                 raise exceptions.RuntimeException(
                         "Can't load plugin %s %s" %
                         (self.group, name))

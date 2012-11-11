@@ -1,3 +1,9 @@
+mako (0.7.3-1) experimental; urgency=low
+
+  * New upstream release
+
+ -- Piotr Ożarowski <piotr@debian.org>  Mon, 12 Nov 2012 00:03:25 +0100
+
 mako (0.7.1-1) experimental; urgency=low
 
   * New upstream release
