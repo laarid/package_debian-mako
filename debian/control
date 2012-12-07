@@ -53,8 +53,8 @@ Section: doc
 Architecture: all
 Priority: extra
 Depends: libjs-jquery, libjs-underscore, ${misc:Depends}
-Breaks: python-mako (<< 0.3.6-1)
-Replaces: python-mako (<< 0.3.6-1)
+Breaks: python-mako (<< 0.3.6-1), python3-mako (<< 0.3.6-1)
+Replaces: python-mako (<< 0.3.6-1), python3-mako (<< 0.3.6-1)
 Suggests: python-mako, python3-mako
 Description: documentation for the Mako Python library
  Mako is a template library written in Python.
