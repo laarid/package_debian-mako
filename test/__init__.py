@@ -1,11 +1,12 @@
 from mako.template import Template
-import unittest, os
-from mako.util import py3k, py26, py25
+import unittest
+import os
+from mako.compat import py3k, py26, py25
 from mako.util import function_named
 import re
 from mako.cache import CacheImpl, register_plugin
 from nose import SkipTest
-
+import sys
 
 template_base = os.path.join(os.path.dirname(__file__), 'templates')
 module_base = os.path.join(template_base, 'modules')
@@ -64,7 +65,7 @@ def assert_raises(except_cls, callable_, *args, **kw):
     try:
         callable_(*args, **kw)
         success = False
-    except except_cls, e:
+    except except_cls:
         success = True
 
     # assert outside the block so it works for AssertionError too !
@@ -74,9 +75,10 @@ def assert_raises_message(except_cls, msg, callable_, *args, **kwargs):
     try:
         callable_(*args, **kwargs)
         assert False, "Callable did not raise an exception"
-    except except_cls, e:
+    except except_cls:
+        e = sys.exc_info()[1]
         assert re.search(msg, str(e)), "%r !~ %s" % (msg, e)
-        print str(e)
+        print(str(e))
 
 def skip_if(predicate, reason=None):
     """Skip a test if predicate is true."""
@@ -111,12 +113,15 @@ def requires_pygments_14(fn):
         version = "0"
     return skip_if(lambda: version < "1.4")(fn)
 
-def requires_no_pygments(fn):
-    try:
-        import pygments
-    except:
-        pygments = None
-    return skip_if(lambda: pygments is not None)(fn)
+def requires_no_pygments_exceptions(fn):
+    def go(*arg, **kw):
+        from mako import exceptions
+        exceptions._install_fallback()
+        try:
+            return fn(*arg, **kw)
+        finally:
+            exceptions._install_highlighting()
+    return function_named(go, fn.__name__)
 
 class PlainCacheImpl(CacheImpl):
     """Simple memory cache impl so that tests which

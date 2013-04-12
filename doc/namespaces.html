@@ -6,7 +6,7 @@
     
                 Namespaces
              &mdash; 
-    Mako 0.7.3 Documentation
+    Mako 0.8.0 Documentation
 </title>
 
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
           URL_ROOT:    '#',
-          VERSION:     '0.7.3',
+          VERSION:     '0.8.0',
           COLLAPSE_MODINDEX: false,
           FILE_SUFFIX: '.html'
       };
@@ -25,7 +25,7 @@
         <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="Mako 0.7.3 Documentation" href="index.html" />
+    <link rel="top" title="Mako 0.8.0 Documentation" href="index.html" />
         <link rel="next" title="Inheritance" href="inheritance.html" />
         <link rel="prev" title="The Mako Runtime Environment" href="runtime.html" />
 
@@ -64,7 +64,7 @@
 
 
 <div id="docs-header">
-    <h1>Mako 0.7.3 Documentation</h1>
+    <h1>Mako 0.8.0 Documentation</h1>
 
     <div id="docs-search">
     Search:
@@ -76,7 +76,7 @@
     </div>
 
     <div id="docs-version-header">
-        Release: <span class="version-num">0.7.3</span>
+        Release: <span class="version-num">0.8.0</span>
 
     </div>
 
@@ -101,7 +101,7 @@
     </div>
 
     <div id="docs-navigation-banner">
-        <a href="index.html">Mako 0.7.3 Documentation</a>
+        <a href="index.html">Mako 0.8.0 Documentation</a>
         » 
                 Namespaces
              
@@ -131,6 +131,11 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#inheritable-namespaces">Inheritable Namespaces</a></li>
+<li><a class="reference internal" href="#namespace-api-usage-example-static-dependencies">Namespace API Usage Example - Static Dependencies</a><ul>
+<li><a class="reference internal" href="#version-one-use-namespace-attr">Version One - Use <tt class="docutils literal"><span class="pre">Namespace.attr</span></tt></a></li>
+<li><a class="reference internal" href="#version-two-use-a-specific-named-def">Version Two - Use a specific named def</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#api-reference">API Reference</a></li>
 </ul>
 </li>
@@ -425,6 +430,120 @@ interact with the <tt class="docutils literal"><span class="pre">inheritable</sp
 use the explicit namespace name off of <tt class="docutils literal"><span class="pre">self</span></tt>, followed by the
 desired function name. But more on this in a future release.</p>
 </div>
+<div class="section" id="namespace-api-usage-example-static-dependencies">
+<h2>Namespace API Usage Example - Static Dependencies<a class="headerlink" href="#namespace-api-usage-example-static-dependencies" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="docutils literal"><span class="pre">&lt;%namespace&gt;</span></tt> tag at runtime produces an instance of
+<a class="reference internal" href="#mako.runtime.Namespace" title="mako.runtime.Namespace"><tt class="xref py py-class docutils literal"><span class="pre">Namespace</span></tt></a>.   Programmatic access of <a class="reference internal" href="#mako.runtime.Namespace" title="mako.runtime.Namespace"><tt class="xref py py-class docutils literal"><span class="pre">Namespace</span></tt></a> can be used
+to build various kinds of scaffolding in templates and between templates.</p>
+<p>A common request is the ability for a particular template to declare
+&#8220;static includes&#8221; - meaning, the usage of a particular set of defs requires
+that certain Javascript/CSS files are present.   Using <a class="reference internal" href="#mako.runtime.Namespace" title="mako.runtime.Namespace"><tt class="xref py py-class docutils literal"><span class="pre">Namespace</span></tt></a> as the
+object that holds together the various templates present, we can build a variety
+of such schemes.   In particular, the <a class="reference internal" href="runtime.html#mako.runtime.Context" title="mako.runtime.Context"><tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt></a> has a <tt class="docutils literal"><span class="pre">namespaces</span></tt>
+attribute, which is a dictionary of all <a class="reference internal" href="#mako.runtime.Namespace" title="mako.runtime.Namespace"><tt class="xref py py-class docutils literal"><span class="pre">Namespace</span></tt></a> objects declared.
+Iterating the values of this dictionary will provide a <a class="reference internal" href="#mako.runtime.Namespace" title="mako.runtime.Namespace"><tt class="xref py py-class docutils literal"><span class="pre">Namespace</span></tt></a>
+object for each time the <tt class="docutils literal"><span class="pre">&lt;%namespace&gt;</span></tt> tag was used, anywhere within the
+inheritance chain.</p>
+<div class="section" id="version-one-use-namespace-attr">
+<span id="namespace-attr-for-includes"></span><h3>Version One - Use <a class="reference internal" href="#mako.runtime.Namespace.attr" title="mako.runtime.Namespace.attr"><tt class="xref py py-attr docutils literal"><span class="pre">Namespace.attr</span></tt></a><a class="headerlink" href="#version-one-use-namespace-attr" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference internal" href="#mako.runtime.Namespace.attr" title="mako.runtime.Namespace.attr"><tt class="xref py py-attr docutils literal"><span class="pre">Namespace.attr</span></tt></a> attribute allows us to locate any variables declared
+in the <tt class="docutils literal"><span class="pre">&lt;%!</span> <span class="pre">%&gt;</span></tt> of a template.</p>
+<div class="highlight-mako"><div class="highlight"><pre><span class="cp">## base.mako</span><span class="x"></span>
+<span class="cp">## base-most template, renders layout etc.</span><span class="x"></span>
+<span class="x">&lt;html&gt;</span>
+<span class="x">&lt;head&gt;</span>
+<span class="cp">## traverse through all namespaces present,</span><span class="x"></span>
+<span class="cp">## look for an attribute named &#39;includes&#39;</span><span class="x"></span>
+<span class="cp">%</span> <span class="k">for</span> <span class="n">ns</span> <span class="ow">in</span> <span class="n">context</span><span class="o">.</span><span class="n">namespaces</span><span class="o">.</span><span class="n">values</span><span class="p">():</span><span class="x"></span>
+    <span class="cp">%</span> <span class="k">for</span> <span class="n">incl</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">ns</span><span class="o">.</span><span class="n">attr</span><span class="p">,</span> <span class="s">&#39;includes&#39;</span><span class="p">,</span> <span class="p">[]):</span><span class="x"></span>
+<span class="x">        </span><span class="cp">${</span><span class="n">incl</span><span class="cp">}</span>
+    <span class="cp">%</span><span class="k"> endfor</span><span class="x"></span>
+<span class="cp">%</span><span class="k"> endfor</span><span class="x"></span>
+<span class="x">&lt;/head&gt;</span>
+<span class="x">&lt;body&gt;</span>
+<span class="cp">${</span><span class="nb">next</span><span class="o">.</span><span class="n">body</span><span class="p">()</span><span class="cp">}</span><span class="x"></span>
+<span class="x">&lt;/body</span>
+<span class="x">&lt;/html&gt;</span>
+
+<span class="cp">## library.mako</span><span class="x"></span>
+<span class="cp">## library functions.</span><span class="x"></span>
+<span class="cp">&lt;%!</span>
+    <span class="n">includes</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s">&#39;&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;mystyle.css&quot;/&gt;&#39;</span><span class="p">,</span>
+        <span class="s">&#39;&lt;script type=&quot;text/javascript&quot; src=&quot;functions.js&quot;&gt;&lt;/script&gt;&#39;</span>
+    <span class="p">]</span>
+<span class="cp">%&gt;</span><span class="x"></span>
+
+<span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;mytag()&quot;</span><span class="cp">&gt;</span><span class="x"></span>
+<span class="x">    &lt;form&gt;</span>
+<span class="x">        </span><span class="cp">${</span><span class="n">caller</span><span class="o">.</span><span class="n">body</span><span class="p">()</span><span class="cp">}</span><span class="x"></span>
+<span class="x">    &lt;/form&gt;</span>
+<span class="cp">&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span>
+
+<span class="cp">## index.mako</span><span class="x"></span>
+<span class="cp">## calling template.</span><span class="x"></span>
+<span class="cp">&lt;%</span><span class="nb">inherit</span> <span class="na">file=</span><span class="s">&quot;base.mako&quot;</span><span class="cp">/&gt;</span><span class="x"></span>
+<span class="cp">&lt;%</span><span class="nb">namespace</span> <span class="na">name=</span><span class="s">&quot;foo&quot;</span> <span class="na">file=</span><span class="s">&quot;library.mako&quot;</span><span class="cp">/&gt;</span><span class="x"></span>
+
+<span class="cp">&lt;%</span><span class="nb">foo:mytag</span><span class="cp">&gt;</span><span class="x"></span>
+<span class="x">    a form</span>
+<span class="cp">&lt;/%</span><span class="nb">foo:mytag</span><span class="cp">&gt;</span><span class="x"></span>
+</pre></div>
+</div>
+<p>Above, the file <tt class="docutils literal"><span class="pre">library.mako</span></tt> declares an attribute <tt class="docutils literal"><span class="pre">includes</span></tt> inside its global <tt class="docutils literal"><span class="pre">&lt;%!</span> <span class="pre">%&gt;</span></tt> section.
+<tt class="docutils literal"><span class="pre">index.mako</span></tt> includes this template using the <tt class="docutils literal"><span class="pre">&lt;%namespace&gt;</span></tt> tag.  The base template <tt class="docutils literal"><span class="pre">base.mako</span></tt>, which is the inherited parent of <tt class="docutils literal"><span class="pre">index.mako</span></tt> and is reponsible for layout, then locates this attribute and iterates through its contents to produce the includes that are specific to <tt class="docutils literal"><span class="pre">library.mako</span></tt>.</p>
+</div>
+<div class="section" id="version-two-use-a-specific-named-def">
+<h3>Version Two - Use a specific named def<a class="headerlink" href="#version-two-use-a-specific-named-def" title="Permalink to this headline">¶</a></h3>
+<p>In this version, we put the includes into a <tt class="docutils literal"><span class="pre">&lt;%def&gt;</span></tt> that
+follows a naming convention.</p>
+<div class="highlight-mako"><div class="highlight"><pre><span class="cp">## base.mako</span><span class="x"></span>
+<span class="cp">## base-most template, renders layout etc.</span><span class="x"></span>
+<span class="x">&lt;html&gt;</span>
+<span class="x">&lt;head&gt;</span>
+<span class="cp">## traverse through all namespaces present,</span><span class="x"></span>
+<span class="cp">## look for a %def named &#39;includes&#39;</span><span class="x"></span>
+<span class="cp">%</span> <span class="k">for</span> <span class="n">ns</span> <span class="ow">in</span> <span class="n">context</span><span class="o">.</span><span class="n">namespaces</span><span class="o">.</span><span class="n">values</span><span class="p">():</span><span class="x"></span>
+    <span class="cp">%</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ns</span><span class="p">,</span> <span class="s">&#39;includes&#39;</span><span class="p">):</span><span class="x"></span>
+<span class="x">        </span><span class="cp">${</span><span class="n">ns</span><span class="o">.</span><span class="n">includes</span><span class="p">()</span><span class="cp">}</span>
+    <span class="cp">%</span><span class="k"> endif</span><span class="x"></span>
+<span class="cp">%</span><span class="k"> endfor</span><span class="x"></span>
+<span class="x">&lt;/head&gt;</span>
+<span class="x">&lt;body&gt;</span>
+<span class="cp">${</span><span class="nb">next</span><span class="o">.</span><span class="n">body</span><span class="p">()</span><span class="cp">}</span><span class="x"></span>
+<span class="x">&lt;/body</span>
+<span class="x">&lt;/html&gt;</span>
+
+<span class="cp">## library.mako</span><span class="x"></span>
+<span class="cp">## library functions.</span><span class="x"></span>
+
+<span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;includes()&quot;</span><span class="cp">&gt;</span><span class="x"></span>
+<span class="x">    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;mystyle.css&quot;/&gt;</span>
+<span class="x">    &lt;script type=&quot;text/javascript&quot; src=&quot;functions.js&quot;&gt;&lt;/script&gt;</span>
+<span class="cp">&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span><span class="x"></span>
+
+<span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;mytag()&quot;</span><span class="cp">&gt;</span><span class="x"></span>
+<span class="x">    &lt;form&gt;</span>
+<span class="x">        </span><span class="cp">${</span><span class="n">caller</span><span class="o">.</span><span class="n">body</span><span class="p">()</span><span class="cp">}</span><span class="x"></span>
+<span class="x">    &lt;/form&gt;</span>
+<span class="cp">&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span>
+
+
+<span class="cp">## index.mako</span><span class="x"></span>
+<span class="cp">## calling template.</span><span class="x"></span>
+<span class="cp">&lt;%</span><span class="nb">inherit</span> <span class="na">file=</span><span class="s">&quot;base.mako&quot;</span><span class="cp">/&gt;</span><span class="x"></span>
+<span class="cp">&lt;%</span><span class="nb">namespace</span> <span class="na">name=</span><span class="s">&quot;foo&quot;</span> <span class="na">file=</span><span class="s">&quot;library.mako&quot;</span><span class="cp">/&gt;</span><span class="x"></span>
+
+<span class="cp">&lt;%</span><span class="nb">foo:mytag</span><span class="cp">&gt;</span><span class="x"></span>
+<span class="x">    a form</span>
+<span class="cp">&lt;/%</span><span class="nb">foo:mytag</span><span class="cp">&gt;</span><span class="x"></span>
+</pre></div>
+</div>
+<p>In this version, <tt class="docutils literal"><span class="pre">library.mako</span></tt> declares a <tt class="docutils literal"><span class="pre">&lt;%def&gt;</span></tt> named <tt class="docutils literal"><span class="pre">includes</span></tt>.   The example works
+identically to the previous one, except that <tt class="docutils literal"><span class="pre">base.mako</span></tt> looks for defs named <tt class="docutils literal"><span class="pre">include</span></tt>
+on each namespace it examines.</p>
+</div>
+</div>
 <div class="section" id="api-reference">
 <h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
@@ -446,8 +565,12 @@ described here.</p>
 <dd><p>Access module level attributes by name.</p>
 <p>This accessor allows templates to supply &#8220;scalar&#8221;
 attributes which are particularly handy in inheritance
-relationships. See the example in
-<a class="reference internal" href="inheritance.html"><em>Inheritance</em></a>.</p>
+relationships.</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p><a class="reference internal" href="inheritance.html#inheritance-attr"><em>Inheritable Attributes</em></a></p>
+<p class="last"><a class="reference internal" href="#namespace-attr-for-includes"><em>Version One - Use Namespace.attr</em></a></p>
+</div>
 </dd></dl>
 
 <dl class="attribute">
