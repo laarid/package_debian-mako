@@ -10,17 +10,16 @@ Build-Depends-Indep: python-all, python-setuptools,
  python-sphinx,
 # for tests:
  python-nose, python-markupsafe
-Standards-Version: 3.9.3
+Standards-Version: 3.9.4
 Homepage: http://www.makotemplates.org/
 X-Python-Version: >= 2.4
 X-Python3-Version: >= 3.0
-Vcs-Svn: svn://svn.debian.org/python-modules/packages/mako/trunk
-Vcs-Browser: http://svn.debian.org/viewsvn/python-modules/packages/mako/trunk/
+Vcs-Svn: svn://anonscm.debian.org/python-modules/packages/mako/trunk/
+Vcs-Browser: http://anonscm.debian.org/viewvc/python-modules/packages/mako/trunk/
 
 Package: python-mako
 Architecture: all
 Depends: ${python:Depends}, ${misc:Depends}
-Breaks: ${python:Breaks}
 Suggests: python-beaker (>= 1.1), python-mako-doc
 Enhances: python-pylons, python-turbogears, python-pygments
 XB-Python-Version: ${python:Versions}
