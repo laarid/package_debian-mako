@@ -1,3 +1,9 @@
+mako (0.8.0-2) UNRELEASED; urgency=low
+
+  * Use canonical URIs for Vcs-* fields.
+
+ -- Jakub Wilk <jwilk@debian.org>  Sun, 05 May 2013 16:01:12 +0200
+
 mako (0.8.0-1) experimental; urgency=low
 
   * New upstream release
