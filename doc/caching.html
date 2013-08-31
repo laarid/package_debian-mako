@@ -6,7 +6,7 @@
     
                 Caching
              &mdash; 
-    Mako 0.8.1 Documentation
+    Mako 0.9.0 Documentation
 </title>
 
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,8 +14,8 @@
 
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-          URL_ROOT:    '#',
-          VERSION:     '0.8.1',
+          URL_ROOT:    './',
+          VERSION:     '0.9.0',
           COLLAPSE_MODINDEX: false,
           FILE_SUFFIX: '.html'
       };
@@ -25,7 +25,7 @@
         <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="Mako 0.8.1 Documentation" href="index.html" />
+    <link rel="top" title="Mako 0.9.0 Documentation" href="index.html" />
         <link rel="prev" title="The Unicode Chapter" href="unicode.html" />
 
 <link rel="stylesheet" href="_static/site.css"></link>
@@ -63,7 +63,7 @@
 
 
 <div id="docs-header">
-    <h1>Mako 0.8.1 Documentation</h1>
+    <h1>Mako 0.9.0 Documentation</h1>
 
     <div id="docs-search">
     Search:
@@ -75,7 +75,7 @@
     </div>
 
     <div id="docs-version-header">
-        Release: <span class="version-num">0.8.1</span>
+        Release: <span class="version-num">0.9.0</span>
 
     </div>
 
@@ -97,7 +97,7 @@
     </div>
 
     <div id="docs-navigation-banner">
-        <a href="index.html">Mako 0.8.1 Documentation</a>
+        <a href="index.html">Mako 0.9.0 Documentation</a>
         » 
                 Caching
              
@@ -229,8 +229,9 @@ e.g.:</p>
 <li><p class="first"><tt class="docutils literal"><span class="pre">cache_impl</span></tt> - The string name of the cache backend
 to use.   This defaults to <tt class="docutils literal"><span class="pre">'beaker'</span></tt>, which has historically
 been the only cache backend supported by Mako.</p>
-<p class="versionadded">
-<span class="versionmodified">New in version 0.6.0.</span></p>
+<div class="versionadded">
+<p><span>New in version 0.6.0.</span></p>
+</div>
 <p>For example, here&#8217;s how to use the upcoming
 <a class="reference external" href="http://dogpilecache.readthedocs.org">dogpile.cache</a>
 backend:</p>
@@ -245,8 +246,9 @@ backend:</p>
 <li><p class="first"><tt class="docutils literal"><span class="pre">cache_args</span></tt> - A dictionary of cache parameters that
 will be consumed by the cache backend.   See
 <a class="reference internal" href="#beaker-backend"><em>Using the Beaker Cache Backend</em></a> for examples.</p>
-<p class="versionadded">
-<span class="versionmodified">New in version 0.6.0.</span></p>
+<div class="versionadded">
+<p><span>New in version 0.6.0.</span></p>
+</div>
 </li>
 </ul>
 <div class="section" id="backend-specific-cache-arguments">
@@ -269,8 +271,9 @@ dogpile.cache.</li>
 of <strong>cache regions</strong> so that cache configurations can be maintained
 externally to templates.  These configurations live under
 named &#8220;regions&#8221; that can be referred to within templates themselves.</p>
-<p class="versionadded">
-<span class="versionmodified">New in version 0.6.0: </span>Support for Beaker cache regions.</p>
+<div class="versionadded">
+<p><span>New in version 0.6.0: </span>Support for Beaker cache regions.</p>
+</div>
 <p>For example, suppose we would like two regions.  One is a &#8220;short term&#8221;
 region that will store content in a memory-based dictionary,
 expiring after 60 seconds.   The other is a Memcached region,
@@ -354,7 +357,7 @@ an exception is thrown.  Available as <tt class="docutils literal"><span class="
 <p><a class="reference external" href="http://dogpilecache.readthedocs.org">dogpile.cache</a> is a new replacement for Beaker.   It provides
 a modernized, slimmed down interface and is generally easier to use
 than Beaker.   As of this writing it has not yet been released.  dogpile.cache
-includes its own Mako cache plugin &#8211; see <a class="reference external" href="http://dogpilecache.readthedocs.org/en/latest/api.html#dogpile.cache.plugins.mako_cache" title="(in dogpile.cache v0.4.4)"><tt class="xref py py-mod docutils literal"><span class="pre">dogpile.cache.plugins.mako_cache</span></tt></a> in the
+includes its own Mako cache plugin &#8211; see <a class="reference external" href="http://dogpilecache.readthedocs.org/en/latest/api.html#dogpile.cache.plugins.mako_cache" title="(in dogpile.cache v0.5.1)"><tt class="xref py py-mod docutils literal"><span class="pre">dogpile.cache.plugins.mako_cache</span></tt></a> in the
 dogpile.cache documentation.</p>
 </div>
 </div>
@@ -492,14 +495,15 @@ conflicts with generated modules don&#8217;t occur.</li>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>Represents a data content cache made available to the module
 space of a specific <a class="reference internal" href="usage.html#mako.template.Template" title="mako.template.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a> object.</p>
-<p class="versionadded">
-<span class="versionmodified">New in version 0.6: </span><a class="reference internal" href="#mako.cache.Cache" title="mako.cache.Cache"><tt class="xref py py-class docutils literal"><span class="pre">Cache</span></tt></a> by itself is mostly a
+<div class="versionadded">
+<p><span>New in version 0.6: </span><a class="reference internal" href="#mako.cache.Cache" title="mako.cache.Cache"><tt class="xref py py-class docutils literal"><span class="pre">Cache</span></tt></a> by itself is mostly a
 container for a <a class="reference internal" href="#mako.cache.CacheImpl" title="mako.cache.CacheImpl"><tt class="xref py py-class docutils literal"><span class="pre">CacheImpl</span></tt></a> object, which implements
 a fixed API to provide caching services; specific subclasses exist to
 implement different
 caching strategies.   Mako includes a backend that works with
 the Beaker caching system.   Beaker itself then supports
 a number of backends (i.e. file, memory, memcached, etc.)</p>
+</div>
 <p>The construction of a <a class="reference internal" href="#mako.cache.Cache" title="mako.cache.Cache"><tt class="xref py py-class docutils literal"><span class="pre">Cache</span></tt></a> is part of the mechanics
 of a <a class="reference internal" href="usage.html#mako.template.Template" title="mako.template.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a>, and programmatic access to this
 cache is typically via the <tt class="xref py py-attr docutils literal"><span class="pre">Template.cache</span></tt> attribute.</p>
@@ -758,7 +762,7 @@ value of <tt class="docutils literal"><span class="pre">'beaker'</span></tt> for
 
     <div id="docs-copyright">
         &copy; Copyright the Mako authors and contributors.
-        Documentation generated using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3 
+        Documentation generated using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2b1 
         with Mako templates.
     </div>
 </div>

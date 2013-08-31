@@ -6,7 +6,7 @@
     
                 Usage
              &mdash; 
-    Mako 0.8.1 Documentation
+    Mako 0.9.0 Documentation
 </title>
 
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,8 +14,8 @@
 
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-          URL_ROOT:    '#',
-          VERSION:     '0.8.1',
+          URL_ROOT:    './',
+          VERSION:     '0.9.0',
           COLLAPSE_MODINDEX: false,
           FILE_SUFFIX: '.html'
       };
@@ -25,7 +25,7 @@
         <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="Mako 0.8.1 Documentation" href="index.html" />
+    <link rel="top" title="Mako 0.9.0 Documentation" href="index.html" />
         <link rel="next" title="Syntax" href="syntax.html" />
         <link rel="prev" title="Table of Contents" href="index.html" />
 
@@ -64,7 +64,7 @@
 
 
 <div id="docs-header">
-    <h1>Mako 0.8.1 Documentation</h1>
+    <h1>Mako 0.9.0 Documentation</h1>
 
     <div id="docs-search">
     Search:
@@ -76,7 +76,7 @@
     </div>
 
     <div id="docs-version-header">
-        Release: <span class="version-num">0.8.1</span>
+        Release: <span class="version-num">0.9.0</span>
 
     </div>
 
@@ -101,7 +101,7 @@
     </div>
 
     <div id="docs-navigation-banner">
-        <a href="index.html">Mako 0.8.1 Documentation</a>
+        <a href="index.html">Mako 0.9.0 Documentation</a>
         » 
                 Usage
              
@@ -495,11 +495,11 @@ template at <tt class="docutils literal"><span class="pre">myproj/myproj/templat
 a Mako section in its <a class="reference external" href="http://babel.edgewall.org/wiki/Documentation/messages.html#extraction-method-mapping-and-configuration">Babel Extraction Method Mapping
 file</a>
 (typically located at <tt class="docutils literal"><span class="pre">myproj/babel.cfg</span></tt>):</p>
-<div class="highlight-cfg"><div class="highlight"><pre><span class="c"># Extraction from Python source files</span>
+<div class="highlight-cfg"><div class="highlight"><pre><span class="c1"># Extraction from Python source files</span>
 
 <span class="k">[python: myproj/**.py]</span>
 
-<span class="c"># Extraction from Mako templates</span>
+<span class="c1"># Extraction from Mako templates</span>
 
 <span class="k">[mako: myproj/templates/**.html]</span>
 <span class="na">input_encoding</span> <span class="o">=</span> <span class="s">utf-8</span>
@@ -579,26 +579,30 @@ default &#8220;fast&#8221; buffer.   This allows raw bytestrings in the
 output stream, such as in expressions, to pass straight
 through to the buffer.  This flag is forced
 to <tt class="docutils literal"><span class="pre">True</span></tt> if <tt class="docutils literal"><span class="pre">disable_unicode</span></tt> is also configured.</p>
-<p class="versionadded">
-<span class="versionmodified">New in version 0.4: </span>Added to provide the same behavior as that of the previous series.</p>
+<div class="versionadded">
+<p><span>New in version 0.4: </span>Added to provide the same behavior as that of the previous series.</p>
+</div>
 </li>
 <li><strong>cache_args</strong> &#8211; Dictionary of cache configuration arguments that
 will be passed to the <a class="reference internal" href="caching.html#mako.cache.CacheImpl" title="mako.cache.CacheImpl"><tt class="xref py py-class docutils literal"><span class="pre">CacheImpl</span></tt></a>.   See <a class="reference internal" href="caching.html"><em>Caching</em></a>.</li>
-<li><strong>cache_dir</strong> &#8211; <p class="deprecated">
-<span class="versionmodified">Deprecated since version 0.6: </span>Use the <tt class="docutils literal"><span class="pre">'dir'</span></tt> argument in the <tt class="docutils literal"><span class="pre">cache_args</span></tt> dictionary.
+<li><strong>cache_dir</strong> &#8211; <div class="deprecated">
+<p><span>Deprecated since version 0.6: </span>Use the <tt class="docutils literal"><span class="pre">'dir'</span></tt> argument in the <tt class="docutils literal"><span class="pre">cache_args</span></tt> dictionary.
 See <a class="reference internal" href="caching.html"><em>Caching</em></a>.</p>
+</div>
 </li>
 <li><strong>cache_enabled</strong> &#8211; Boolean flag which enables caching of this
 template.  See <a class="reference internal" href="caching.html"><em>Caching</em></a>.</li>
 <li><strong>cache_impl</strong> &#8211; String name of a <a class="reference internal" href="caching.html#mako.cache.CacheImpl" title="mako.cache.CacheImpl"><tt class="xref py py-class docutils literal"><span class="pre">CacheImpl</span></tt></a> caching
 implementation to use.   Defaults to <tt class="docutils literal"><span class="pre">'beaker'</span></tt>.</li>
-<li><strong>cache_type</strong> &#8211; <p class="deprecated">
-<span class="versionmodified">Deprecated since version 0.6: </span>Use the <tt class="docutils literal"><span class="pre">'type'</span></tt> argument in the <tt class="docutils literal"><span class="pre">cache_args</span></tt> dictionary.
+<li><strong>cache_type</strong> &#8211; <div class="deprecated">
+<p><span>Deprecated since version 0.6: </span>Use the <tt class="docutils literal"><span class="pre">'type'</span></tt> argument in the <tt class="docutils literal"><span class="pre">cache_args</span></tt> dictionary.
 See <a class="reference internal" href="caching.html"><em>Caching</em></a>.</p>
+</div>
 </li>
-<li><strong>cache_url</strong> &#8211; <p class="deprecated">
-<span class="versionmodified">Deprecated since version 0.6: </span>Use the <tt class="docutils literal"><span class="pre">'url'</span></tt> argument in the <tt class="docutils literal"><span class="pre">cache_args</span></tt> dictionary.
+<li><strong>cache_url</strong> &#8211; <div class="deprecated">
+<p><span>Deprecated since version 0.6: </span>Use the <tt class="docutils literal"><span class="pre">'url'</span></tt> argument in the <tt class="docutils literal"><span class="pre">cache_args</span></tt> dictionary.
 See <a class="reference internal" href="caching.html"><em>Caching</em></a>.</p>
+</div>
 </li>
 <li><strong>default_filters</strong> &#8211; List of string filter names that will
 be applied to all expressions.  See <a class="reference internal" href="filtering.html#filtering-default-filters"><em>The default_filters Argument</em></a>.</li>
@@ -691,16 +695,18 @@ code.</li>
 <li><strong>lexer_cls</strong> &#8211; <p>A <tt class="xref py py-class docutils literal"><span class="pre">Lexer</span></tt> class used to parse
 the template.   The <tt class="xref py py-class docutils literal"><span class="pre">Lexer</span></tt> class is used by
 default.</p>
-<p class="versionadded">
-<span class="versionmodified">New in version 0.7.4.</span></p>
+<div class="versionadded">
+<p><span>New in version 0.7.4.</span></p>
+</div>
 </li>
 <li><strong>strict_undefined</strong> &#8211; <p>Replaces the automatic usage of
 <tt class="docutils literal"><span class="pre">UNDEFINED</span></tt> for any undeclared variables not located in
 the <a class="reference internal" href="runtime.html#mako.runtime.Context" title="mako.runtime.Context"><tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt></a> with an immediate raise of
 <tt class="docutils literal"><span class="pre">NameError</span></tt>. The advantage is immediate reporting of
 missing variables which include the name.</p>
-<p class="versionadded">
-<span class="versionmodified">New in version 0.3.6.</span></p>
+<div class="versionadded">
+<p><span>New in version 0.3.6.</span></p>
+</div>
 </li>
 <li><strong>uri</strong> &#8211; string URI or other identifier for this template.
 If not provided, the <tt class="docutils literal"><span class="pre">uri</span></tt> is generated from the filesystem
@@ -1050,7 +1056,7 @@ applicable.</p>
 
     <div id="docs-copyright">
         &copy; Copyright the Mako authors and contributors.
-        Documentation generated using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3 
+        Documentation generated using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2b1 
         with Mako templates.
     </div>
 </div>

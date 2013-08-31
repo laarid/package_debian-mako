@@ -6,7 +6,7 @@
     
                 Filtering and Buffering
              &mdash; 
-    Mako 0.8.1 Documentation
+    Mako 0.9.0 Documentation
 </title>
 
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,8 +14,8 @@
 
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-          URL_ROOT:    '#',
-          VERSION:     '0.8.1',
+          URL_ROOT:    './',
+          VERSION:     '0.9.0',
           COLLAPSE_MODINDEX: false,
           FILE_SUFFIX: '.html'
       };
@@ -25,7 +25,7 @@
         <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="Mako 0.8.1 Documentation" href="index.html" />
+    <link rel="top" title="Mako 0.9.0 Documentation" href="index.html" />
         <link rel="next" title="The Unicode Chapter" href="unicode.html" />
         <link rel="prev" title="Inheritance" href="inheritance.html" />
 
@@ -64,7 +64,7 @@
 
 
 <div id="docs-header">
-    <h1>Mako 0.8.1 Documentation</h1>
+    <h1>Mako 0.9.0 Documentation</h1>
 
     <div id="docs-search">
     Search:
@@ -76,7 +76,7 @@
     </div>
 
     <div id="docs-version-header">
-        Release: <span class="version-num">0.8.1</span>
+        Release: <span class="version-num">0.9.0</span>
 
     </div>
 
@@ -101,7 +101,7 @@
     </div>
 
     <div id="docs-navigation-banner">
-        <a href="index.html">Mako 0.8.1 Documentation</a>
+        <a href="index.html">Mako 0.9.0 Documentation</a>
         » 
                 Filtering and Buffering
              
@@ -175,8 +175,9 @@ produces <tt class="docutils literal"><span class="pre">this+is+some+text</span>
 </li>
 <li><p class="first"><tt class="docutils literal"><span class="pre">h</span></tt> : HTML escaping, provided by
 <tt class="docutils literal"><span class="pre">markupsafe.escape(string)</span></tt></p>
-<p class="versionadded">
-<span class="versionmodified">New in version 0.3.4: </span>Prior versions use <tt class="docutils literal"><span class="pre">cgi.escape(string,</span> <span class="pre">True)</span></tt>.</p>
+<div class="versionadded">
+<p><span>New in version 0.3.4: </span>Prior versions use <tt class="docutils literal"><span class="pre">cgi.escape(string,</span> <span class="pre">True)</span></tt>.</p>
+</div>
 </li>
 <li><p class="first"><tt class="docutils literal"><span class="pre">x</span></tt> : XML escaping</p>
 </li>
@@ -388,8 +389,9 @@ to <tt class="docutils literal"><span class="pre">capture</span></tt> instead:</
 </div>
 <div class="section" id="decorating">
 <h2>Decorating<a class="headerlink" href="#decorating" title="Permalink to this headline">¶</a></h2>
-<p class="versionadded">
-<span class="versionmodified">New in version 0.2.5.</span></p>
+<div class="versionadded">
+<p><span>New in version 0.2.5.</span></p>
+</div>
 <p>Somewhat like a filter for a <tt class="docutils literal"><span class="pre">%def</span></tt> but more flexible, the <tt class="docutils literal"><span class="pre">decorator</span></tt>
 argument to <tt class="docutils literal"><span class="pre">%def</span></tt> allows the creation of a function that will
 work in a similar manner to a Python decorator. The function can
@@ -457,7 +459,7 @@ as in the first example. The return value gets discarded.</p>
 
     <div id="docs-copyright">
         &copy; Copyright the Mako authors and contributors.
-        Documentation generated using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3 
+        Documentation generated using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2b1 
         with Mako templates.
     </div>
 </div>

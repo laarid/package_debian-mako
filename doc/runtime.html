@@ -6,7 +6,7 @@
     
                 The Mako Runtime Environment
              &mdash; 
-    Mako 0.8.1 Documentation
+    Mako 0.9.0 Documentation
 </title>
 
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,8 +14,8 @@
 
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-          URL_ROOT:    '#',
-          VERSION:     '0.8.1',
+          URL_ROOT:    './',
+          VERSION:     '0.9.0',
           COLLAPSE_MODINDEX: false,
           FILE_SUFFIX: '.html'
       };
@@ -25,7 +25,7 @@
         <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="Mako 0.8.1 Documentation" href="index.html" />
+    <link rel="top" title="Mako 0.9.0 Documentation" href="index.html" />
         <link rel="next" title="Namespaces" href="namespaces.html" />
         <link rel="prev" title="Defs and Blocks" href="defs.html" />
 
@@ -64,7 +64,7 @@
 
 
 <div id="docs-header">
-    <h1>Mako 0.8.1 Documentation</h1>
+    <h1>Mako 0.9.0 Documentation</h1>
 
     <div id="docs-search">
     Search:
@@ -76,7 +76,7 @@
     </div>
 
     <div id="docs-version-header">
-        Release: <span class="version-num">0.8.1</span>
+        Release: <span class="version-num">0.9.0</span>
 
     </div>
 
@@ -101,7 +101,7 @@
     </div>
 
     <div id="docs-navigation-banner">
-        <a href="index.html">Mako 0.8.1 Documentation</a>
+        <a href="index.html">Mako 0.9.0 Documentation</a>
         » 
                 The Mako Runtime Environment
              
@@ -239,8 +239,9 @@ to the <a class="reference internal" href="usage.html#mako.template.Template" ti
 any non-present variables to raise an immediate <tt class="docutils literal"><span class="pre">NameError</span></tt>
 which includes the name of the variable in its message
 when <a class="reference internal" href="usage.html#mako.template.Template.render" title="mako.template.Template.render"><tt class="xref py py-meth docutils literal"><span class="pre">render()</span></tt></a> is called &#8211; <tt class="docutils literal"><span class="pre">UNDEFINED</span></tt> is not used.</p>
-<p class="versionadded">
-<span class="versionmodified">New in version 0.3.6.</span></p>
+<div class="versionadded">
+<p><span>New in version 0.3.6.</span></p>
+</div>
 </li>
 <li><p class="first"><strong>Why not just return None?</strong> Using <tt class="docutils literal"><span class="pre">UNDEFINED</span></tt>, or
 raising a <tt class="docutils literal"><span class="pre">NameError</span></tt> is more
@@ -362,8 +363,9 @@ template behavior:</p>
 <span class="x">&lt;/ul&gt;</span>
 </pre></div>
 </div>
-<p class="versionadded">
-<span class="versionmodified">New in version 0.7.</span></p>
+<div class="versionadded">
+<p><span>New in version 0.7.</span></p>
+</div>
 <div class="section" id="iterations">
 <h3>Iterations<a class="headerlink" href="#iterations" title="Permalink to this headline">¶</a></h3>
 <p>Regardless of the type of iterable you&#8217;re looping over, <tt class="docutils literal"><span class="pre">loop</span></tt> always tracks
@@ -466,10 +468,11 @@ loop to make a checkered table:</p>
 </div>
 <div class="section" id="migrating-legacy-templates-that-use-the-word-loop">
 <span id="migrating-loop"></span><h3>Migrating Legacy Templates that Use the Word &#8220;loop&#8221;<a class="headerlink" href="#migrating-legacy-templates-that-use-the-word-loop" title="Permalink to this headline">¶</a></h3>
-<p class="versionchanged">
-<span class="versionmodified">Changed in version 0.7: </span>The <tt class="docutils literal"><span class="pre">loop</span></tt> name is now <a class="reference internal" href="#reserved-names"><em>reserved</em></a> in Mako,
+<div class="versionchanged">
+<p><span>Changed in version 0.7: </span>The <tt class="docutils literal"><span class="pre">loop</span></tt> name is now <a class="reference internal" href="#reserved-names"><em>reserved</em></a> in Mako,
 which means a template that refers to a variable named <tt class="docutils literal"><span class="pre">loop</span></tt>
 won&#8217;t function correctly when used in Mako 0.7.</p>
+</div>
 <p>To ease the transition for such systems, the feature can be disabled across the board for
 all templates, then re-enabled on a per-template basis for those templates which wish
 to make use of the new system.</p>
@@ -548,10 +551,11 @@ makes no sense, it shouldn&#8217;t; read the section
 <span id="id2"></span><h3>Reserved Names<a class="headerlink" href="#reserved-names" title="Permalink to this headline">¶</a></h3>
 <p>Mako has a few names that are considered to be &#8220;reserved&#8221; and can&#8217;t be used
 as variable names.</p>
-<p class="versionchanged">
-<span class="versionmodified">Changed in version 0.7: </span>Mako raises an error if these words are found passed to the template
+<div class="versionchanged">
+<p><span>Changed in version 0.7: </span>Mako raises an error if these words are found passed to the template
 as context arguments, whereas in previous versions they&#8217;d be silently
 ignored or lead to other error messages.</p>
+</div>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">context</span></tt> - see <a class="reference internal" href="#context"><em>Context</em></a>.</li>
 <li><tt class="docutils literal"><span class="pre">UNDEFINED</span></tt> - see <a class="reference internal" href="#context-vars"><em>Context Variables</em></a>.</li>
@@ -585,15 +589,20 @@ callstacks for templates.</p>
 <dl class="attribute">
 <dt id="mako.runtime.Context.kwargs">
 <tt class="descname">kwargs</tt><a class="headerlink" href="#mako.runtime.Context.kwargs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the dictionary of keyword arguments associated with this
-<a class="reference internal" href="#mako.runtime.Context" title="mako.runtime.Context"><tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt></a>.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="mako.runtime.Context.locals_">
-<tt class="descname">locals_</tt><big>(</big><em>d</em><big>)</big><a class="headerlink" href="#mako.runtime.Context.locals_" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new <a class="reference internal" href="#mako.runtime.Context" title="mako.runtime.Context"><tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt></a> with a copy of this
-<a class="reference internal" href="#mako.runtime.Context" title="mako.runtime.Context"><tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt></a>&#8216;s current state, updated with the given dictionary.</p>
+<dd><p>Return the dictionary of top level keyword arguments associated
+with this <a class="reference internal" href="#mako.runtime.Context" title="mako.runtime.Context"><tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt></a>.</p>
+<p>This dictionary only includes the top-level arguments passed to
+<a class="reference internal" href="usage.html#mako.template.Template.render" title="mako.template.Template.render"><tt class="xref py py-meth docutils literal"><span class="pre">Template.render()</span></tt></a>.  It does not include names produced within
+the template execution such as local variable names or special names
+such as <tt class="docutils literal"><span class="pre">self</span></tt>, <tt class="docutils literal"><span class="pre">next</span></tt>, etc.</p>
+<p>The purpose of this dictionary is primarily for the case that
+a <a class="reference internal" href="usage.html#mako.template.Template" title="mako.template.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a> accepts arguments via its <tt class="docutils literal"><span class="pre">&lt;%page&gt;</span></tt> tag,
+which are normally expected to be passed via <a class="reference internal" href="usage.html#mako.template.Template.render" title="mako.template.Template.render"><tt class="xref py py-meth docutils literal"><span class="pre">Template.render()</span></tt></a>,
+except the template is being called in an inheritance context,
+using the <tt class="docutils literal"><span class="pre">body()</span></tt> method.   <a class="reference internal" href="#mako.runtime.Context.kwargs" title="mako.runtime.Context.kwargs"><tt class="xref py py-attr docutils literal"><span class="pre">Context.kwargs</span></tt></a> can then be
+used to propagate these arguments to the inheriting template:</p>
+<div class="highlight-python"><pre>${next.body(**context.kwargs)}</pre>
+</div>
 </dd></dl>
 
 <dl class="attribute">
@@ -689,7 +698,7 @@ object.</p>
 
     <div id="docs-copyright">
         &copy; Copyright the Mako authors and contributors.
-        Documentation generated using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3 
+        Documentation generated using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2b1 
         with Mako templates.
     </div>
 </div>
