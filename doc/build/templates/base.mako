@@ -3,9 +3,15 @@
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 <head>
 <title><%block name="head_title">Mako Templates for Python</%block></title>
+
+<!-- begin iterate through sphinx environment css_files -->
+% for cssfile in self.attr.default_css_files + css_files:
+    <link rel="stylesheet" href="${pathto(cssfile, 1)}" type="text/css" />
+% endfor
+<!-- end iterate through sphinx environment css_files -->
+
 <%block name="headers">
 </%block>
-<link rel="stylesheet" href="${pathto('_static/site.css', 1)}"></link>
 
 
 </head>
@@ -28,8 +34,6 @@
     % if toolbar:
     <div class="toolbar">
     <a href="${site_base}/">Home</a>
-    &nbsp; | &nbsp;
-    <a href="${site_base}/trac">Trac</a>
     &nbsp; | &nbsp;
     <a href="${site_base}/community.html">Community</a>
     &nbsp; | &nbsp;

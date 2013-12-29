@@ -31,7 +31,7 @@
     :license: Python License.
 """
 from _ast import *
-
+from mako.compat import arg_stringname
 
 BOOLOP_SYMBOLS = {
     And:        'and',
@@ -403,10 +403,10 @@ class SourceGenerator(NodeVisitor):
                 self.visit(default)
         if node.vararg is not None:
             write_comma()
-            self.write('*' + node.vararg)
+            self.write('*' + arg_stringname(node.vararg))
         if node.kwarg is not None:
             write_comma()
-            self.write('**' + node.kwarg)
+            self.write('**' + arg_stringname(node.kwarg))
 
     def decorators(self, node):
         for decorator in node.decorator_list:
@@ -658,6 +658,9 @@ class SourceGenerator(NodeVisitor):
 
     def visit_Name(self, node):
         self.write(node.id)
+
+    def visit_NameConstant(self, node):
+        self.write(str(node.value))
 
     def visit_arg(self, node):
         self.write(node.arg)
