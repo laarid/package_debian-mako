@@ -1,12 +1,13 @@
 from mako.template import Template
 import unittest
 import os
-from mako.compat import py3k, py26, py25
-from mako.util import function_named
+from mako.compat import py3k, py26, py33
+from mako import compat
+from mako.util import update_wrapper
 import re
 from mako.cache import CacheImpl, register_plugin
 from nose import SkipTest
-import sys
+import contextlib
 
 template_base = os.path.join(os.path.dirname(__file__), 'templates')
 module_base = os.path.join(template_base, 'modules')
@@ -61,24 +62,34 @@ def teardown():
     import shutil
     shutil.rmtree(module_base, True)
 
-def assert_raises(except_cls, callable_, *args, **kw):
+if py33:
+    from unittest import mock
+else:
+    import mock
+
+@contextlib.contextmanager
+def raises(except_cls, message=None):
     try:
-        callable_(*args, **kw)
+        yield
         success = False
-    except except_cls:
+    except except_cls as e:
+        if message:
+            assert re.search(message, compat.text_type(e), re.UNICODE), \
+                            "%r !~ %s" % (message, e)
+            print(compat.text_type(e).encode('utf-8'))
         success = True
 
     # assert outside the block so it works for AssertionError too !
     assert success, "Callable did not raise an exception"
 
+
+def assert_raises(except_cls, callable_, *args, **kw):
+    with raises(except_cls):
+        return callable_(*args, **kw)
+
 def assert_raises_message(except_cls, msg, callable_, *args, **kwargs):
-    try:
-        callable_(*args, **kwargs)
-        assert False, "Callable did not raise an exception"
-    except except_cls:
-        e = sys.exc_info()[1]
-        assert re.search(msg, str(e)), "%r !~ %s" % (msg, e)
-        print(str(e))
+    with raises(except_cls, msg):
+        return callable_(*args, **kwargs)
 
 def skip_if(predicate, reason=None):
     """Skip a test if predicate is true."""
@@ -93,17 +104,17 @@ def skip_if(predicate, reason=None):
                 raise SkipTest(msg)
             else:
                 return fn(*args, **kw)
-        return function_named(maybe, fn_name)
+        return update_wrapper(maybe, fn)
     return decorate
+
+def requires_python_3(fn):
+    return skip_if(lambda: not py3k, "Requires Python 3.xx")(fn)
 
 def requires_python_2(fn):
     return skip_if(lambda: py3k, "Requires Python 2.xx")(fn)
 
 def requires_python_26_or_greater(fn):
     return skip_if(lambda: not py26, "Requires Python 2.6 or greater")(fn)
-
-def requires_python_25_or_greater(fn):
-    return skip_if(lambda: not py25, "Requires Python 2.5 or greater")(fn)
 
 def requires_pygments_14(fn):
     try:
@@ -121,7 +132,7 @@ def requires_no_pygments_exceptions(fn):
             return fn(*arg, **kw)
         finally:
             exceptions._install_highlighting()
-    return function_named(go, fn.__name__)
+    return update_wrapper(go, fn)
 
 class PlainCacheImpl(CacheImpl):
     """Simple memory cache impl so that tests which

@@ -13,6 +13,7 @@ Mako.egg-info/not-zip-safe
 Mako.egg-info/requires.txt
 Mako.egg-info/top_level.txt
 doc/caching.html
+doc/changelog.html
 doc/defs.html
 doc/filtering.html
 doc/genindex.html
@@ -26,6 +27,7 @@ doc/syntax.html
 doc/unicode.html
 doc/usage.html
 doc/_sources/caching.txt
+doc/_sources/changelog.txt
 doc/_sources/defs.txt
 doc/_sources/filtering.txt
 doc/_sources/index.txt
@@ -36,6 +38,7 @@ doc/_sources/syntax.txt
 doc/_sources/unicode.txt
 doc/_sources/usage.txt
 doc/_static/basic.css
+doc/_static/changelog.css
 doc/_static/comment-bright.png
 doc/_static/comment-close.png
 doc/_static/comment.png
@@ -53,18 +56,21 @@ doc/_static/pygments.css
 doc/_static/searchtools.js
 doc/_static/sidebar.js
 doc/_static/site.css
+doc/_static/sphinx_paramlinks.css
 doc/_static/underscore.js
 doc/_static/up-pressed.png
 doc/_static/up.png
 doc/_static/websupport.js
 doc/build/Makefile
 doc/build/caching.rst
+doc/build/changelog.rst
 doc/build/conf.py
 doc/build/defs.rst
 doc/build/filtering.rst
 doc/build/index.rst
 doc/build/inheritance.rst
 doc/build/namespaces.rst
+doc/build/requirements.txt
 doc/build/runtime.rst
 doc/build/syntax.rst
 doc/build/unicode.rst
@@ -96,6 +102,7 @@ mako/__init__.py
 mako/_ast_util.py
 mako/ast.py
 mako/cache.py
+mako/cmd.py
 mako/codegen.py
 mako/compat.py
 mako/exceptions.py
@@ -115,7 +122,6 @@ mako/ext/beaker_cache.py
 mako/ext/preprocessors.py
 mako/ext/pygmentplugin.py
 mako/ext/turbogears.py
-scripts/mako-render
 test/__init__.py
 test/sample_module_namespace.py
 test/test_ast.py
@@ -123,6 +129,7 @@ test/test_babelplugin.py
 test/test_block.py
 test/test_cache.py
 test/test_call.py
+test/test_cmd.py
 test/test_decorators.py
 test/test_def.py
 test/test_exceptions.py
@@ -147,6 +154,9 @@ test/templates/bommagic.html
 test/templates/chs_unicode.html
 test/templates/chs_unicode_py3k.html
 test/templates/chs_utf8.html
+test/templates/cmd_good.mako
+test/templates/cmd_runtime.mako
+test/templates/cmd_syntax.mako
 test/templates/crlf.html
 test/templates/gettext.mako
 test/templates/index.html

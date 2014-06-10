@@ -6,13 +6,15 @@
     
                 Caching
              &mdash;
-    Mako 0.9.1 Documentation
+    Mako 1.0.0 Documentation
 </title>
 
 <!-- begin iterate through sphinx environment css_files -->
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/docs.css" type="text/css" />
     <link rel="stylesheet" href="_static/site.css" type="text/css" />
+    <link rel="stylesheet" href="_static/changelog.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx_paramlinks.css" type="text/css" />
 <!-- end iterate through sphinx environment css_files -->
 
 
@@ -22,7 +24,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
           URL_ROOT:    './',
-          VERSION:     '0.9.1',
+          VERSION:     '1.0.0',
           COLLAPSE_MODINDEX: false,
           FILE_SUFFIX: '.html'
       };
@@ -32,7 +34,8 @@
         <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="Mako 0.9.1 Documentation" href="index.html" />
+    <link rel="top" title="Mako 1.0.0 Documentation" href="index.html" />
+        <link rel="next" title="Changelog" href="changelog.html" />
         <link rel="prev" title="The Unicode Chapter" href="unicode.html" />
 
 
@@ -70,7 +73,7 @@
 
 
 <div id="docs-header">
-    <h1>Mako 0.9.1 Documentation</h1>
+    <h1>Mako 1.0.0 Documentation</h1>
 
     <div id="docs-search">
     Search:
@@ -82,7 +85,7 @@
     </div>
 
     <div id="docs-version-header">
-        Release: <span class="version-num">0.9.1</span>
+        Release: <span class="version-num">1.0.0</span>
 
     </div>
 
@@ -94,6 +97,9 @@
             <li>Prev:
             <a href="unicode.html" title="previous chapter">The Unicode Chapter</a>
             </li>
+            <li>Next:
+            <a href="changelog.html" title="next chapter">Changelog</a>
+            </li>
 
         <li>
             <a href="index.html">Table of Contents</a> |
@@ -104,7 +110,7 @@
     </div>
 
     <div id="docs-navigation-banner">
-        <a href="index.html">Mako 0.9.1 Documentation</a>
+        <a href="index.html">Mako 1.0.0 Documentation</a>
         » 
                 Caching
             
@@ -144,6 +150,10 @@
     <h4>Previous Topic</h4>
     <p>
     <a href="unicode.html" title="previous chapter">The Unicode Chapter</a>
+    </p>
+    <h4>Next Topic</h4>
+    <p>
+    <a href="changelog.html" title="next chapter">Changelog</a>
     </p>
 
     <h4>Quick Search</h4>
@@ -364,7 +374,7 @@ an exception is thrown.  Available as <tt class="docutils literal"><span class="
 <p><a class="reference external" href="http://dogpilecache.readthedocs.org">dogpile.cache</a> is a new replacement for Beaker.   It provides
 a modernized, slimmed down interface and is generally easier to use
 than Beaker.   As of this writing it has not yet been released.  dogpile.cache
-includes its own Mako cache plugin &#8211; see <a class="reference external" href="http://dogpilecache.readthedocs.org/en/latest/api.html#dogpile.cache.plugins.mako_cache" title="(in dogpile.cache v0.5.3)"><tt class="xref py py-mod docutils literal"><span class="pre">dogpile.cache.plugins.mako_cache</span></tt></a> in the
+includes its own Mako cache plugin &#8211; see <a class="reference external" href="http://dogpilecache.readthedocs.org/en/latest/api.html#module-dogpile.cache.plugins.mako_cache" title="(in dogpile.cache v0.5.4)"><tt class="xref py py-mod docutils literal"><span class="pre">dogpile.cache.plugins.mako_cache</span></tt></a> in the
 dogpile.cache documentation.</p>
 </div>
 </div>
@@ -523,8 +533,8 @@ cache is typically via the <tt class="xref py py-attr docutils literal"><span cl
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>key</strong> &#8211; the value&#8217;s key.</li>
-<li><strong>**kw</strong> &#8211; cache configuration arguments.  The
+<li><span class="target" id="mako.cache.Cache.get.params.key"></span><strong>key</strong><a class="paramlink headerlink reference internal" href="#mako.cache.Cache.get.params.key">¶</a> &#8211; the value&#8217;s key.</li>
+<li><span class="target" id="mako.cache.Cache.get.params.**kw"></span><strong>**kw</strong><a class="paramlink headerlink reference internal" href="#mako.cache.Cache.get.params.**kw">¶</a> &#8211; cache configuration arguments.  The
 backend is configured using these arguments upon first request.
 Subsequent requests that use the same series of configuration
 values will use that same backend.</li>
@@ -569,8 +579,8 @@ methods beyond that of <a class="reference internal" href="#mako.cache.Cache" ti
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>key</strong> &#8211; the value&#8217;s key.</li>
-<li><strong>**kw</strong> &#8211; cache configuration arguments.  The
+<li><span class="target" id="mako.cache.Cache.invalidate.params.key"></span><strong>key</strong><a class="paramlink headerlink reference internal" href="#mako.cache.Cache.invalidate.params.key">¶</a> &#8211; the value&#8217;s key.</li>
+<li><span class="target" id="mako.cache.Cache.invalidate.params.**kw"></span><strong>**kw</strong><a class="paramlink headerlink reference internal" href="#mako.cache.Cache.invalidate.params.**kw">¶</a> &#8211; cache configuration arguments.  The
 backend is configured using these arguments upon first request.
 Subsequent requests that use the same series of configuration
 values will use that same backend.</li>
@@ -622,9 +632,9 @@ template.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>key</strong> &#8211; the value&#8217;s key.</li>
-<li><strong>value</strong> &#8211; the value.</li>
-<li><strong>**kw</strong> &#8211; cache configuration arguments.</li>
+<li><span class="target" id="mako.cache.Cache.set.params.key"></span><strong>key</strong><a class="paramlink headerlink reference internal" href="#mako.cache.Cache.set.params.key">¶</a> &#8211; the value&#8217;s key.</li>
+<li><span class="target" id="mako.cache.Cache.set.params.value"></span><strong>value</strong><a class="paramlink headerlink reference internal" href="#mako.cache.Cache.set.params.value">¶</a> &#8211; the value.</li>
+<li><span class="target" id="mako.cache.Cache.set.params.**kw"></span><strong>**kw</strong><a class="paramlink headerlink reference internal" href="#mako.cache.Cache.set.params.**kw">¶</a> &#8211; cache configuration arguments.</li>
 </ul>
 </td>
 </tr>
@@ -660,8 +670,8 @@ the filesystem.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>key</strong> &#8211; the value&#8217;s key.</li>
-<li><strong>**kw</strong> &#8211; cache configuration arguments.</li>
+<li><span class="target" id="mako.cache.CacheImpl.get.params.key"></span><strong>key</strong><a class="paramlink headerlink reference internal" href="#mako.cache.CacheImpl.get.params.key">¶</a> &#8211; the value&#8217;s key.</li>
+<li><span class="target" id="mako.cache.CacheImpl.get.params.**kw"></span><strong>**kw</strong><a class="paramlink headerlink reference internal" href="#mako.cache.CacheImpl.get.params.**kw">¶</a> &#8211; cache configuration arguments.</li>
 </ul>
 </td>
 </tr>
@@ -684,10 +694,10 @@ under the given key before being returned.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>key</strong> &#8211; the value&#8217;s key.</li>
-<li><strong>creation_function</strong> &#8211; function that when called generates
+<li><span class="target" id="mako.cache.CacheImpl.get_or_create.params.key"></span><strong>key</strong><a class="paramlink headerlink reference internal" href="#mako.cache.CacheImpl.get_or_create.params.key">¶</a> &#8211; the value&#8217;s key.</li>
+<li><span class="target" id="mako.cache.CacheImpl.get_or_create.params.creation_function"></span><strong>creation_function</strong><a class="paramlink headerlink reference internal" href="#mako.cache.CacheImpl.get_or_create.params.creation_function">¶</a> &#8211; function that when called generates
 a new value.</li>
-<li><strong>**kw</strong> &#8211; cache configuration arguments.</li>
+<li><span class="target" id="mako.cache.CacheImpl.get_or_create.params.**kw"></span><strong>**kw</strong><a class="paramlink headerlink reference internal" href="#mako.cache.CacheImpl.get_or_create.params.**kw">¶</a> &#8211; cache configuration arguments.</li>
 </ul>
 </td>
 </tr>
@@ -704,8 +714,8 @@ a new value.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>key</strong> &#8211; the value&#8217;s key.</li>
-<li><strong>**kw</strong> &#8211; cache configuration arguments.</li>
+<li><span class="target" id="mako.cache.CacheImpl.invalidate.params.key"></span><strong>key</strong><a class="paramlink headerlink reference internal" href="#mako.cache.CacheImpl.invalidate.params.key">¶</a> &#8211; the value&#8217;s key.</li>
+<li><span class="target" id="mako.cache.CacheImpl.invalidate.params.**kw"></span><strong>**kw</strong><a class="paramlink headerlink reference internal" href="#mako.cache.CacheImpl.invalidate.params.**kw">¶</a> &#8211; cache configuration arguments.</li>
 </ul>
 </td>
 </tr>
@@ -729,9 +739,9 @@ a new value.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>key</strong> &#8211; the value&#8217;s key.</li>
-<li><strong>value</strong> &#8211; the value.</li>
-<li><strong>**kw</strong> &#8211; cache configuration arguments.</li>
+<li><span class="target" id="mako.cache.CacheImpl.set.params.key"></span><strong>key</strong><a class="paramlink headerlink reference internal" href="#mako.cache.CacheImpl.set.params.key">¶</a> &#8211; the value&#8217;s key.</li>
+<li><span class="target" id="mako.cache.CacheImpl.set.params.value"></span><strong>value</strong><a class="paramlink headerlink reference internal" href="#mako.cache.CacheImpl.set.params.value">¶</a> &#8211; the value.</li>
+<li><span class="target" id="mako.cache.CacheImpl.set.params.**kw"></span><strong>**kw</strong><a class="paramlink headerlink reference internal" href="#mako.cache.CacheImpl.set.params.**kw">¶</a> &#8211; cache configuration arguments.</li>
 </ul>
 </td>
 </tr>
@@ -766,6 +776,8 @@ value of <tt class="docutils literal"><span class="pre">'beaker'</span></tt> for
 <div id="docs-bottom-navigation" class="docs-navigation-links">
         Previous:
         <a href="unicode.html" title="previous chapter">The Unicode Chapter</a>
+        Next:
+        <a href="changelog.html" title="next chapter">Changelog</a>
 
     <div id="docs-copyright">
         &copy; Copyright the Mako authors and contributors.
