@@ -19,7 +19,7 @@ build:
 build-indep: build-docs
 build-arch:
 
-test: $(PYVERS:%=test-python%)
+test: $(PYVERS:%=test-python%) $(PY3VERS:%=test-python%)
 test-python%:
 	-
 ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
@@ -50,7 +50,6 @@ binary-indep: build install
 	dh_testdir -i
 	dh_testroot -i
 	dh_installchangelogs -i
-	dh_installchangelogs -p python-mako-doc CHANGES
 	dh_installdocs -i
 	dh_installexamples -i
 	dh_link -i

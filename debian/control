@@ -7,9 +7,10 @@ Build-Depends: debhelper (>= 5.0.38)
 Build-Depends-Indep: python-all, python-setuptools,
  python3-all, python3-setuptools,
 # to rebuild docs:
- python-sphinx,
+ python-sphinx, python-changelog, python-sphinx-paramlinks,
 # for tests:
- python-nose, python-markupsafe
+ python-nose, python-markupsafe, python-mock,
+ python3-nose, python3-markupsafe, python3-mock
 Standards-Version: 3.9.5
 Homepage: http://www.makotemplates.org/
 X-Python-Version: >= 2.4
