@@ -1,3 +1,11 @@
+mako (1.0.2+ds1-1) unstable; urgency=medium
+
+  * New upstream release.
+    - remove python35-compat.patch - no longer needed
+  * Add debian/upstream/signing-key.asc
+
+ -- Piotr Ożarowski <piotr@debian.org>  Wed, 26 Aug 2015 22:49:37 +0200
+
 mako (1.0.1+ds1-1) unstable; urgency=medium
 
   [ Barry Warsaw ]

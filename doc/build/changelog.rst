@@ -6,6 +6,53 @@ Changelog
 ===
 
 .. changelog::
+    :version: 1.0.2
+    :released: Wed Aug 26 2015
+
+    .. change::
+        :tags: bug, installation
+        :tickets: 249
+
+      The "universal wheel" marker is removed from setup.cfg, because
+      our setup.py currently makes use of conditional dependencies.
+      In :ticket:`249`, the discussion is ongoing on how to correct our
+      setup.cfg / setup.py fully so that we can handle the per-version
+      dependency changes while still maintaining optimal wheel settings,
+      so this issue is not yet fully resolved.
+
+    .. change::
+        :tags: bug, py3k
+        :tickets: 250
+
+      Repair some calls within the ast module that no longer work on Python3.5;
+      additionally replace the use of ``inspect.getargspec()`` under
+      Python 3 (seems to be called from the TG plugin) to avoid deprecation
+      warnings.
+
+    .. change::
+        :tags: bug
+        :pullreq: bitbucket:18
+
+      Update the Lingua translation extraction plugin to correctly
+      handle templates mixing Python control statements (such as if,
+      for and while) with template fragments. Pull request courtesy
+      Laurent Daverio.
+
+    .. change::
+        :tags: feature
+        :tickets: 236
+
+      Added ``STOP_RENDERING`` keyword for returning/exiting from a
+      template early, which is a synonym for an empty string ``""``.
+      Previously, the docs suggested a bare
+      ``return``, but this could cause ``None`` to appear in the
+      rendered template result.
+
+      .. seealso::
+
+        :ref:`syntax_exiting_early`
+
+.. changelog::
     :version: 1.0.1
     :released: Thu Jan 22 2015
 

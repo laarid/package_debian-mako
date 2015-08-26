@@ -757,9 +757,22 @@ class UndefinedVarsTest(TemplateTest):
             ['t is: T', 'a,b,c']
         )
 
+class StopRenderingTest(TemplateTest):
+    def test_return_in_template(self):
+        t = Template("""
+           Line one
+           <% return STOP_RENDERING %>
+           Line Three
+        """, strict_undefined=True)
+
+        eq_(
+            result_lines(t.render()),
+            ['Line one']
+        )
+
 class ReservedNameTest(TemplateTest):
     def test_names_on_context(self):
-        for name in ('context', 'loop', 'UNDEFINED'):
+        for name in ('context', 'loop', 'UNDEFINED', 'STOP_RENDERING'):
             assert_raises_message(
                 exceptions.NameConflictError,
                 r"Reserved words passed to render\(\): %s" % name,
@@ -767,7 +780,7 @@ class ReservedNameTest(TemplateTest):
             )
 
     def test_names_in_template(self):
-        for name in ('context', 'loop', 'UNDEFINED'):
+        for name in ('context', 'loop', 'UNDEFINED', 'STOP_RENDERING'):
             assert_raises_message(
                 exceptions.NameConflictError,
                 r"Reserved words declared in template: %s" % name,
@@ -1117,7 +1130,7 @@ class ModuleDirTest(TemplateTest):
         eq_(
             canary,
             [os.path.join(module_base, "modtest.html.py"),
-            os.path.join(module_base, "subdir/modtest.html.py")]
+            os.path.join(module_base, "subdir", "modtest.html.py")]
         )
 
 class FilenameToURITest(TemplateTest):
@@ -1251,13 +1264,13 @@ Text
         eq_(
             ModuleInfo.get_module_source_metadata(t.code, full_line_map=True),
             {
-                'full_line_map': [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
-                                    0, 0, 0, 0, 0, 0, 1, 4, 5, 5, 5, 7, 8,
-                                    8, 8, 8, 8, 8, 8],
+                'full_line_map': [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                    1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 4, 5, 5, 5, 7,
+                    8, 8, 8, 8, 8, 8, 8],
                 'source_encoding': 'ascii',
                 'filename': None,
-                'line_map': {34: 28, 14: 0, 21: 1, 22: 4, 23: 5, 24: 5,
-                                    25: 5, 26: 7, 27: 8, 28: 8},
+                'line_map': {35: 29, 15: 0, 22: 1, 23: 4, 24: 5, 25: 5,
+                             26: 5, 27: 7, 28: 8, 29: 8},
                 'uri': '/some/template'
             }
 
@@ -1280,16 +1293,18 @@ Text
         eq_(
             ModuleInfo.get_module_source_metadata(t.code, full_line_map=True),
             {
-                'full_line_map': [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                            0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4, 5, 5, 5, 7, 7, 7,
-                            7, 7, 10, 10, 10, 10, 10, 10, 8, 8, 8, 8, 8,
-                            8, 8, 8, 8, 8, 8, 8],
+                'full_line_map': [
+                    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4, 5, 5, 5, 7, 7,
+                    7, 7, 7, 10, 10, 10, 10, 10, 10, 8, 8, 8, 8,
+                    8, 8, 8, 8, 8, 8, 8, 8],
                 'source_encoding': 'ascii',
                 'filename': None,
-                'line_map': {33: 10, 39: 8, 45: 8, 14: 0, 51: 45, 23: 1,
-                                24: 4, 25: 5, 26: 5, 27: 5, 28: 7},
+                'line_map': {34: 10, 40: 8, 46: 8, 15: 0, 52: 46,
+                             24: 1, 25: 4, 26: 5, 27: 5, 28: 5, 29: 7},
                 'uri': '/some/template'}
         )
+
 
 class PreprocessTest(TemplateTest):
     def test_old_comments(self):

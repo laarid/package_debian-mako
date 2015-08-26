@@ -97,3 +97,34 @@ ${_(u'bar')}
 ## TRANSLATOR: we still ignore comments too far from the string
 
 <p>${_("No action at a distance.")}</p>
+
+## TRANSLATOR: nothing to extract from these blocks
+
+% if 1==1:
+<p>One is one!</p>
+% elif 1==2:
+<p>One is two!</p>
+% else:
+<p>How much is one?</p>
+% endif
+
+% for i in range(10):
+<p>${i} squared is ${i*i}</p>
+% else:
+<p>Done with squares!</p>
+% endfor
+
+% while random.randint(1,6) != 6:
+<p>Not 6!</p>
+% endwhile
+
+## TRANSLATOR: for now, try/except blocks are ignored
+
+% try:
+<% 1/0 %>
+% except:
+<p>Failed!</p>
+% endtry
+
+## TRANSLATOR: this should not cause a parse error
+${ 1 }
