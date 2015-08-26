@@ -1,3 +1,14 @@
+mako (1.0.1-1) UNRELEASED; urgency=medium
+
+  * Team upload.
+  * New upstream release.
+  * debian/control: 
+    - Add python3-funcsigs to Build-Depends-Indep.
+  * debian/patches/python35-compat.patch: Upstream provided patch to
+    fix compatibility issues with Python 3.5.
+
+ -- Barry Warsaw <barry@debian.org>  Tue, 25 Aug 2015 16:23:14 -0400
+
 mako (1.0.0-1) unstable; urgency=medium
 
   * New upstream release
