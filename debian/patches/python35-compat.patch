@@ -1,0 +1,34 @@
+Subject: Python 3.5 compatibility.
+Origin: https://bitbucket.org/zzzeek/mako/issues/250/mako-101-is-incompatible-with-python-35
+Forwarded: not-needed
+
+--- a/mako/_ast_util.py
++++ b/mako/_ast_util.py
+@@ -481,11 +481,11 @@
+                 paren_or_comma()
+                 self.write(keyword.arg + '=')
+                 self.visit(keyword.value)
+-            if node.starargs is not None:
++            if getattr(node, "starargs", None):
+                 paren_or_comma()
+                 self.write('*')
+                 self.visit(node.starargs)
+-            if node.kwargs is not None:
++            if getattr(node, "kwargs", None):
+                 paren_or_comma()
+                 self.write('**')
+                 self.visit(node.kwargs)
+@@ -646,11 +646,11 @@
+             write_comma()
+             self.write(keyword.arg + '=')
+             self.visit(keyword.value)
+-        if node.starargs is not None:
++        if getattr(node, "starargs", None):
+             write_comma()
+             self.write('*')
+             self.visit(node.starargs)
+-        if node.kwargs is not None:
++        if getattr(node, "kwargs", None):
+             write_comma()
+             self.write('**')
+             self.visit(node.kwargs)

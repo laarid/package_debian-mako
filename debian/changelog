@@ -1,3 +1,17 @@
+mako (1.0.1+ds1-1) unstable; urgency=medium
+
+  [ Barry Warsaw ]
+  * New upstream release.
+  * debian/patches/python35-compat.patch: Upstream provided patch to
+    fix compatibility issues with Python 3.5.
+
+  [ Piotr Ożarowski ]
+  * Convert debian/copyright to DEP-5 and use it to remove minified JS files
+  * Add dh-python to Build-Depends
+  * Standards-Version bumped to 3.9.6 (no changes needed)
+
+ -- Piotr Ożarowski <piotr@debian.org>  Wed, 26 Aug 2015 17:24:08 +0200
+
 mako (1.0.0+dfsg-0.1) unstable; urgency=medium
 
   * Non-maintainer upload.

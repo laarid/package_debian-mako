@@ -32,14 +32,14 @@ setup(name='Mako',
  best ideas from the existing templating languages.",
       long_description=readme,
       classifiers=[
-      'Development Status :: 5 - Production/Stable',
-      'Environment :: Web Environment',
-      'Intended Audience :: Developers',
-      'Programming Language :: Python',
-      'Programming Language :: Python :: 3',
-      "Programming Language :: Python :: Implementation :: CPython",
-      "Programming Language :: Python :: Implementation :: PyPy",
-      'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
+          'Development Status :: 5 - Production/Stable',
+          'Environment :: Web Environment',
+          'Intended Audience :: Developers',
+          'Programming Language :: Python',
+          'Programming Language :: Python :: 3',
+          "Programming Language :: Python :: Implementation :: CPython",
+          "Programming Language :: Python :: Implementation :: PyPy",
+          'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
       ],
       keywords='templates',
       author='Mike Bayer',
@@ -65,6 +65,9 @@ setup(name='Mako',
 
       [babel.extractors]
       mako = mako.ext.babelplugin:extract
+
+      [lingua.extractors]
+      mako = mako.ext.linguaplugin:LinguaMakoExtractor
 
       [console_scripts]
       mako-render = mako.cmd:cmdline

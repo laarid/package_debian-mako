@@ -6,6 +6,24 @@ Changelog
 ===
 
 .. changelog::
+    :version: 1.0.1
+    :released: Thu Jan 22 2015
+
+    .. change::
+        :tags: feature
+        :pullreq: bitbucket:9
+
+      Added support for Lingua, a translation extraction system as an
+      alternative to Babel.  Pull request courtesy Wichert Akkerman.
+
+    .. change::
+        :tags: bug, py3k
+        :pullreq: bitbucket:11
+
+      Modernized the examples/wsgi/run_wsgi.py file for Py3k.
+      Pull requset courtesy Cody Taylor.
+
+.. changelog::
     :version: 1.0.0
     :released: Sun Jun 8 2014
 
