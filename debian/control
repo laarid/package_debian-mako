@@ -3,15 +3,15 @@ Section: python
 Priority: optional
 Maintainer: Piotr Ożarowski <piotr@debian.org>
 Uploaders: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
-Build-Depends: debhelper (>= 5.0.38)
+Build-Depends: debhelper (>= 5.0.38), dh-python
 Build-Depends-Indep: python-all, python-setuptools,
  python3-all, python3-setuptools,
 # to rebuild docs:
  python-sphinx, python-changelog, python-sphinx-paramlinks,
 # for tests:
  python-nose, python-markupsafe, python-mock,
- python3-nose, python3-markupsafe, python3-mock, python3-funcsigs
-Standards-Version: 3.9.5
+ python3-nose, python3-markupsafe, python3-mock
+Standards-Version: 3.9.6
 Homepage: http://www.makotemplates.org/
 X-Python-Version: >= 2.4
 Vcs-Svn: svn://anonscm.debian.org/python-modules/packages/mako/trunk/
