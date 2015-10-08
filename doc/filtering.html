@@ -6,7 +6,7 @@
     
                 Filtering and Buffering
              &mdash; 
-    Mako 0.7.0 Documentation
+    Mako 0.7.1 Documentation
 </title>
 
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
           URL_ROOT:    '#',
-          VERSION:     '0.7.0',
+          VERSION:     '0.7.1',
           COLLAPSE_MODINDEX: false,
           FILE_SUFFIX: '.html'
       };
@@ -25,7 +25,7 @@
         <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="Mako 0.7.0 Documentation" href="index.html" />
+    <link rel="top" title="Mako 0.7.1 Documentation" href="index.html" />
         <link rel="next" title="The Unicode Chapter" href="unicode.html" />
         <link rel="prev" title="Inheritance" href="inheritance.html" />
 
@@ -62,7 +62,7 @@
 
 
 <div id="docs-header">
-    <h1>Mako 0.7.0 Documentation</h1>
+    <h1>Mako 0.7.1 Documentation</h1>
 
     <div id="docs-search">
     Search:
@@ -74,7 +74,7 @@
     </div>
 
     <div id="docs-version-header">
-        Release: <span class="version-num">0.7.0</span>
+        Release: <span class="version-num">0.7.1</span>
 
     </div>
 
@@ -99,7 +99,7 @@
     </div>
 
     <div id="docs-navigation-banner">
-        <a href="index.html">Mako 0.7.0 Documentation</a>
+        <a href="index.html">Mako 0.7.1 Documentation</a>
         » 
                 Filtering and Buffering
              
@@ -120,8 +120,8 @@
     <ul>
 <li><a class="reference internal" href="#">Filtering and Buffering</a><ul>
 <li><a class="reference internal" href="#expression-filtering">Expression Filtering</a><ul>
-<li><a class="reference internal" href="#the-default-filters-argument">The default_filters Argument</a></li>
-<li><a class="reference internal" href="#turning-off-filtering-with-the-n-filter">Turning off Filtering with the &#8220;n&#8221; filter</a></li>
+<li><a class="reference internal" href="#the-default-filters-argument">The <tt class="docutils literal"><span class="pre">default_filters</span></tt> Argument</a></li>
+<li><a class="reference internal" href="#turning-off-filtering-with-the-n-filter">Turning off Filtering with the <tt class="docutils literal"><span class="pre">n</span></tt> Filter</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#filtering-defs-and-blocks">Filtering Defs and Blocks</a></li>
@@ -167,22 +167,31 @@ output:</p>
 <p>The above expression applies URL escaping to the expression, and
 produces <tt class="docutils literal"><span class="pre">this+is+some+text</span></tt>.</p>
 <p>The built-in escape flags are:</p>
-<ul class="simple">
-<li><tt class="docutils literal"><span class="pre">u</span></tt> : URL escaping, provided by
-<tt class="docutils literal"><span class="pre">urllib.quote_plus(string.encode('utf-8'))</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">h</span></tt> : HTML escaping, provided by
-<tt class="docutils literal"><span class="pre">markupsafe.escape(string)</span></tt> (new as of 0.3.4 - prior
-versions use <tt class="docutils literal"><span class="pre">cgi.escape(string,</span> <span class="pre">True)</span></tt>)</li>
-<li><tt class="docutils literal"><span class="pre">x</span></tt> : XML escaping</li>
-<li><tt class="docutils literal"><span class="pre">trim</span></tt> : whitespace trimming, provided by <tt class="docutils literal"><span class="pre">string.strip()</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">entity</span></tt> : produces HTML entity references for applicable
-strings, derived from <tt class="docutils literal"><span class="pre">htmlentitydefs</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">unicode</span></tt> (<tt class="docutils literal"><span class="pre">str</span></tt> on Python 3): produces a Python unicode
-string (this function is applied by default).</li>
-<li><tt class="docutils literal"><span class="pre">decode.&lt;some</span> <span class="pre">encoding&gt;</span></tt> : decode input into a Python
-unicode with the specified encoding</li>
-<li><tt class="docutils literal"><span class="pre">n</span></tt> : disable all default filtering; only filters specified
-in the local expression tag will be applied.</li>
+<ul>
+<li><p class="first"><tt class="docutils literal"><span class="pre">u</span></tt> : URL escaping, provided by
+<tt class="docutils literal"><span class="pre">urllib.quote_plus(string.encode('utf-8'))</span></tt></p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">h</span></tt> : HTML escaping, provided by
+<tt class="docutils literal"><span class="pre">markupsafe.escape(string)</span></tt></p>
+<p class="versionadded">
+<span class="versionmodified">New in version 0.3.4: </span>Prior versions use <tt class="docutils literal"><span class="pre">cgi.escape(string,</span> <span class="pre">True)</span></tt>.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">x</span></tt> : XML escaping</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">trim</span></tt> : whitespace trimming, provided by <tt class="docutils literal"><span class="pre">string.strip()</span></tt></p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">entity</span></tt> : produces HTML entity references for applicable
+strings, derived from <tt class="docutils literal"><span class="pre">htmlentitydefs</span></tt></p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">unicode</span></tt> (<tt class="docutils literal"><span class="pre">str</span></tt> on Python 3): produces a Python unicode
+string (this function is applied by default)</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">decode.&lt;some</span> <span class="pre">encoding&gt;</span></tt>: decode input into a Python
+unicode with the specified encoding</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">n</span></tt> : disable all default filtering; only filters specified
+in the local expression tag will be applied.</p>
+</li>
 </ul>
 <p>To apply more than one filter, separate them by a comma:</p>
 <div class="highlight-mako"><div class="highlight"><pre><span class="cp">${</span><span class="s">&quot; &lt;tag&gt;some value&lt;/tag&gt; &quot;</span> <span class="o">|</span> <span class="n">h</span><span class="p">,</span><span class="n">trim</span><span class="cp">}</span><span class="x"></span>
@@ -201,7 +210,7 @@ they appear, meaning you can define escaping functions locally:</p>
         <span class="k">return</span> <span class="s">&quot;&lt;TAG&gt;&quot;</span> <span class="o">+</span> <span class="n">text</span> <span class="o">+</span> <span class="s">&quot;&lt;/TAG&gt;&quot;</span>
 <span class="cp">%&gt;</span><span class="x"></span>
 
-<span class="x">Heres some tagged text: </span><span class="cp">${</span><span class="s">&quot;text&quot;</span> <span class="o">|</span> <span class="n">myescape</span><span class="cp">}</span><span class="x"></span>
+<span class="x">Here&#39;s some tagged text: </span><span class="cp">${</span><span class="s">&quot;text&quot;</span> <span class="o">|</span> <span class="n">myescape</span><span class="cp">}</span><span class="x"></span>
 </pre></div>
 </div>
 <p>Or from any Python module:</p>
@@ -209,7 +218,7 @@ they appear, meaning you can define escaping functions locally:</p>
     <span class="kn">import</span> <span class="nn">myfilters</span>
 <span class="cp">%&gt;</span><span class="x"></span>
 
-<span class="x">Heres some tagged text: </span><span class="cp">${</span><span class="s">&quot;text&quot;</span> <span class="o">|</span> <span class="n">myfilters</span><span class="o">.</span><span class="n">tagfilter</span><span class="cp">}</span><span class="x"></span>
+<span class="x">Here&#39;s some tagged text: </span><span class="cp">${</span><span class="s">&quot;text&quot;</span> <span class="o">|</span> <span class="n">myfilters</span><span class="o">.</span><span class="n">tagfilter</span><span class="cp">}</span><span class="x"></span>
 </pre></div>
 </div>
 <p>A page can apply a default set of filters to all expression tags
@@ -224,10 +233,10 @@ using the <tt class="docutils literal"><span class="pre">expression_filter</span
 </pre></div>
 </div>
 <div class="section" id="the-default-filters-argument">
-<span id="filtering-default-filters"></span><h3>The default_filters Argument<a class="headerlink" href="#the-default-filters-argument" title="Permalink to this headline">¶</a></h3>
+<span id="filtering-default-filters"></span><h3>The <tt class="docutils literal"><span class="pre">default_filters</span></tt> Argument<a class="headerlink" href="#the-default-filters-argument" title="Permalink to this headline">¶</a></h3>
 <p>In addition to the <tt class="docutils literal"><span class="pre">expression_filter</span></tt> argument, the
-<tt class="docutils literal"><span class="pre">default_filters</span></tt> argument to both <tt class="docutils literal"><span class="pre">Template</span></tt> and
-<tt class="docutils literal"><span class="pre">TemplateLookup</span></tt> can specify filtering for all expression tags
+<tt class="docutils literal"><span class="pre">default_filters</span></tt> argument to both <a class="reference internal" href="usage.html#mako.template.Template" title="mako.template.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a> and
+<a class="reference internal" href="usage.html#mako.lookup.TemplateLookup" title="mako.lookup.TemplateLookup"><tt class="xref py py-class docutils literal"><span class="pre">TemplateLookup</span></tt></a> can specify filtering for all expression tags
 at the programmatic level. This array-based argument, when given
 its default argument of <tt class="docutils literal"><span class="pre">None</span></tt>, will be internally set to
 <tt class="docutils literal"><span class="pre">[&quot;unicode&quot;]</span></tt> (or <tt class="docutils literal"><span class="pre">[&quot;str&quot;]</span></tt> on Python 3), except when
@@ -257,8 +266,8 @@ applied first.</p>
 you can also add imports (or other code) to all templates using
 the <tt class="docutils literal"><span class="pre">imports</span></tt> argument:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">t</span> <span class="o">=</span> <span class="n">TemplateLookup</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;/tmp&#39;</span><span class="p">],</span>
-    <span class="n">default_filters</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;unicode&#39;</span><span class="p">,</span> <span class="s">&#39;myfilter&#39;</span><span class="p">],</span>
-    <span class="n">imports</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;from mypackage import myfilter&#39;</span><span class="p">])</span>
+                   <span class="n">default_filters</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;unicode&#39;</span><span class="p">,</span> <span class="s">&#39;myfilter&#39;</span><span class="p">],</span>
+                   <span class="n">imports</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;from mypackage import myfilter&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>The above will generate templates something like this:</p>
@@ -271,15 +280,15 @@ the <tt class="docutils literal"><span class="pre">imports</span></tt> argument:
 </div>
 </div>
 <div class="section" id="turning-off-filtering-with-the-n-filter">
-<h3>Turning off Filtering with the &#8220;n&#8221; filter<a class="headerlink" href="#turning-off-filtering-with-the-n-filter" title="Permalink to this headline">¶</a></h3>
+<h3>Turning off Filtering with the <tt class="docutils literal"><span class="pre">n</span></tt> Filter<a class="headerlink" href="#turning-off-filtering-with-the-n-filter" title="Permalink to this headline">¶</a></h3>
 <p>In all cases the special <tt class="docutils literal"><span class="pre">n</span></tt> filter, used locally within an
 expression, will <strong>disable</strong> all filters declared in the
-<tt class="docutils literal"><span class="pre">&lt;%page&gt;</span></tt> tag as well <tt class="docutils literal"><span class="pre">default_filters</span></tt>. Such as:</p>
+<tt class="docutils literal"><span class="pre">&lt;%page&gt;</span></tt> tag as well as in <tt class="docutils literal"><span class="pre">default_filters</span></tt>. Such as:</p>
 <div class="highlight-mako"><div class="highlight"><pre><span class="cp">${</span><span class="s">&#39;myexpression&#39;</span> <span class="o">|</span> <span class="n">n</span><span class="cp">}</span><span class="x"></span>
 </pre></div>
 </div>
-<p>Will render <tt class="docutils literal"><span class="pre">myexpression</span></tt> with no filtering of any kind, and</p>
-<div class="highlight-mako"><div class="highlight"><pre><span class="cp">${</span><span class="s">&#39;myexpression&#39;</span> <span class="o">|</span> <span class="n">n</span><span class="p">,</span> <span class="n">trim</span><span class="cp">}</span><span class="x"></span>
+<p>will render <tt class="docutils literal"><span class="pre">myexpression</span></tt> with no filtering of any kind, and:</p>
+<div class="highlight-mako"><div class="highlight"><pre><span class="cp">${</span><span class="s">&#39;myexpression&#39;</span> <span class="o">|</span> <span class="n">n</span><span class="p">,</span><span class="n">trim</span><span class="cp">}</span><span class="x"></span>
 </pre></div>
 </div>
 <p>will render <tt class="docutils literal"><span class="pre">myexpression</span></tt> using the <tt class="docutils literal"><span class="pre">trim</span></tt> filter only.</p>
@@ -294,7 +303,7 @@ given list of filter functions to the output of the <tt class="docutils literal"
 <span class="cp">&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span><span class="x"></span>
 </pre></div>
 </div>
-<p>When the filter attribute is applied to a def as above, the def
+<p>When the <tt class="docutils literal"><span class="pre">filter</span></tt> attribute is applied to a def as above, the def
 is automatically <strong>buffered</strong> as well. This is described next.</p>
 </div>
 <div class="section" id="buffering">
@@ -302,7 +311,7 @@ is automatically <strong>buffered</strong> as well. This is described next.</p>
 <p>One of Mako&#8217;s central design goals is speed. To this end, all of
 the textual content within a template and its various callables
 is by default piped directly to the single buffer that is stored
-within the <tt class="docutils literal"><span class="pre">Context</span></tt> object. While this normally is easy to
+within the <a class="reference internal" href="runtime.html#mako.runtime.Context" title="mako.runtime.Context"><tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt></a> object. While this normally is easy to
 miss, it has certain side effects. The main one is that when you
 call a def using the normal expression syntax, i.e.
 <tt class="docutils literal"><span class="pre">${somedef()}</span></tt>, it may appear that the return value of the
@@ -347,8 +356,8 @@ buffering to the <tt class="docutils literal"><span class="pre">%def</span></tt>
 which is then popped off the stack and its value returned. The
 speed hit inherent in buffering the output of a def is also
 apparent.</p>
-<p>Note that the <tt class="docutils literal"><span class="pre">filter</span></tt> argument on %def also causes the def to
-be buffered. This is so that the final content of the %def can
+<p>Note that the <tt class="docutils literal"><span class="pre">filter</span></tt> argument on <tt class="docutils literal"><span class="pre">%def</span></tt> also causes the def to
+be buffered. This is so that the final content of the <tt class="docutils literal"><span class="pre">%def</span></tt> can
 be delivered to the escaping function in one batch, which
 reduces method calls and also produces more deterministic
 behavior for the filtering function itself, which can possibly
@@ -377,8 +386,9 @@ to <tt class="docutils literal"><span class="pre">capture</span></tt> instead:</
 </div>
 <div class="section" id="decorating">
 <h2>Decorating<a class="headerlink" href="#decorating" title="Permalink to this headline">¶</a></h2>
-<p>This is a feature that&#8217;s new as of version 0.2.5. Somewhat like
-a filter for a %def but more flexible, the <tt class="docutils literal"><span class="pre">decorator</span></tt>
+<p class="versionadded">
+<span class="versionmodified">New in version 0.2.5.</span></p>
+<p>Somewhat like a filter for a <tt class="docutils literal"><span class="pre">%def</span></tt> but more flexible, the <tt class="docutils literal"><span class="pre">decorator</span></tt>
 argument to <tt class="docutils literal"><span class="pre">%def</span></tt> allows the creation of a function that will
 work in a similar manner to a Python decorator. The function can
 control whether or not the function executes. The original
@@ -408,7 +418,7 @@ simplicities&#8217; sake:</p>
 <p>The above template will return, with more whitespace than this,
 <tt class="docutils literal"><span class="pre">&quot;BAR</span> <span class="pre">this</span> <span class="pre">is</span> <span class="pre">foo</span> <span class="pre">BAR&quot;</span></tt>. The function is the render callable
 itself (or possibly a wrapper around it), and by default will
-write to the context. To capture its output, use the <tt class="docutils literal"><span class="pre">capture</span></tt>
+write to the context. To capture its output, use the <a class="reference internal" href="namespaces.html#mako.runtime.capture" title="mako.runtime.capture"><tt class="xref py py-func docutils literal"><span class="pre">capture()</span></tt></a>
 callable in the <tt class="docutils literal"><span class="pre">mako.runtime</span></tt> module (available in templates
 as just <tt class="docutils literal"><span class="pre">runtime</span></tt>):</p>
 <div class="highlight-mako"><div class="highlight"><pre><span class="cp">&lt;%!</span>
@@ -427,7 +437,7 @@ as just <tt class="docutils literal"><span class="pre">runtime</span></tt>):</p>
 </div>
 <p>The decorator can be used with top-level defs as well as nested
 defs, and blocks too. Note that when calling a top-level def from the
-<tt class="docutils literal"><span class="pre">Template</span></tt> api, i.e. <tt class="docutils literal"><span class="pre">template.get_def('somedef').render()</span></tt>,
+<a class="reference internal" href="usage.html#mako.template.Template" title="mako.template.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a> API, i.e. <tt class="docutils literal"><span class="pre">template.get_def('somedef').render()</span></tt>,
 the decorator has to write the output to the <tt class="docutils literal"><span class="pre">context</span></tt>, i.e.
 as in the first example. The return value gets discarded.</p>
 </div>
@@ -445,7 +455,7 @@ as in the first example. The return value gets discarded.</p>
 
     <div id="docs-copyright">
         &copy; Copyright the Mako authors and contributors.
-        Documentation generated using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2 
+        Documentation generated using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3 
         with Mako templates.
     </div>
 </div>

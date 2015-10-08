@@ -6,7 +6,7 @@
     
                 Caching
              &mdash; 
-    Mako 0.7.0 Documentation
+    Mako 0.7.1 Documentation
 </title>
 
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
           URL_ROOT:    '#',
-          VERSION:     '0.7.0',
+          VERSION:     '0.7.1',
           COLLAPSE_MODINDEX: false,
           FILE_SUFFIX: '.html'
       };
@@ -25,7 +25,7 @@
         <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="Mako 0.7.0 Documentation" href="index.html" />
+    <link rel="top" title="Mako 0.7.1 Documentation" href="index.html" />
         <link rel="prev" title="The Unicode Chapter" href="unicode.html" />
 
 <link rel="stylesheet" href="_static/site.css"></link>
@@ -61,7 +61,7 @@
 
 
 <div id="docs-header">
-    <h1>Mako 0.7.0 Documentation</h1>
+    <h1>Mako 0.7.1 Documentation</h1>
 
     <div id="docs-search">
     Search:
@@ -73,7 +73,7 @@
     </div>
 
     <div id="docs-version-header">
-        Release: <span class="version-num">0.7.0</span>
+        Release: <span class="version-num">0.7.1</span>
 
     </div>
 
@@ -95,7 +95,7 @@
     </div>
 
     <div id="docs-navigation-banner">
-        <a href="index.html">Mako 0.7.0 Documentation</a>
+        <a href="index.html">Mako 0.7.1 Documentation</a>
         » 
                 Caching
              
@@ -115,7 +115,7 @@
     <h3><a href="index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">Caching</a><ul>
-<li><a class="reference internal" href="#cache-arguments">Cache arguments</a><ul>
+<li><a class="reference internal" href="#cache-arguments">Cache Arguments</a><ul>
 <li><a class="reference internal" href="#backend-specific-cache-arguments">Backend-Specific Cache Arguments</a></li>
 <li><a class="reference internal" href="#using-the-beaker-cache-backend">Using the Beaker Cache Backend</a></li>
 <li><a class="reference internal" href="#using-the-dogpile-cache-backend">Using the dogpile.cache Backend</a></li>
@@ -123,7 +123,7 @@
 </li>
 <li><a class="reference internal" href="#programmatic-cache-access">Programmatic Cache Access</a></li>
 <li><a class="reference internal" href="#cache-plugins">Cache Plugins</a><ul>
-<li><a class="reference internal" href="#guidelines-for-writing-cache-plugins">Guidelines for writing cache plugins</a></li>
+<li><a class="reference internal" href="#guidelines-for-writing-cache-plugins">Guidelines for Writing Cache Plugins</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#api-reference">API Reference</a></li>
@@ -167,7 +167,7 @@ method will return content directly from the cache. When the
 cache is garbage collected along with the template.</p>
 <p>By default, caching requires that the <a class="reference external" href="http://beaker.readthedocs.org/">Beaker</a> package be installed on the
 system, however the mechanism of caching can be customized to use
-any third party or user defined system - see <a class="reference internal" href="#cache-plugins"><em>Cache Plugins</em></a>.</p>
+any third party or user defined system &#8211; see <a class="reference internal" href="#cache-plugins"><em>Cache Plugins</em></a>.</p>
 <p>In addition to being available on the <tt class="docutils literal"><span class="pre">&lt;%page&gt;</span></tt> tag, the caching flag and all
 its options can be used with the <tt class="docutils literal"><span class="pre">&lt;%def&gt;</span></tt> tag as well:</p>
 <div class="highlight-mako"><div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;mycomp&quot;</span> <span class="na">cached=</span><span class="s">&quot;True&quot;</span> <span class="na">cache_timeout=</span><span class="s">&quot;60&quot;</span><span class="cp">&gt;</span><span class="x"></span>
@@ -182,11 +182,11 @@ its options can be used with the <tt class="docutils literal"><span class="pre">
 </pre></div>
 </div>
 <div class="section" id="cache-arguments">
-<h2>Cache arguments<a class="headerlink" href="#cache-arguments" title="Permalink to this headline">¶</a></h2>
+<h2>Cache Arguments<a class="headerlink" href="#cache-arguments" title="Permalink to this headline">¶</a></h2>
 <p>Mako has two cache arguments available on tags that are
 available in all cases.   The rest of the arguments
 available are specific to a backend.</p>
-<p>The two generic tags are:</p>
+<p>The two generic tags arguments are:</p>
 <ul>
 <li><p class="first"><tt class="docutils literal"><span class="pre">cached=&quot;True&quot;</span></tt> - enable caching for this <tt class="docutils literal"><span class="pre">&lt;%page&gt;</span></tt>,
 <tt class="docutils literal"><span class="pre">&lt;%def&gt;</span></tt>, or <tt class="docutils literal"><span class="pre">&lt;%block&gt;</span></tt>.</p>
@@ -225,9 +225,10 @@ e.g.:</p>
 </div>
 </li>
 <li><p class="first"><tt class="docutils literal"><span class="pre">cache_impl</span></tt> - The string name of the cache backend
-to use.   This defaults to <tt class="docutils literal"><span class="pre">beaker</span></tt>, which has historically
-been the only cache backend supported by Mako.
-New in 0.6.0.</p>
+to use.   This defaults to <tt class="docutils literal"><span class="pre">'beaker'</span></tt>, which has historically
+been the only cache backend supported by Mako.</p>
+<p class="versionadded">
+<span class="versionmodified">New in version 0.6.0.</span></p>
 <p>For example, here&#8217;s how to use the upcoming
 <a class="reference external" href="http://dogpilecache.readthedocs.org">dogpile.cache</a>
 backend:</p>
@@ -241,7 +242,9 @@ backend:</p>
 </li>
 <li><p class="first"><tt class="docutils literal"><span class="pre">cache_args</span></tt> - A dictionary of cache parameters that
 will be consumed by the cache backend.   See
-<a class="reference internal" href="#beaker-backend"><em>Using the Beaker Cache Backend</em></a> for examples.  New in 0.6.0.</p>
+<a class="reference internal" href="#beaker-backend"><em>Using the Beaker Cache Backend</em></a> for examples.</p>
+<p class="versionadded">
+<span class="versionmodified">New in version 0.6.0.</span></p>
 </li>
 </ul>
 <div class="section" id="backend-specific-cache-arguments">
@@ -253,8 +256,8 @@ underlying caching implementation, minus the <tt class="docutils literal"><span 
 <p>The actual arguments understood are determined by the backend.</p>
 <ul class="simple">
 <li><a class="reference internal" href="#beaker-backend"><em>Using the Beaker Cache Backend</em></a> - Includes arguments understood by
-Beaker</li>
-<li><a class="reference external" href="http://dogpilecache.readthedocs.org/en/latest/usage.html#mako-plugin" title="(in dogpile.cache v0.1.0)"><em>Mako Integration</em></a> - Includes arguments understood by
+Beaker.</li>
+<li><a class="reference internal" href="#dogpile-cache-backend"><em>Using the dogpile.cache Backend</em></a> - Includes arguments understood by
 dogpile.cache.</li>
 </ul>
 </div>
@@ -263,8 +266,9 @@ dogpile.cache.</li>
 <p>When using Beaker, new implementations will want to make usage
 of <strong>cache regions</strong> so that cache configurations can be maintained
 externally to templates.  These configurations live under
-named &#8220;regions&#8221; that can be referred to within templates themselves.
-Support for Beaker cache regions is new in Mako 0.6.0.</p>
+named &#8220;regions&#8221; that can be referred to within templates themselves.</p>
+<p class="versionadded">
+<span class="versionmodified">New in version 0.6.0: </span>Support for Beaker cache regions.</p>
 <p>For example, suppose we would like two regions.  One is a &#8220;short term&#8221;
 region that will store content in a memory-based dictionary,
 expiring after 60 seconds.   The other is a Memcached region,
@@ -288,8 +292,8 @@ our <a class="reference internal" href="usage.html#mako.lookup.TemplateLookup" t
 <span class="n">lookup</span> <span class="o">=</span> <span class="n">TemplateLookup</span><span class="p">(</span>
                 <span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;/path/to/templates&#39;</span><span class="p">],</span>
                 <span class="n">module_directory</span><span class="o">=</span><span class="s">&#39;/path/to/modules&#39;</span><span class="p">,</span>
-                <span class="n">cache_impl</span> <span class="o">=</span> <span class="s">&#39;beaker&#39;</span><span class="p">,</span>
-                <span class="n">cache_args</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">cache_impl</span><span class="o">=</span><span class="s">&#39;beaker&#39;</span><span class="p">,</span>
+                <span class="n">cache_args</span><span class="o">=</span><span class="p">{</span>
                     <span class="s">&#39;manager&#39;</span><span class="p">:</span><span class="n">manager</span>
                 <span class="p">}</span>
         <span class="p">)</span>
@@ -326,15 +330,15 @@ without the <tt class="docutils literal"><span class="pre">cache_</span></tt> pr
 cached data.  After this timeout, the content is re-generated
 on the next call.  Available as <tt class="docutils literal"><span class="pre">timeout</span></tt> in the <tt class="docutils literal"><span class="pre">cache_args</span></tt>
 dictionary.</li>
-<li><tt class="docutils literal"><span class="pre">cache_type</span></tt> - type of caching. <tt class="docutils literal"><span class="pre">memory</span></tt>, <tt class="docutils literal"><span class="pre">file</span></tt>, <tt class="docutils literal"><span class="pre">dbm</span></tt>, or
-<tt class="docutils literal"><span class="pre">ext:memcached</span></tt> (note that  the string <tt class="docutils literal"><span class="pre">memcached</span></tt> is
-also accepted by the Mako plugin, though not by Beaker itself).
+<li><tt class="docutils literal"><span class="pre">cache_type</span></tt> - type of caching. <tt class="docutils literal"><span class="pre">'memory'</span></tt>, <tt class="docutils literal"><span class="pre">'file'</span></tt>, <tt class="docutils literal"><span class="pre">'dbm'</span></tt>, or
+<tt class="docutils literal"><span class="pre">'ext:memcached'</span></tt> (note that  the string <tt class="docutils literal"><span class="pre">memcached</span></tt> is
+also accepted by the dogpile.cache Mako plugin, though not by Beaker itself).
 Available as <tt class="docutils literal"><span class="pre">type</span></tt> in the <tt class="docutils literal"><span class="pre">cache_args</span></tt> dictionary.</li>
 <li><tt class="docutils literal"><span class="pre">cache_url</span></tt> - (only used for <tt class="docutils literal"><span class="pre">memcached</span></tt> but required) a single
 IP address or a semi-colon separated list of IP address of
 memcache servers to use.  Available as <tt class="docutils literal"><span class="pre">url</span></tt> in the <tt class="docutils literal"><span class="pre">cache_args</span></tt>
 dictionary.</li>
-<li><tt class="docutils literal"><span class="pre">cache_dir</span></tt> - In the case of the <tt class="docutils literal"><span class="pre">file</span></tt> and <tt class="docutils literal"><span class="pre">dbm</span></tt> cache types,
+<li><tt class="docutils literal"><span class="pre">cache_dir</span></tt> - in the case of the <tt class="docutils literal"><span class="pre">'file'</span></tt> and <tt class="docutils literal"><span class="pre">'dbm'</span></tt> cache types,
 this is the filesystem directory with which to store data
 files. If this option is not present, the value of
 <tt class="docutils literal"><span class="pre">module_directory</span></tt> is used (i.e. the directory where compiled
@@ -344,18 +348,18 @@ an exception is thrown.  Available as <tt class="docutils literal"><span class="
 </ul>
 </div>
 <div class="section" id="using-the-dogpile-cache-backend">
-<h3>Using the dogpile.cache Backend<a class="headerlink" href="#using-the-dogpile-cache-backend" title="Permalink to this headline">¶</a></h3>
+<span id="dogpile-cache-backend"></span><h3>Using the dogpile.cache Backend<a class="headerlink" href="#using-the-dogpile-cache-backend" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="http://dogpilecache.readthedocs.org">dogpile.cache</a> is a new replacement for Beaker.   It provides
 a modernized, slimmed down interface and is generally easier to use
 than Beaker.   As of this writing it has not yet been released.  dogpile.cache
-includes its own Mako cache plugin - see <a class="reference external" href="http://dogpilecache.readthedocs.org/en/latest/usage.html#mako-plugin" title="(in dogpile.cache v0.1.0)"><em>Mako Integration</em></a> in the
+includes its own Mako cache plugin &#8211; see <a class="reference external" href="http://dogpilecache.readthedocs.org/en/latest/api.html#dogpile.cache.plugins.mako_cache" title="(in dogpile.cache v0.3.0)"><tt class="xref py py-mod docutils literal"><span class="pre">dogpile.cache.plugins.mako_cache</span></tt></a> in the
 dogpile.cache documentation.</p>
 </div>
 </div>
 <div class="section" id="programmatic-cache-access">
 <h2>Programmatic Cache Access<a class="headerlink" href="#programmatic-cache-access" title="Permalink to this headline">¶</a></h2>
 <p>The <a class="reference internal" href="usage.html#mako.template.Template" title="mako.template.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a>, as well as any template-derived <a class="reference internal" href="namespaces.html#mako.runtime.Namespace" title="mako.runtime.Namespace"><tt class="xref py py-class docutils literal"><span class="pre">Namespace</span></tt></a>, has
-an accessor called <tt class="docutils literal"><span class="pre">cache</span></tt> which returns the <tt class="docutils literal"><span class="pre">Cache</span></tt> object
+an accessor called <tt class="docutils literal"><span class="pre">cache</span></tt> which returns the <a class="reference internal" href="#mako.cache.Cache" title="mako.cache.Cache"><tt class="xref py py-class docutils literal"><span class="pre">Cache</span></tt></a> object
 for that template. This object is a facade on top of the underlying
 <a class="reference internal" href="#mako.cache.CacheImpl" title="mako.cache.CacheImpl"><tt class="xref py py-class docutils literal"><span class="pre">CacheImpl</span></tt></a> object, and provides some very rudimental
 capabilities, such as the ability to get and put arbitrary
@@ -382,7 +386,7 @@ sections programmatically:</p>
 </pre></div>
 </div>
 <p>You can access any special method or attribute of the <a class="reference internal" href="#mako.cache.CacheImpl" title="mako.cache.CacheImpl"><tt class="xref py py-class docutils literal"><span class="pre">CacheImpl</span></tt></a>
-itself using the <tt class="docutils literal"><span class="pre">impl</span></tt> attribute:</p>
+itself using the <a class="reference internal" href="#mako.cache.Cache.impl" title="mako.cache.Cache.impl"><tt class="xref py py-attr docutils literal"><span class="pre">impl</span></tt></a> attribute:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">template</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">impl</span><span class="o">.</span><span class="n">do_something_special</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -400,8 +404,8 @@ provide the default implementation.  A <a class="reference internal" href="#mako
 is acquired by Mako using a <tt class="docutils literal"><span class="pre">pkg_resources</span></tt> entrypoint, using
 the name given as the <tt class="docutils literal"><span class="pre">cache_impl</span></tt> argument to <a class="reference internal" href="usage.html#mako.template.Template" title="mako.template.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a>
 or <a class="reference internal" href="usage.html#mako.lookup.TemplateLookup" title="mako.lookup.TemplateLookup"><tt class="xref py py-class docutils literal"><span class="pre">TemplateLookup</span></tt></a>.    This entry point can be
-installed via the standard setuptools/<tt class="docutils literal"><span class="pre">setup()</span></tt> procedure, underneath
-the EntryPoint group named <tt class="docutils literal"><span class="pre">&quot;mako.cache&quot;</span></tt>.  It can also be
+installed via the standard <cite>setuptools</cite>/<tt class="docutils literal"><span class="pre">setup()</span></tt> procedure, underneath
+the <cite>EntryPoint</cite> group named <tt class="docutils literal"><span class="pre">&quot;mako.cache&quot;</span></tt>.  It can also be
 installed at runtime via a convenience installer <a class="reference internal" href="#mako.cache.register_plugin" title="mako.cache.register_plugin"><tt class="xref py py-func docutils literal"><span class="pre">register_plugin()</span></tt></a>
 which accomplishes essentially the same task.</p>
 <p>An example plugin that implements a local dictionary cache:</p>
@@ -434,12 +438,12 @@ which accomplishes essentially the same task.</p>
 </div>
 <p>Enabling the above plugin in a template would look like:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">t</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="s">&quot;mytemplate&quot;</span><span class="p">,</span>
-                <span class="nb">file</span><span class="o">=</span><span class="s">&quot;mytemplate.html&quot;</span><span class="p">,</span>
-                <span class="n">cache_impl</span><span class="o">=</span><span class="s">&#39;simple&#39;</span><span class="p">)</span>
+             <span class="nb">file</span><span class="o">=</span><span class="s">&quot;mytemplate.html&quot;</span><span class="p">,</span>
+             <span class="n">cache_impl</span><span class="o">=</span><span class="s">&#39;simple&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="section" id="guidelines-for-writing-cache-plugins">
-<h3>Guidelines for writing cache plugins<a class="headerlink" href="#guidelines-for-writing-cache-plugins" title="Permalink to this headline">¶</a></h3>
+<h3>Guidelines for Writing Cache Plugins<a class="headerlink" href="#guidelines-for-writing-cache-plugins" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>The <a class="reference internal" href="#mako.cache.CacheImpl" title="mako.cache.CacheImpl"><tt class="xref py py-class docutils literal"><span class="pre">CacheImpl</span></tt></a> is created on a per-<a class="reference internal" href="usage.html#mako.template.Template" title="mako.template.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a> basis.  The
 class should ensure that only data for the parent <a class="reference internal" href="usage.html#mako.template.Template" title="mako.template.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a> is
@@ -456,7 +460,7 @@ methods on the <a class="reference internal" href="#mako.cache.Cache" title="mak
 <li><a class="reference internal" href="#mako.cache.CacheImpl" title="mako.cache.CacheImpl"><tt class="xref py py-class docutils literal"><span class="pre">CacheImpl</span></tt></a> will be accessed in a multithreaded fashion if the
 <a class="reference internal" href="usage.html#mako.template.Template" title="mako.template.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a> itself is used multithreaded.  Care should be taken
 to ensure caching implementations are threadsafe.</li>
-<li>A library like <a class="reference external" href="http://pypi.python.org/pypi/Dogpile">Dogpile</a>, which
+<li>A library like <a class="reference external" href="http://pypi.python.org/pypi/dogpile.core">Dogpile</a>, which
 is a minimal locking system derived from Beaker, can be used to help
 implement the <a class="reference internal" href="#mako.cache.CacheImpl.get_or_create" title="mako.cache.CacheImpl.get_or_create"><tt class="xref py py-meth docutils literal"><span class="pre">CacheImpl.get_or_create()</span></tt></a> method in a threadsafe
 way that can maximize effectiveness across multiple threads as well
@@ -486,11 +490,12 @@ conflicts with generated modules don&#8217;t occur.</li>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>Represents a data content cache made available to the module
 space of a specific <a class="reference internal" href="usage.html#mako.template.Template" title="mako.template.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a> object.</p>
-<p>As of Mako 0.6, <a class="reference internal" href="#mako.cache.Cache" title="mako.cache.Cache"><tt class="xref py py-class docutils literal"><span class="pre">Cache</span></tt></a> by itself is mostly a 
+<p class="versionadded">
+<span class="versionmodified">New in version 0.6: </span><a class="reference internal" href="#mako.cache.Cache" title="mako.cache.Cache"><tt class="xref py py-class docutils literal"><span class="pre">Cache</span></tt></a> by itself is mostly a
 container for a <a class="reference internal" href="#mako.cache.CacheImpl" title="mako.cache.CacheImpl"><tt class="xref py py-class docutils literal"><span class="pre">CacheImpl</span></tt></a> object, which implements
-a fixed API to provide caching services; specific subclasses exist to 
+a fixed API to provide caching services; specific subclasses exist to
 implement different
-caching strategies.   Mako includes a backend that works with 
+caching strategies.   Mako includes a backend that works with
 the Beaker caching system.   Beaker itself then supports
 a number of backends (i.e. file, memory, memcached, etc.)</p>
 <p>The construction of a <a class="reference internal" href="#mako.cache.Cache" title="mako.cache.Cache"><tt class="xref py py-class docutils literal"><span class="pre">Cache</span></tt></a> is part of the mechanics
@@ -506,7 +511,7 @@ cache is typically via the <tt class="xref py py-attr docutils literal"><span cl
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>key</strong> &#8211; the value&#8217;s key.</li>
-<li><strong>**kw</strong> &#8211; cache configuration arguments.  The 
+<li><strong>**kw</strong> &#8211; cache configuration arguments.  The
 backend is configured using these arguments upon first request.
 Subsequent requests that use the same series of configuration
 values will use that same backend.</li>
@@ -520,7 +525,7 @@ values will use that same backend.</li>
 <dl class="method">
 <dt id="mako.cache.Cache.get_or_create">
 <tt class="descname">get_or_create</tt><big>(</big><em>key</em>, <em>creation_function</em>, <em>**kw</em><big>)</big><a class="headerlink" href="#mako.cache.Cache.get_or_create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve a value from the cache, using the given creation function 
+<dd><p>Retrieve a value from the cache, using the given creation function
 to generate a new value.</p>
 </dd></dl>
 
@@ -552,7 +557,7 @@ methods beyond that of <a class="reference internal" href="#mako.cache.Cache" ti
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>key</strong> &#8211; the value&#8217;s key.</li>
-<li><strong>**kw</strong> &#8211; cache configuration arguments.  The 
+<li><strong>**kw</strong> &#8211; cache configuration arguments.  The
 backend is configured using these arguments upon first request.
 Subsequent requests that use the same series of configuration
 values will use that same backend.</li>
@@ -573,18 +578,18 @@ template.</p>
 <dl class="method">
 <dt id="mako.cache.Cache.invalidate_closure">
 <tt class="descname">invalidate_closure</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#mako.cache.Cache.invalidate_closure" title="Permalink to this definition">¶</a></dt>
-<dd><p>Invalidate a nested &lt;%def&gt; within this template.</p>
+<dd><p>Invalidate a nested <tt class="docutils literal"><span class="pre">&lt;%def&gt;</span></tt> within this template.</p>
 <p>Caching of nested defs is a blunt tool as there is no
-management of scope - nested defs that use cache tags
-need to have names unique of all other nested defs in the 
-template, else their content will be overwritten by 
+management of scope &#8211; nested defs that use cache tags
+need to have names unique of all other nested defs in the
+template, else their content will be overwritten by
 each other.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="mako.cache.Cache.invalidate_def">
 <tt class="descname">invalidate_def</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#mako.cache.Cache.invalidate_def" title="Permalink to this definition">¶</a></dt>
-<dd><p>Invalidate the cached content of a particular &lt;%def&gt; within this
+<dd><p>Invalidate the cached content of a particular <tt class="docutils literal"><span class="pre">&lt;%def&gt;</span></tt> within this
 template.</p>
 </dd></dl>
 
@@ -605,7 +610,7 @@ template.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>key</strong> &#8211; the value&#8217;s key.</li>
-<li><strong>value</strong> &#8211; the value</li>
+<li><strong>value</strong> &#8211; the value.</li>
 <li><strong>**kw</strong> &#8211; cache configuration arguments.</li>
 </ul>
 </td>
@@ -654,12 +659,12 @@ the filesystem.</p>
 <dl class="method">
 <dt id="mako.cache.CacheImpl.get_or_create">
 <tt class="descname">get_or_create</tt><big>(</big><em>key</em>, <em>creation_function</em>, <em>**kw</em><big>)</big><a class="headerlink" href="#mako.cache.CacheImpl.get_or_create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve a value from the cache, using the given creation function 
+<dd><p>Retrieve a value from the cache, using the given creation function
 to generate a new value.</p>
-<p>This function <em>must</em> return a value, either from 
+<p>This function <em>must</em> return a value, either from
 the cache, or via the given creation function.
-If the creation function is called, the newly 
-created value should be populated into the cache 
+If the creation function is called, the newly
+created value should be populated into the cache
 under the given key before being returned.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -698,8 +703,8 @@ a new value.</li>
 <dl class="attribute">
 <dt id="mako.cache.CacheImpl.pass_context">
 <tt class="descname">pass_context</tt><em class="property"> = False</em><a class="headerlink" href="#mako.cache.CacheImpl.pass_context" title="Permalink to this definition">¶</a></dt>
-<dd><p>If True, the Context will be passed to get_or_create
-as the name &#8216;context&#8217;.</p>
+<dd><p>If <tt class="docutils literal"><span class="pre">True</span></tt>, the <a class="reference internal" href="runtime.html#mako.runtime.Context" title="mako.runtime.Context"><tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt></a> will be passed to
+<a class="reference internal" href="#mako.cache.CacheImpl.get_or_create" title="mako.cache.CacheImpl.get_or_create"><tt class="xref py py-meth docutils literal"><span class="pre">get_or_create</span></tt></a> as the name <tt class="docutils literal"><span class="pre">'context'</span></tt>.</p>
 </dd></dl>
 
 <dl class="method">
@@ -712,7 +717,7 @@ as the name &#8216;context&#8217;.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>key</strong> &#8211; the value&#8217;s key.</li>
-<li><strong>value</strong> &#8211; the value</li>
+<li><strong>value</strong> &#8211; the value.</li>
 <li><strong>**kw</strong> &#8211; cache configuration arguments.</li>
 </ul>
 </td>
@@ -751,7 +756,7 @@ value of <tt class="docutils literal"><span class="pre">'beaker'</span></tt> for
 
     <div id="docs-copyright">
         &copy; Copyright the Mako authors and contributors.
-        Documentation generated using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2 
+        Documentation generated using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3 
         with Mako templates.
     </div>
 </div>

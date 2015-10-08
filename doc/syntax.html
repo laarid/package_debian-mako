@@ -6,7 +6,7 @@
     
                 Syntax
              &mdash; 
-    Mako 0.7.0 Documentation
+    Mako 0.7.1 Documentation
 </title>
 
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
           URL_ROOT:    '#',
-          VERSION:     '0.7.0',
+          VERSION:     '0.7.1',
           COLLAPSE_MODINDEX: false,
           FILE_SUFFIX: '.html'
       };
@@ -25,7 +25,7 @@
         <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="Mako 0.7.0 Documentation" href="index.html" />
+    <link rel="top" title="Mako 0.7.1 Documentation" href="index.html" />
         <link rel="next" title="Defs and Blocks" href="defs.html" />
         <link rel="prev" title="Usage" href="usage.html" />
 
@@ -62,7 +62,7 @@
 
 
 <div id="docs-header">
-    <h1>Mako 0.7.0 Documentation</h1>
+    <h1>Mako 0.7.1 Documentation</h1>
 
     <div id="docs-search">
     Search:
@@ -74,7 +74,7 @@
     </div>
 
     <div id="docs-version-header">
-        Release: <span class="version-num">0.7.0</span>
+        Release: <span class="version-num">0.7.1</span>
 
     </div>
 
@@ -99,7 +99,7 @@
     </div>
 
     <div id="docs-navigation-banner">
-        <a href="index.html">Mako 0.7.0 Documentation</a>
+        <a href="index.html">Mako 0.7.1 Documentation</a>
         » 
                 Syntax
              
@@ -130,19 +130,19 @@
 <li><a class="reference internal" href="#python-blocks">Python Blocks</a></li>
 <li><a class="reference internal" href="#module-level-blocks">Module-level Blocks</a></li>
 <li><a class="reference internal" href="#tags">Tags</a><ul>
-<li><a class="reference internal" href="#page">&lt;%page&gt;</a></li>
-<li><a class="reference internal" href="#include">&lt;%include&gt;</a></li>
-<li><a class="reference internal" href="#def">&lt;%def&gt;</a></li>
-<li><a class="reference internal" href="#block">&lt;%block&gt;</a></li>
-<li><a class="reference internal" href="#namespace">&lt;%namespace&gt;</a></li>
-<li><a class="reference internal" href="#inherit">&lt;%inherit&gt;</a></li>
-<li><a class="reference internal" href="#nsname-defname">&lt;%nsname:defname&gt;</a></li>
-<li><a class="reference internal" href="#call">&lt;%call&gt;</a></li>
-<li><a class="reference internal" href="#doc">&lt;%doc&gt;</a></li>
-<li><a class="reference internal" href="#text">&lt;%text&gt;</a></li>
+<li><a class="reference internal" href="#page"><tt class="docutils literal"><span class="pre">&lt;%page&gt;</span></tt></a></li>
+<li><a class="reference internal" href="#include"><tt class="docutils literal"><span class="pre">&lt;%include&gt;</span></tt></a></li>
+<li><a class="reference internal" href="#def"><tt class="docutils literal"><span class="pre">&lt;%def&gt;</span></tt></a></li>
+<li><a class="reference internal" href="#block"><tt class="docutils literal"><span class="pre">&lt;%block&gt;</span></tt></a></li>
+<li><a class="reference internal" href="#namespace"><tt class="docutils literal"><span class="pre">&lt;%namespace&gt;</span></tt></a></li>
+<li><a class="reference internal" href="#inherit"><tt class="docutils literal"><span class="pre">&lt;%inherit&gt;</span></tt></a></li>
+<li><a class="reference internal" href="#nsname-defname"><tt class="docutils literal"><span class="pre">&lt;%</span></tt>nsname<tt class="docutils literal"><span class="pre">:</span></tt>defname<tt class="docutils literal"><span class="pre">&gt;</span></tt></a></li>
+<li><a class="reference internal" href="#call"><tt class="docutils literal"><span class="pre">&lt;%call&gt;</span></tt></a></li>
+<li><a class="reference internal" href="#doc"><tt class="docutils literal"><span class="pre">&lt;%doc&gt;</span></tt></a></li>
+<li><a class="reference internal" href="#text"><tt class="docutils literal"><span class="pre">&lt;%text&gt;</span></tt></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#returning-early-from-a-template">Returning early from a template</a></li>
+<li><a class="reference internal" href="#returning-early-from-a-template">Returning Early from a Template</a></li>
 </ul>
 </li>
 </ul>
@@ -191,7 +191,7 @@ Perl, Genshi, JSP EL, and others:</p>
 </div>
 <p>Above, the string representation of <tt class="docutils literal"><span class="pre">x</span></tt> is applied to the
 template&#8217;s output stream. If you&#8217;re wondering where <tt class="docutils literal"><span class="pre">x</span></tt> comes
-from, its usually from the <tt class="docutils literal"><span class="pre">Context</span></tt> supplied to the
+from, it&#8217;s usually from the <a class="reference internal" href="runtime.html#mako.runtime.Context" title="mako.runtime.Context"><tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt></a> supplied to the
 template&#8217;s rendering function. If <tt class="docutils literal"><span class="pre">x</span></tt> was not supplied to the
 template and was not otherwise assigned locally, it evaluates to
 a special value <tt class="docutils literal"><span class="pre">UNDEFINED</span></tt>. More on that later.</p>
@@ -210,7 +210,7 @@ result.</p>
 <p>Mako includes a number of built-in escaping mechanisms,
 including HTML, URI and XML escaping, as well as a &#8220;trim&#8221;
 function. These escapes can be added to an expression
-substituion using the <tt class="docutils literal"><span class="pre">|</span></tt> operator:</p>
+substitution using the <tt class="docutils literal"><span class="pre">|</span></tt> operator:</p>
 <div class="highlight-mako"><div class="highlight"><pre><span class="cp">${</span><span class="s">&quot;this is some text&quot;</span> <span class="o">|</span> <span class="n">u</span><span class="cp">}</span><span class="x"></span>
 </pre></div>
 </div>
@@ -218,14 +218,14 @@ substituion using the <tt class="docutils literal"><span class="pre">|</span></t
 produces <tt class="docutils literal"><span class="pre">this+is+some+text</span></tt>. The <tt class="docutils literal"><span class="pre">u</span></tt> name indicates URL
 escaping, whereas <tt class="docutils literal"><span class="pre">h</span></tt> represents HTML escaping, <tt class="docutils literal"><span class="pre">x</span></tt>
 represents XML escaping, and <tt class="docutils literal"><span class="pre">trim</span></tt> applies a trim function.</p>
-<p>Read more about built in filtering functions, including how to
+<p>Read more about built-in filtering functions, including how to
 make your own filter functions, in <a class="reference internal" href="filtering.html"><em>Filtering and Buffering</em></a>.</p>
 </div>
 <div class="section" id="control-structures">
 <h2>Control Structures<a class="headerlink" href="#control-structures" title="Permalink to this headline">¶</a></h2>
 <p>A control structure refers to all those things that control the
-flow of a program - conditionals (i.e. if/else), loops (like
-while and for), as well as things like <tt class="docutils literal"><span class="pre">try/except</span></tt>. In Mako,
+flow of a program &#8211; conditionals (i.e. <tt class="docutils literal"><span class="pre">if</span></tt>/<tt class="docutils literal"><span class="pre">else</span></tt>), loops (like
+<tt class="docutils literal"><span class="pre">while</span></tt> and <tt class="docutils literal"><span class="pre">for</span></tt>), as well as things like <tt class="docutils literal"><span class="pre">try</span></tt>/<tt class="docutils literal"><span class="pre">except</span></tt>. In Mako,
 control structures are written using the <tt class="docutils literal"><span class="pre">%</span></tt> marker followed
 by a regular Python control expression, and are &#8220;closed&#8221; by
 using another <tt class="docutils literal"><span class="pre">%</span></tt> marker with the tag &#8220;<tt class="docutils literal"><span class="pre">end&lt;name&gt;</span></tt>&#8221;, where
@@ -236,18 +236,18 @@ using another <tt class="docutils literal"><span class="pre">%</span></tt> marke
 </pre></div>
 </div>
 <p>The <tt class="docutils literal"><span class="pre">%</span></tt> can appear anywhere on the line as long as no text
-precedes it; indentation is not signficant. The full range of
+precedes it; indentation is not significant. The full range of
 Python &#8220;colon&#8221; expressions are allowed here, including
-<tt class="docutils literal"><span class="pre">if/elif/else</span></tt>, <tt class="docutils literal"><span class="pre">while</span></tt>, <tt class="docutils literal"><span class="pre">for</span></tt>, and even <tt class="docutils literal"><span class="pre">def</span></tt>, although
+<tt class="docutils literal"><span class="pre">if</span></tt>/<tt class="docutils literal"><span class="pre">elif</span></tt>/<tt class="docutils literal"><span class="pre">else</span></tt>, <tt class="docutils literal"><span class="pre">while</span></tt>, <tt class="docutils literal"><span class="pre">for</span></tt>, and even <tt class="docutils literal"><span class="pre">def</span></tt>, although
 Mako has a built-in tag for defs which is more full-featured.</p>
 <div class="highlight-mako"><div class="highlight"><pre><span class="cp">%</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;one&#39;</span><span class="p">,</span> <span class="s">&#39;two&#39;</span><span class="p">,</span> <span class="s">&#39;three&#39;</span><span class="p">,</span> <span class="s">&#39;four&#39;</span><span class="p">,</span> <span class="s">&#39;five&#39;</span><span class="p">]:</span><span class="x"></span>
     <span class="cp">%</span> <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;t&#39;</span><span class="p">:</span><span class="x"></span>
-<span class="x">     its two or three</span>
+<span class="x">    its two or three</span>
     <span class="cp">%</span> <span class="k">elif</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;f&#39;</span><span class="p">:</span><span class="x"></span>
 <span class="x">    four/five</span>
     <span class="cp">%</span> <span class="k">else</span><span class="p">:</span><span class="x"></span>
 <span class="x">    one</span>
-    <span class="cp">%</span><span class="k">endif</span><span class="x"></span>
+    <span class="cp">%</span><span class="k"> endif</span><span class="x"></span>
 <span class="cp">%</span><span class="k"> endfor</span><span class="x"></span>
 </pre></div>
 </div>
@@ -261,9 +261,8 @@ line, by escaping it as in <tt class="docutils literal"><span class="pre">%%</sp
 </div>
 <div class="section" id="the-loop-context">
 <h3>The Loop Context<a class="headerlink" href="#the-loop-context" title="Permalink to this headline">¶</a></h3>
-<p>Mako 0.7 includes a new feature called the <strong>loop context</strong> which
-provides additional information about a loop while inside of a <tt class="docutils literal"><span class="pre">%</span> <span class="pre">for</span></tt>
-structure:</p>
+<p>The <strong>loop context</strong> provides additional information about a loop
+while inside of a <tt class="docutils literal"><span class="pre">%</span> <span class="pre">for</span></tt> structure:</p>
 <div class="highlight-mako"><div class="highlight"><pre><span class="x">&lt;ul&gt;</span>
 <span class="cp">%</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&quot;one&quot;</span><span class="p">,</span> <span class="s">&quot;two&quot;</span><span class="p">,</span> <span class="s">&quot;three&quot;</span><span class="p">):</span><span class="x"></span>
 <span class="x">    &lt;li&gt;Item </span><span class="cp">${</span><span class="n">loop</span><span class="o">.</span><span class="n">index</span><span class="cp">}</span><span class="x">: </span><span class="cp">${</span><span class="n">a</span><span class="cp">}</span><span class="x">&lt;/li&gt;</span>
@@ -272,6 +271,8 @@ structure:</p>
 </pre></div>
 </div>
 <p>See <a class="reference internal" href="runtime.html#loop-context"><em>The Loop Context</em></a> for more information on this feature.</p>
+<p class="versionadded">
+<span class="versionmodified">New in version 0.7.</span></p>
 </div>
 </div>
 <div class="section" id="comments">
@@ -282,7 +283,7 @@ structure:</p>
 <span class="x">...text ...</span>
 </pre></div>
 </div>
-<p>A multiline version exists using <tt class="docutils literal"><span class="pre">&lt;%doc&gt;</span>&nbsp; <span class="pre">...text...</span> <span class="pre">&lt;/%doc&gt;</span></tt>:</p>
+<p>A multiline version exists using <tt class="docutils literal"><span class="pre">&lt;%doc&gt;</span> <span class="pre">...text...</span> <span class="pre">&lt;/%doc&gt;</span></tt>:</p>
 <div class="highlight-mako"><div class="highlight"><pre><span class="cp">&lt;%doc&gt;</span>
 <span class="cp">    these are comments</span>
 <span class="cp">    more comments</span>
@@ -300,7 +301,8 @@ the next line:</p>
 </pre></div>
 </div>
 <p>The above text evaluates to:</p>
-<div class="highlight-python"><pre>here is a line that goes onto another line.</pre>
+<div class="highlight-text"><div class="highlight"><pre>here is a line that goes onto another line.
+</pre></div>
 </div>
 </div>
 <div class="section" id="python-blocks">
@@ -372,11 +374,11 @@ expression (using <tt class="docutils literal"><span class="pre">${}</span></tt>
 <p>Whether or not an attribute accepts runtime evaluation depends
 on the type of tag and how that tag is compiled into the
 template. The best way to find out if you can stick an
-expression in is to try it ! The lexer will tell you if its not
+expression in is to try it! The lexer will tell you if it&#8217;s not
 valid.</p>
 <p>Heres a quick summary of all the tags:</p>
 <div class="section" id="page">
-<h3>&lt;%page&gt;<a class="headerlink" href="#page" title="Permalink to this headline">¶</a></h3>
+<h3><tt class="docutils literal"><span class="pre">&lt;%page&gt;</span></tt><a class="headerlink" href="#page" title="Permalink to this headline">¶</a></h3>
 <p>This tag defines general characteristics of the template,
 including caching arguments, and optional lists of arguments
 which the template expects when invoked.</p>
@@ -392,11 +394,11 @@ rest get ignored. While this will be improved in a future
 release, for now make sure you have only one <tt class="docutils literal"><span class="pre">&lt;%page&gt;</span></tt> tag
 defined in your template, else you may not get the results you
 want. The details of what <tt class="docutils literal"><span class="pre">&lt;%page&gt;</span></tt> is used for are described
-further in <a class="reference internal" href="namespaces.html#namespaces-body"><em>The &#8220;body()&#8221; method</em></a> as well as <a class="reference internal" href="caching.html"><em>Caching</em></a>.</p>
+further in <a class="reference internal" href="namespaces.html#namespaces-body"><em>The body() Method</em></a> as well as <a class="reference internal" href="caching.html"><em>Caching</em></a>.</p>
 </div>
 <div class="section" id="include">
-<h3>&lt;%include&gt;<a class="headerlink" href="#include" title="Permalink to this headline">¶</a></h3>
-<p>A tag that is familiar from other template languages, %include
+<h3><tt class="docutils literal"><span class="pre">&lt;%include&gt;</span></tt><a class="headerlink" href="#include" title="Permalink to this headline">¶</a></h3>
+<p>A tag that is familiar from other template languages, <tt class="docutils literal"><span class="pre">%include</span></tt>
 is a regular joe that just accepts a file argument and calls in
 the rendered result of that file:</p>
 <div class="highlight-mako"><div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">include</span> <span class="na">file=</span><span class="s">&quot;header.html&quot;</span><span class="cp">/&gt;</span><span class="x"></span>
@@ -412,7 +414,7 @@ the rendered result of that file:</p>
 </div>
 </div>
 <div class="section" id="def">
-<h3>&lt;%def&gt;<a class="headerlink" href="#def" title="Permalink to this headline">¶</a></h3>
+<h3><tt class="docutils literal"><span class="pre">&lt;%def&gt;</span></tt><a class="headerlink" href="#def" title="Permalink to this headline">¶</a></h3>
 <p>The <tt class="docutils literal"><span class="pre">%def</span></tt> tag defines a Python function which contains a set
 of content, that can be called at some other point in the
 template. The basic idea is simple:</p>
@@ -423,19 +425,19 @@ template. The basic idea is simple:</p>
 <span class="cp">${</span><span class="n">myfunc</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span><span class="cp">}</span><span class="x"></span>
 </pre></div>
 </div>
-<p>The %def tag is a lot more powerful than a plain Python def, as
-the Mako compiler provides many extra services with %def that
+<p>The <tt class="docutils literal"><span class="pre">%def</span></tt> tag is a lot more powerful than a plain Python <tt class="docutils literal"><span class="pre">def</span></tt>, as
+the Mako compiler provides many extra services with <tt class="docutils literal"><span class="pre">%def</span></tt> that
 you wouldn&#8217;t normally have, such as the ability to export defs
 as template &#8220;methods&#8221;, automatic propagation of the current
-<tt class="docutils literal"><span class="pre">Context</span></tt>, buffering/filtering/caching flags, and def calls
+<a class="reference internal" href="runtime.html#mako.runtime.Context" title="mako.runtime.Context"><tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt></a>, buffering/filtering/caching flags, and def calls
 with content, which enable packages of defs to be sent as
 arguments to other def calls (not as hard as it sounds). Get the
-full deal on what %def can do in <a class="reference internal" href="defs.html"><em>Defs and Blocks</em></a>.</p>
+full deal on what <tt class="docutils literal"><span class="pre">%def</span></tt> can do in <a class="reference internal" href="defs.html"><em>Defs and Blocks</em></a>.</p>
 </div>
 <div class="section" id="block">
-<h3>&lt;%block&gt;<a class="headerlink" href="#block" title="Permalink to this headline">¶</a></h3>
-<p><tt class="docutils literal"><span class="pre">%block</span></tt> is a tag that&#8217;s new as of Mako 0.4.1.   It&#8217;s close to
-a <tt class="docutils literal"><span class="pre">%def</span></tt>, except executes itself immediately in its base-most scope,
+<h3><tt class="docutils literal"><span class="pre">&lt;%block&gt;</span></tt><a class="headerlink" href="#block" title="Permalink to this headline">¶</a></h3>
+<p><tt class="docutils literal"><span class="pre">%block</span></tt> is a tag that is close to a <tt class="docutils literal"><span class="pre">%def</span></tt>,
+except executes itself immediately in its base-most scope,
 and can also be anonymous (i.e. with no name):</p>
 <div class="highlight-mako"><div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">block</span> <span class="na">filter=</span><span class="s">&quot;h&quot;</span><span class="cp">&gt;</span><span class="x"></span>
 <span class="x">    some &lt;html&gt; stuff.</span>
@@ -455,17 +457,19 @@ to do inheritance:</p>
 </pre></div>
 </div>
 <p>Blocks are introduced in <a class="reference internal" href="defs.html#blocks"><em>Using Blocks</em></a> and further described in <a class="reference internal" href="inheritance.html"><em>Inheritance</em></a>.</p>
+<p class="versionadded">
+<span class="versionmodified">New in version 0.4.1.</span></p>
 </div>
 <div class="section" id="namespace">
-<h3>&lt;%namespace&gt;<a class="headerlink" href="#namespace" title="Permalink to this headline">¶</a></h3>
-<p>%namespace is Mako&#8217;s equivalent of Python&#8217;s <tt class="docutils literal"><span class="pre">import</span></tt>
+<h3><tt class="docutils literal"><span class="pre">&lt;%namespace&gt;</span></tt><a class="headerlink" href="#namespace" title="Permalink to this headline">¶</a></h3>
+<p><tt class="docutils literal"><span class="pre">%namespace</span></tt> is Mako&#8217;s equivalent of Python&#8217;s <tt class="docutils literal"><span class="pre">import</span></tt>
 statement. It allows access to all the rendering functions and
 metadata of other template files, plain Python modules, as well
 as locally defined &#8220;packages&#8221; of functions.</p>
 <div class="highlight-mako"><div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">namespace</span> <span class="na">file=</span><span class="s">&quot;functions.html&quot;</span> <span class="na">import=</span><span class="s">&quot;*&quot;</span><span class="cp">/&gt;</span><span class="x"></span>
 </pre></div>
 </div>
-<p>The underlying object generated by %namespace, an instance of
+<p>The underlying object generated by <tt class="docutils literal"><span class="pre">%namespace</span></tt>, an instance of
 <a class="reference internal" href="namespaces.html#mako.runtime.Namespace" title="mako.runtime.Namespace"><tt class="xref py py-class docutils literal"><span class="pre">mako.runtime.Namespace</span></tt></a>, is a central construct used in
 templates to reference template-specific information such as the
 current URI, inheritance structures, and other things that are
@@ -473,23 +477,23 @@ not as hard as they sound right here. Namespaces are described
 in <a class="reference internal" href="namespaces.html"><em>Namespaces</em></a>.</p>
 </div>
 <div class="section" id="inherit">
-<h3>&lt;%inherit&gt;<a class="headerlink" href="#inherit" title="Permalink to this headline">¶</a></h3>
+<h3><tt class="docutils literal"><span class="pre">&lt;%inherit&gt;</span></tt><a class="headerlink" href="#inherit" title="Permalink to this headline">¶</a></h3>
 <p>Inherit allows templates to arrange themselves in <strong>inheritance
 chains</strong>. This is a concept familiar in many other template
 languages.</p>
 <div class="highlight-mako"><div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">inherit</span> <span class="na">file=</span><span class="s">&quot;base.html&quot;</span><span class="cp">/&gt;</span><span class="x"></span>
 </pre></div>
 </div>
-<p>When using the %inherit tag, control is passed to the topmost
+<p>When using the <tt class="docutils literal"><span class="pre">%inherit</span></tt> tag, control is passed to the topmost
 inherited template first, which then decides how to handle
 calling areas of content from its inheriting templates. Mako
-offers a lot of flexbility in this area, including dynamic
+offers a lot of flexibility in this area, including dynamic
 inheritance, content wrapping, and polymorphic method calls.
 Check it out in <a class="reference internal" href="inheritance.html"><em>Inheritance</em></a>.</p>
 </div>
 <div class="section" id="nsname-defname">
-<h3>&lt;%nsname:defname&gt;<a class="headerlink" href="#nsname-defname" title="Permalink to this headline">¶</a></h3>
-<p>As of Mako 0.2.3, any user-defined &#8220;tag&#8221; can be created against
+<h3><tt class="docutils literal"><span class="pre">&lt;%</span></tt>nsname<tt class="docutils literal"><span class="pre">:</span></tt>defname<tt class="docutils literal"><span class="pre">&gt;</span></tt><a class="headerlink" href="#nsname-defname" title="Permalink to this headline">¶</a></h3>
+<p>Any user-defined &#8220;tag&#8221; can be created against
 a namespace by using a tag with a name of the form
 <tt class="docutils literal"><span class="pre">&lt;%&lt;namespacename&gt;:&lt;defname&gt;&gt;</span></tt>. The closed and open formats of such a
 tag are equivalent to an inline expression and the <tt class="docutils literal"><span class="pre">&lt;%call&gt;</span></tt>
@@ -500,17 +504,19 @@ tag, respectively.</p>
 </pre></div>
 </div>
 <p>To create custom tags which accept a body, see
-<a class="reference internal" href="defs.html#defs-with-content"><em>Calling a def with embedded content and/or other defs</em></a>.</p>
+<a class="reference internal" href="defs.html#defs-with-content"><em>Calling a Def with Embedded Content and/or Other Defs</em></a>.</p>
+<p class="versionadded">
+<span class="versionmodified">New in version 0.2.3.</span></p>
 </div>
 <div class="section" id="call">
-<h3>&lt;%call&gt;<a class="headerlink" href="#call" title="Permalink to this headline">¶</a></h3>
+<h3><tt class="docutils literal"><span class="pre">&lt;%call&gt;</span></tt><a class="headerlink" href="#call" title="Permalink to this headline">¶</a></h3>
 <p>The call tag is the &#8220;classic&#8221; form of a user-defined tag, and is
-roughly equiavlent to the <tt class="docutils literal"><span class="pre">&lt;%namespacename:defname&gt;</span></tt> syntax
-described above. This tag is also described in <a class="reference internal" href="defs.html#defs-with-content"><em>Calling a def with embedded content and/or other defs</em></a>.</p>
+roughly equivalent to the <tt class="docutils literal"><span class="pre">&lt;%namespacename:defname&gt;</span></tt> syntax
+described above. This tag is also described in <a class="reference internal" href="defs.html#defs-with-content"><em>Calling a Def with Embedded Content and/or Other Defs</em></a>.</p>
 </div>
 <div class="section" id="doc">
-<h3>&lt;%doc&gt;<a class="headerlink" href="#doc" title="Permalink to this headline">¶</a></h3>
-<p>The doc tag handles multiline comments:</p>
+<h3><tt class="docutils literal"><span class="pre">&lt;%doc&gt;</span></tt><a class="headerlink" href="#doc" title="Permalink to this headline">¶</a></h3>
+<p>The <tt class="docutils literal"><span class="pre">%doc</span></tt> tag handles multiline comments:</p>
 <div class="highlight-mako"><div class="highlight"><pre><span class="cp">&lt;%doc&gt;</span>
 <span class="cp">    these are comments</span>
 <span class="cp">    more comments</span>
@@ -520,24 +526,24 @@ described above. This tag is also described in <a class="reference internal" hre
 <p>Also the <tt class="docutils literal"><span class="pre">##</span></tt> symbol as the first non-space characters on a line can be used for single line comments.</p>
 </div>
 <div class="section" id="text">
-<h3>&lt;%text&gt;<a class="headerlink" href="#text" title="Permalink to this headline">¶</a></h3>
+<h3><tt class="docutils literal"><span class="pre">&lt;%text&gt;</span></tt><a class="headerlink" href="#text" title="Permalink to this headline">¶</a></h3>
 <p>This tag suspends the Mako lexer&#8217;s normal parsing of Mako
 template directives, and returns its entire body contents as
 plain text. It is used pretty much to write documentation about
 Mako:</p>
 <div class="highlight-mako"><div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">text</span> <span class="na">filter=</span><span class="s">&quot;h&quot;</span><span class="cp">&gt;</span><span class="x"></span>
 <span class="x">    heres some fake mako </span><span class="cp">${</span><span class="n">syntax</span><span class="cp">}</span><span class="x"></span>
-<span class="x">    </span><span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;x()&quot;</span><span class="cp">&gt;${</span><span class="n">x</span><span class="cp">}&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span>
-<span class="cp">%</span><span class="n">CLOSETEXT</span><span class="x"></span>
+<span class="x">    </span><span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;x()&quot;</span><span class="cp">&gt;${</span><span class="n">x</span><span class="cp">}&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span><span class="x"></span>
+<span class="cp">&lt;/%</span><span class="nb">text</span><span class="cp">&gt;</span><span class="x"></span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="returning-early-from-a-template">
-<h2>Returning early from a template<a class="headerlink" href="#returning-early-from-a-template" title="Permalink to this headline">¶</a></h2>
+<h2>Returning Early from a Template<a class="headerlink" href="#returning-early-from-a-template" title="Permalink to this headline">¶</a></h2>
 <p>Sometimes you want to stop processing a template or <tt class="docutils literal"><span class="pre">&lt;%def&gt;</span></tt>
 method in the middle and just use the text you&#8217;ve accumulated so
-far. You can use a <tt class="docutils literal"><span class="pre">``return``</span></tt> statement inside a Python
+far. You can use a <tt class="docutils literal"><span class="pre">return</span></tt> statement inside a Python
 block to do that.</p>
 <div class="highlight-mako"><div class="highlight"><pre><span class="cp">%</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">):</span><span class="x"></span>
 <span class="x">    No records found.</span>
@@ -567,7 +573,7 @@ block to do that.</p>
 
     <div id="docs-copyright">
         &copy; Copyright the Mako authors and contributors.
-        Documentation generated using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2 
+        Documentation generated using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3 
         with Mako templates.
     </div>
 </div>
