@@ -12,6 +12,23 @@ from test import TemplateTest, eq_, template_base, module_base, \
     skip_if, assert_raises, assert_raises_message
 
 class EncodingTest(TemplateTest):
+    def test_escapes_html_tags(self):
+        from mako.exceptions import html_error_template
+
+        x = Template("""
+        X:
+        <% raise Exception('<span style="color:red">Foobar</span>') %>
+        """)
+
+        try:
+            x.render()
+        except:
+            # <h3>Exception: <span style="color:red">Foobar</span></h3>
+            markup = html_error_template().render(full=False, css=False)
+            print markup
+            assert '<span style="color:red">Foobar</span></h3>' not in markup
+            assert '&lt;span style=&#34;color:red&#34;&gt;Foobar&lt;/span&gt;' in markup
+    
     def test_unicode(self):
         self._do_memory_test(
             u"""Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petite voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »""",
@@ -824,6 +841,10 @@ for utf8 in (True, False):
             del _do_test
 
 class ModuleDirTest(TemplateTest):
+    def tearDown(self):
+        import shutil
+        shutil.rmtree(module_base, True)
+
     def test_basic(self):
         t = self._file_template("modtest.html")
         t2 = self._file_template('subdir/modtest.html')
@@ -855,6 +876,22 @@ class ModuleDirTest(TemplateTest):
         eq_(
             t2.module.__file__, 
             os.path.join(module_base, 'subdir', 'foo', 'modtest.html.py')
+        )
+
+    def test_custom_writer(self):
+        canary = []
+        def write_module(source, outputpath):
+            with open(outputpath, 'wb') as f:
+                canary.append(outputpath)
+                f.write(source)
+        lookup = TemplateLookup(template_base, module_writer=write_module, 
+                                            module_directory=module_base)
+        t = lookup.get_template('/modtest.html')
+        t2 = lookup.get_template('/subdir/modtest.html')
+        eq_(
+            canary,
+            [os.path.join(module_base, "modtest.html.py"),
+            os.path.join(module_base, "subdir/modtest.html.py")]
         )
 
 class FilenameToURITest(TemplateTest):
@@ -936,6 +973,7 @@ class FilenameToURITest(TemplateTest):
         # normalizes in the root is OK
         t = Template("test", uri="foo/bar/../../foo.html")
         eq_(t.uri, "foo/bar/../../foo.html")
+
 
 class ModuleTemplateTest(TemplateTest):
     def test_module_roundtrip(self):

@@ -1,21 +1,21 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        
-        <title>
-                        The Mako Runtime Environment
-                     &mdash; Mako 0.5.0 Documentation</title>
-        
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<head>
+<title>
+    
+                The Mako Runtime Environment
+             &mdash; 
+    Mako 0.6.0 Documentation
+</title>
+
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/docs.css" type="text/css" />
 
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
           URL_ROOT:    '#',
-          VERSION:     '0.5.0',
+          VERSION:     '0.6.0',
           COLLAPSE_MODINDEX: false,
           FILE_SUFFIX: '.html'
       };
@@ -23,66 +23,101 @@
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/init.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="Mako 0.5.0 Documentation" href="index.html" />
+    <link rel="top" title="Mako 0.6.0 Documentation" href="index.html" />
         <link rel="next" title="Namespaces" href="namespaces.html" />
         <link rel="prev" title="Defs and Blocks" href="defs.html" />
 
+<link rel="stylesheet" href="_static/site.css"></link>
+
+
+</head>
+<body>
+    <div id="wrap">
+    <div class="rightbar">
+    <div class="slogan">
+    Hyperfast and lightweight templating for the Python platform.
+    </div>
+
+
+    </div>
+
+    <a href="http://www.makotemplates.org/"><img src="_static/makoLogo.png" /></a>
+
+    <hr/>
+
     
-    
-
-    </head>
-    <body>
-        
 
 
 
-        <h1>Mako 0.5.0 Documentation</h1>
 
-        <div id="search">
-        Search:
-        <form class="search" action="search.html" method="get">
-          <input type="text" name="q" size="18" /> <input type="submit" value="Search" />
-          <input type="hidden" name="check_keywords" value="yes" />
-          <input type="hidden" name="area" value="default" />
-        </form>
-        </div>
 
-        <div class="versionheader">
-            Version: <span class="versionnum">0.5.0</span> Last Updated: 09/27/2011 20:26:30
-        </div>
-        <div class="clearboth"></div>
 
-        <div class="topnav">
-            <div id="pagecontrol">
-                <a href="genindex.html">Index</a>
- 
-                <div class="sourcelink">(<a href="_sources/runtime.txt">view source)</div>
-            </div>
- 
-            <div class="navbanner">
-                <a class="totoc" href="index.html">Table of Contents</a>
-                » 
-                        The Mako Runtime Environment
-                     
 
-                
-<div class="prevnext">
-        Previous:
-        <a href="defs.html" title="previous chapter">Defs and Blocks</a>
-        Next:
-        <a href="namespaces.html" title="next chapter">Namespaces</a>
+
+
+<div id="docs-container">
+
+
+
+<div id="docs-header">
+    <h1>Mako 0.6.0 Documentation</h1>
+
+    <div id="docs-search">
+    Search:
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" /> <input type="submit" value="Search" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+
+    <div id="docs-version-header">
+        Release: <span class="version-num">0.6.0</span>
+
+    </div>
+
 </div>
 
-                <h2>
-                    
-                        The Mako Runtime Environment
-                    
-                </h2>
-            </div>
-                <ul>
+<div id="docs-top-navigation">
+    <div id="docs-top-page-control" class="docs-navigation-links">
+        <ul>
+            <li>Prev:
+            <a href="defs.html" title="previous chapter">Defs and Blocks</a>
+            </li>
+            <li>Next:
+            <a href="namespaces.html" title="next chapter">Namespaces</a>
+            </li>
+
+        <li>
+            <a href="index.html">Table of Contents</a> |
+            <a href="genindex.html">Index</a>
+            | <a href="_sources/runtime.txt">view source
+        </li>
+        </ul>
+    </div>
+
+    <div id="docs-navigation-banner">
+        <a href="index.html">Mako 0.6.0 Documentation</a>
+        » 
+                The Mako Runtime Environment
+             
+
+        <h2>
+            
+                The Mako Runtime Environment
+            
+        </h2>
+    </div>
+
+</div>
+
+<div id="docs-body-container">
+
+    <div id="docs-sidebar">
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">The Mako Runtime Environment</a><ul>
 <li><a class="reference internal" href="#context">Context</a><ul>
 <li><a class="reference internal" href="#the-buffer">The Buffer</a></li>
@@ -96,21 +131,40 @@
 </li>
 </ul>
 
-            <div class="clearboth"></div>
-        </div>
- 
-        <div class="document">
-            <div class="body">
-                
+
+    <h4>Previous Topic</h4>
+    <p>
+    <a href="defs.html" title="previous chapter">Defs and Blocks</a>
+    </p>
+    <h4>Next Topic</h4>
+    <p>
+    <a href="namespaces.html" title="next chapter">Namespaces</a>
+    </p>
+
+    <h4>Quick Search</h4>
+    <p>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" /> <input type="submit" value="Search" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </p>
+
+    </div>
+
+    <div id="docs-body" class="withsidebar" >
+        
 <div class="section" id="the-mako-runtime-environment">
 <span id="runtime-toplevel"></span><h1>The Mako Runtime Environment<a class="headerlink" href="#the-mako-runtime-environment" title="Permalink to this headline">¶</a></h1>
 <p>This section describes a little bit about the objects and
 built-in functions that are available in templates.</p>
 <div class="section" id="context">
-<h2>Context<a class="headerlink" href="#context" title="Permalink to this headline">¶</a></h2>
+<span id="id1"></span><h2>Context<a class="headerlink" href="#context" title="Permalink to this headline">¶</a></h2>
 <p>The <a class="reference internal" href="#mako.runtime.Context" title="mako.runtime.Context"><tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt></a> is the central object that is created when
 a template is first executed, and is responsible for handling
-all communication with the outside world. This includes two
+all communication with the outside world.  Within the template
+environment, it is available via the name <tt class="docutils literal"><span class="pre">context</span></tt>.  The <a class="reference internal" href="#mako.runtime.Context" title="mako.runtime.Context"><tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt></a>
+includes two
 major components, one of which is the output buffer, which is a
 file-like object such as Python&#8217;s <tt class="docutils literal"><span class="pre">StringIO</span></tt> or similar, and
 the other a dictionary of variables that can be freely
@@ -120,8 +174,9 @@ some built-in variables provided by Mako&#8217;s runtime environment.</p>
 <div class="section" id="the-buffer">
 <h3>The Buffer<a class="headerlink" href="#the-buffer" title="Permalink to this headline">¶</a></h3>
 <p>The buffer is stored within the <a class="reference internal" href="#mako.runtime.Context" title="mako.runtime.Context"><tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt></a>, and writing
-to it is achieved by calling <a class="reference internal" href="#mako.runtime.Context.write" title="mako.runtime.Context.write"><tt class="xref py py-meth docutils literal"><span class="pre">Context.write()</span></tt></a>. You usually
-don&#8217;t need to care about this as all text within a template, as
+to it is achieved by calling the <a class="reference internal" href="#mako.runtime.Context.write" title="mako.runtime.Context.write"><tt class="xref py py-meth docutils literal"><span class="pre">write()</span></tt></a> method -
+in a template this looks like <tt class="docutils literal"><span class="pre">context.write('some</span> <span class="pre">string')</span></tt>.
+You usually don&#8217;t need to care about this, as all text within a template, as
 well as all expressions provided by <tt class="docutils literal"><span class="pre">${}</span></tt>, automatically send
 everything to this method. The cases you might want to be aware
 of its existence are if you are dealing with various
@@ -138,7 +193,7 @@ block.</p>
 the <a class="reference internal" href="#mako.runtime.Context" title="mako.runtime.Context"><tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt></a> object, as various filtering/caching
 scenarios may &#8220;push&#8221; a new buffer onto the context&#8217;s underlying
 buffer stack. For this reason, just stick with
-<a class="reference internal" href="#mako.runtime.Context.write" title="mako.runtime.Context.write"><tt class="xref py py-meth docutils literal"><span class="pre">Context.write()</span></tt></a> and content will always go to the topmost
+<tt class="docutils literal"><span class="pre">context.write()</span></tt> and content will always go to the topmost
 buffer.</p>
 </div>
 <div class="section" id="context-variables">
@@ -174,7 +229,7 @@ which includes the name of the variable in its message
 when <a class="reference internal" href="usage.html#mako.template.Template.render" title="mako.template.Template.render"><tt class="xref py py-meth docutils literal"><span class="pre">render()</span></tt></a> is called - <tt class="docutils literal"><span class="pre">UNDEFINED</span></tt> is not used.</li>
 <li><strong>Why not just return None?</strong> Using <tt class="docutils literal"><span class="pre">UNDEFINED</span></tt>, or
 raising a <tt class="docutils literal"><span class="pre">NameError</span></tt> is more
-explicit and allows differentiation between a value of <tt class="xref docutils literal"><span class="pre">None</span></tt>
+explicit and allows differentiation between a value of <tt class="docutils literal"><span class="pre">None</span></tt>
 that was explicitly passed to the <a class="reference internal" href="#mako.runtime.Context" title="mako.runtime.Context"><tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt></a> and a value that
 wasn&#8217;t present at all.</li>
 <li><strong>Why raise an exception when you call str() on it ? Why not
@@ -183,7 +238,7 @@ Python philosophy of &#8220;explicit is better than implicit&#8221;. In
 this case, its decided that the template author should be made
 to specifically handle a missing value rather than
 experiencing what may be a silent failure. Since <tt class="docutils literal"><span class="pre">UNDEFINED</span></tt>
-is a singleton object just like Python&#8217;s <tt class="xref docutils literal"><span class="pre">True</span></tt> or <tt class="xref docutils literal"><span class="pre">False</span></tt>,
+is a singleton object just like Python&#8217;s <tt class="docutils literal"><span class="pre">True</span></tt> or <tt class="docutils literal"><span class="pre">False</span></tt>,
 you can use the <tt class="docutils literal"><span class="pre">is</span></tt> operator to check for it:</li>
 </ul>
 <blockquote>
@@ -284,6 +339,8 @@ in the next section, <a class="reference internal" href="namespaces.html"><em>Na
 these names other than <a class="reference internal" href="#mako.runtime.Context" title="mako.runtime.Context"><tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt></a> and <tt class="docutils literal"><span class="pre">UNDEFINED</span></tt> are
 also present <em>within</em> the <a class="reference internal" href="#mako.runtime.Context" title="mako.runtime.Context"><tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt></a> itself.</p>
 <ul class="simple">
+<li><tt class="docutils literal"><span class="pre">context</span></tt> - this is the <a class="reference internal" href="#mako.runtime.Context" title="mako.runtime.Context"><tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt></a> object, introduced
+at <a class="reference internal" href="#context"><em>Context</em></a>.</li>
 <li><tt class="docutils literal"><span class="pre">local</span></tt> - the namespace of the current template, described
 in <a class="reference internal" href="namespaces.html#namespaces-builtin"><em>Built-in Namespaces</em></a>.</li>
 <li><tt class="docutils literal"><span class="pre">self</span></tt> - the namespace of the topmost template in an
@@ -305,7 +362,7 @@ is described in <a class="reference internal" href="filtering.html"><em>Filterin
 otherwise uninitialized template variables that were not
 located within the <a class="reference internal" href="#mako.runtime.Context" title="mako.runtime.Context"><tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt></a> when rendering began,
 unless the <a class="reference internal" href="usage.html#mako.template.Template" title="mako.template.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a> flag <tt class="docutils literal"><span class="pre">strict_undefined</span></tt>
-is set to <tt class="xref docutils literal"><span class="pre">True</span></tt>. <tt class="docutils literal"><span class="pre">UNDEFINED</span></tt> is
+is set to <tt class="docutils literal"><span class="pre">True</span></tt>. <tt class="docutils literal"><span class="pre">UNDEFINED</span></tt> is
 an instance of <a class="reference internal" href="#mako.runtime.Undefined" title="mako.runtime.Undefined"><tt class="xref py py-class docutils literal"><span class="pre">Undefined</span></tt></a>, and raises an
 exception when its <tt class="docutils literal"><span class="pre">__str__()</span></tt> method is called.</li>
 <li><tt class="docutils literal"><span class="pre">pageargs</span></tt> - this is a dictionary which is present in a
@@ -325,9 +382,8 @@ makes no sense, it shouldn&#8217;t; read the section
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>Provides runtime namespace, output buffer, and various
 callstacks for templates.</p>
-<blockquote>
-<div>See <a class="reference internal" href="#"><em>The Mako Runtime Environment</em></a> for detail on the usage of</div></blockquote>
-<p><a class="reference internal" href="#mako.runtime.Context" title="mako.runtime.Context"><tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt></a>.</p>
+<p>See <a class="reference internal" href="#"><em>The Mako Runtime Environment</em></a> for detail on the usage of
+<a class="reference internal" href="#mako.runtime.Context" title="mako.runtime.Context"><tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt></a>.</p>
 <dl class="method">
 <dt id="mako.runtime.Context.get">
 <tt class="descname">get</tt><big>(</big><em>key</em>, <em>default=None</em><big>)</big><a class="headerlink" href="#mako.runtime.Context.get" title="Permalink to this definition">¶</a></dt>
@@ -403,32 +459,34 @@ object.</p>
 </div>
 </div>
 
-            </div>
-        </div>
+    </div>
 
-        
-            <div class="bottomnav">
-                
-<div class="prevnext">
+</div>
+
+<div id="docs-bottom-navigation" class="docs-navigation-links">
         Previous:
         <a href="defs.html" title="previous chapter">Defs and Blocks</a>
         Next:
         <a href="namespaces.html" title="next chapter">Namespaces</a>
+
+    <div id="docs-copyright">
+        &copy; Copyright the Mako authors and contributors.
+        Documentation generated using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2 
+        with Mako templates.
+    </div>
 </div>
 
-                <div class="doc_copyright">
-                    &copy; Copyright the Mako authors and contributors.
-                    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
-                </div>
-            </div>
-        
+</div>
 
+<div class="clearfix">
 
+<hr/>
 
+<div class="copyright">Website content copyright &copy; by Michael Bayer. 
+    All rights reserved.  Mako and its documentation are licensed 
+    under the MIT license.  mike(&)zzzcomputing.com</div>
 
-
-    </body>
+</div>
+</div>
+</body>
 </html>
-
-
-

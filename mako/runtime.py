@@ -1,5 +1,5 @@
 # mako/runtime.py
-# Copyright (C) 2006-2011 the Mako authors and contributors <see AUTHORS file>
+# Copyright (C) 2006-2012 the Mako authors and contributors <see AUTHORS file>
 #
 # This module is part of Mako and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
@@ -14,7 +14,7 @@ class Context(object):
     """Provides runtime namespace, output buffer, and various
     callstacks for templates.
  
-     See :ref:`runtime_toplevel` for detail on the usage of
+    See :ref:`runtime_toplevel` for detail on the usage of
     :class:`.Context`.
  
      """
@@ -330,27 +330,13 @@ class Namespace(object):
         by ``<%page>``.
  
         """
- 
-        if self.template:
-            if not self.template.cache_enabled:
-                createfunc = kwargs.get('createfunc', None)
-                if createfunc:
-                    return createfunc()
-                else:
-                    return None
- 
-            if self.template.cache_dir:
-                kwargs.setdefault('data_dir', self.template.cache_dir)
-            if self.template.cache_type:
-                kwargs.setdefault('type', self.template.cache_type)
-            if self.template.cache_url:
-                kwargs.setdefault('url', self.template.cache_url)
+
         return self.cache.get(key, **kwargs)
  
     @property
     def cache(self):
         """Return the :class:`.Cache` object referenced 
-           by this :class:`.Namespace` object's
+        by this :class:`.Namespace` object's
         :class:`.Template`.
  
         """

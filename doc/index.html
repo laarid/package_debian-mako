@@ -1,21 +1,18 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        
-        <title>
-                        Table of Contents
-                     &mdash; Mako 0.5.0 Documentation</title>
-        
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<head>
+<title>
+    Mako 0.6.0 Documentation
+</title>
+
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/docs.css" type="text/css" />
 
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
           URL_ROOT:    '#',
-          VERSION:     '0.5.0',
+          VERSION:     '0.6.0',
           COLLAPSE_MODINDEX: false,
           FILE_SUFFIX: '.html'
       };
@@ -23,65 +20,94 @@
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/init.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="Mako 0.5.0 Documentation" href="#" />
+    <link rel="top" title="Mako 0.6.0 Documentation" href="#" />
         <link rel="next" title="Usage" href="usage.html" />
 
+<link rel="stylesheet" href="_static/site.css"></link>
+
+
+</head>
+<body>
+    <div id="wrap">
+    <div class="rightbar">
+    <div class="slogan">
+    Hyperfast and lightweight templating for the Python platform.
+    </div>
+
+
+    </div>
+
+    <a href="http://www.makotemplates.org/"><img src="_static/makoLogo.png" /></a>
+
+    <hr/>
+
     
-    
-
-    </head>
-    <body>
-        
 
 
 
-        <h1>Mako 0.5.0 Documentation</h1>
 
-        <div id="search">
-        Search:
-        <form class="search" action="search.html" method="get">
-          <input type="text" name="q" size="18" /> <input type="submit" value="Search" />
-          <input type="hidden" name="check_keywords" value="yes" />
-          <input type="hidden" name="area" value="default" />
-        </form>
-        </div>
 
-        <div class="versionheader">
-            Version: <span class="versionnum">0.5.0</span> Last Updated: 09/27/2011 20:26:30
-        </div>
-        <div class="clearboth"></div>
 
-        <div class="topnav">
-            <div id="pagecontrol">
-                <a href="genindex.html">Index</a>
- 
-                <div class="sourcelink">(<a href="_sources/index.txt">view source)</div>
-            </div>
- 
-            <div class="navbanner">
-                <a class="totoc" href="#">Table of Contents</a>
 
-                
-<div class="prevnext">
-        Next:
-        <a href="usage.html" title="next chapter">Usage</a>
+
+
+<div id="docs-container">
+
+
+
+<div id="docs-header">
+    <h1>Mako 0.6.0 Documentation</h1>
+
+    <div id="docs-search">
+    Search:
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" /> <input type="submit" value="Search" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+
+    <div id="docs-version-header">
+        Release: <span class="version-num">0.6.0</span>
+
+    </div>
+
 </div>
 
-                <h2>
-                    
-                        Table of Contents
-                    
-                </h2>
-            </div>
-            <div class="clearboth"></div>
-        </div>
- 
-        <div class="document">
-            <div class="body">
-                
+<div id="docs-top-navigation">
+    <div id="docs-top-page-control" class="docs-navigation-links">
+        <ul>
+            <li>Next:
+            <a href="usage.html" title="next chapter">Usage</a>
+            </li>
+
+        <li>
+            <a href="#">Table of Contents</a> |
+            <a href="genindex.html">Index</a>
+            | <a href="_sources/index.txt">view source
+        </li>
+        </ul>
+    </div>
+
+    <div id="docs-navigation-banner">
+        <a href="#">Mako 0.6.0 Documentation</a>
+
+        <h2>
+            
+                Table of Contents
+            
+        </h2>
+    </div>
+
+</div>
+
+<div id="docs-body-container">
+
+
+    <div id="docs-body" class="" >
+        
 <div class="section" id="table-of-contents">
 <h1>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
@@ -154,7 +180,8 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="caching.html">Caching</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="caching.html#cache-arguments">Cache arguments</a></li>
-<li class="toctree-l2"><a class="reference internal" href="caching.html#accessing-the-cache">Accessing the Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caching.html#programmatic-cache-access">Programmatic Cache Access</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caching.html#cache-plugins">Cache Plugins</a></li>
 <li class="toctree-l2"><a class="reference internal" href="caching.html#api-reference">API Reference</a></li>
 </ul>
 </li>
@@ -169,30 +196,32 @@
 </div>
 </div>
 
-            </div>
-        </div>
+    </div>
 
-        
-            <div class="bottomnav">
-                
-<div class="prevnext">
-        Next:
-        <a href="usage.html" title="next chapter">Usage</a>
 </div>
 
-                <div class="doc_copyright">
-                    &copy; Copyright the Mako authors and contributors.
-                    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
-                </div>
-            </div>
-        
+<div id="docs-bottom-navigation" class="docs-navigation-links">
+        Next:
+        <a href="usage.html" title="next chapter">Usage</a>
 
+    <div id="docs-copyright">
+        &copy; Copyright the Mako authors and contributors.
+        Documentation generated using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2 
+        with Mako templates.
+    </div>
+</div>
 
+</div>
 
+<div class="clearfix">
 
+<hr/>
 
-    </body>
+<div class="copyright">Website content copyright &copy; by Michael Bayer. 
+    All rights reserved.  Mako and its documentation are licensed 
+    under the MIT license.  mike(&)zzzcomputing.com</div>
+
+</div>
+</div>
+</body>
 </html>
-
-
-

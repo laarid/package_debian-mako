@@ -1,5 +1,5 @@
 # mako/exceptions.py
-# Copyright (C) 2006-2011 the Mako authors and contributors <see AUTHORS file>
+# Copyright (C) 2006-2012 the Mako authors and contributors <see AUTHORS file>
 #
 # This module is part of Mako and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
@@ -260,6 +260,8 @@ def html_error_template():
         .sampleline { padding:0px 10px 0px 10px; }
         .sourceline { margin:5px 5px 10px 5px; font-family:monospace;}
         .location { font-size:80%; }
+        .highlight { white-space:pre; }
+        .sampleline { white-space:pre; }
     </style>
 % endif
 % if full:
@@ -277,7 +279,7 @@ def html_error_template():
     else:
         lines = None
 %>
-<h3>${tback.errorname}: ${tback.message}</h3>
+<h3>${tback.errorname}: ${tback.message|h}</h3>
 
 % if lines:
     <div class="sample">

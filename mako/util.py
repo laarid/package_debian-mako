@@ -1,5 +1,5 @@
 # mako/util.py
-# Copyright (C) 2006-2011 the Mako authors and contributors <see AUTHORS file>
+# Copyright (C) 2006-2012 the Mako authors and contributors <see AUTHORS file>
 #
 # This module is part of Mako and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
@@ -64,7 +64,35 @@ if py24:
 else:
     def exception_name(exc):
         return exc.__class__.__name__
- 
+
+class PluginLoader(object):
+    def __init__(self, group):
+        self.group = group
+        self.impls = {}
+
+    def load(self, name):
+        if name in self.impls:
+             return self.impls[name]()
+        else:
+            import pkg_resources
+            for impl in pkg_resources.iter_entry_points(
+                                self.group, 
+                                name):
+                self.impls[name] = impl.load
+                return impl.load()
+            else:
+                raise exceptions.RuntimeException(
+                        "Can't load plugin %s %s" % 
+                        (self.group, name))
+
+    def register(self, name, modulepath, objname):
+        def load():
+            mod = __import__(modulepath)
+            for token in modulepath.split(".")[1:]:
+                mod = getattr(mod, token)
+            return getattr(mod, objname)
+        self.impls[name] = load
+
 def verify_directory(dir):
     """create and/or verify a filesystem directory."""
  
