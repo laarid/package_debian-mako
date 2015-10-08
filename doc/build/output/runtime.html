@@ -10,19 +10,19 @@
 ## This file is generated.  Edit the .txt files instead of this one.
 
 
-<%call expr="formatting.section(path='runtime',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='runtime')">
 
 <p>This section describes a little bit about the objects and built-in functions that are available in templates.
 </p>
 
-<%call expr="formatting.section(path='runtime_context',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='runtime_context')">
 
 <p>The <code><%text filter='h'>Context</%text></code> is the central object that is created when a template is first executed, and is responsible for handling all communication with the outside world.  This includes two major components, one of which is the output buffer, which is a file-like object such as Python's <code><%text filter='h'>StringIO</%text></code> or similar, and the other a dictionary of variables that can be freely referenced within a template; this dictionary is a combination of the arguments sent to the <code><%text filter='h'>template.render()</%text></code> function and some built-in variables provided by Mako's runtime environment.
 </p>
 
-<%call expr="formatting.section(path='runtime_context_buffer',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='runtime_context_buffer')">
 
-<p>The buffer is stored within the <code><%text filter='h'>Context</%text></code>, and writing to it is achieved by calling <code><%text filter='h'>context.write()</%text></code>.  You usually don't need to care about this as all text within a template, as well as all expressions provided by <code><%text filter='h'>${}</%text></code>, automatically send everything to this method.  The cases you might want to be aware of its existence are if you are dealing with various filtering/buffering scenarios, which are described in <%call expr="nav.toclink(path='filtering',paged=paged,extension=extension,toc=toc)"></%call>, or if you want to programmatically send content to the output stream, such as within a <code><%text filter='h'><% %></%text></code> block.
+<p>The buffer is stored within the <code><%text filter='h'>Context</%text></code>, and writing to it is achieved by calling <code><%text filter='h'>context.write()</%text></code>.  You usually don't need to care about this as all text within a template, as well as all expressions provided by <code><%text filter='h'>${}</%text></code>, automatically send everything to this method.  The cases you might want to be aware of its existence are if you are dealing with various filtering/buffering scenarios, which are described in <%call expr="nav.toclink(toc=toc,paged=paged,extension=extension,path='filtering')"></%call>, or if you want to programmatically send content to the output stream, such as within a <code><%text filter='h'><% %></%text></code> block.
 </p>
 <%call expr="formatting.code()"><%text><%
     context.write("some programmatic text")
@@ -31,7 +31,7 @@
 </p>
 
 </%call>
-<%call expr="formatting.section(path='runtime_context_variables',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='runtime_context_variables')">
 
 <p>When your template is compiled into a Python module, the body content is enclosed within a Python function called <code><%text filter='h'>render_body</%text></code>.  Other top-level defs defined in the template are defined within their own function bodies which are named after the def's name with the prefix <code><%text filter='h'>render_</%text></code> (i.e. <code><%text filter='h'>render_mydef</%text></code>).  One of the first things that happens within these functions is that all variable names that are referenced within the function which are not defined in some other way (i.e. such as via assignment, module level imports, etc.) are pulled from the <code><%text filter='h'>Context</%text></code> object's dictionary of variables.  This is how you're able to freely reference variable names in a template which automatically correspond to what was passed into the current <code><%text filter='h'>Context</%text></code>.
 </p>
@@ -80,7 +80,7 @@ output = template.render(attributes={})
 </ul>
 
 </%call>
-<%call expr="formatting.section(path='runtime_context_accessors',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='runtime_context_accessors')">
 
 <p>Significant members off of <code><%text filter='h'>Context</%text></code> include:
 </p>
@@ -114,33 +114,33 @@ output = template.render(attributes={})
 
 </%call>
 </%call>
-<%call expr="formatting.section(path='runtime_builtins',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='runtime_builtins')">
 
-<p>A one-stop shop for all the names Mako defines.  Most of these names are instances of <code><%text filter='h'>Namespace</%text></code>, which are described in the next section,   <%call expr="nav.toclink(path='namespaces',paged=paged,extension=extension,toc=toc)"></%call>.  Also, most of these names other than <code><%text filter='h'>context</%text></code> and <code><%text filter='h'>UNDEFINED</%text></code> are also present <em>within</em> the <code><%text filter='h'>Context</%text></code> itself.
+<p>A one-stop shop for all the names Mako defines.  Most of these names are instances of <code><%text filter='h'>Namespace</%text></code>, which are described in the next section,   <%call expr="nav.toclink(toc=toc,paged=paged,extension=extension,path='namespaces')"></%call>.  Also, most of these names other than <code><%text filter='h'>context</%text></code> and <code><%text filter='h'>UNDEFINED</%text></code> are also present <em>within</em> the <code><%text filter='h'>Context</%text></code> itself.
 </p>
 <ul>
  <li>
-     <code><%text filter='h'>local</%text></code> - the namespace of the current template, described in <%call expr="nav.toclink(path='namespaces_builtin',paged=paged,extension=extension,toc=toc)"></%call>
+     <code><%text filter='h'>local</%text></code> - the namespace of the current template, described in <%call expr="nav.toclink(toc=toc,paged=paged,extension=extension,path='namespaces_builtin')"></%call>
  </li>
 
  <li>
-     <code><%text filter='h'>self</%text></code> - the namespace of the topmost template in an inheritance chain (if any, otherwise the same as <code><%text filter='h'>local</%text></code>), mostly described in <%call expr="nav.toclink(path='inheritance',paged=paged,extension=extension,toc=toc)"></%call>
+     <code><%text filter='h'>self</%text></code> - the namespace of the topmost template in an inheritance chain (if any, otherwise the same as <code><%text filter='h'>local</%text></code>), mostly described in <%call expr="nav.toclink(toc=toc,paged=paged,extension=extension,path='inheritance')"></%call>
  </li>
 
  <li>
-     <code><%text filter='h'>parent</%text></code> - the namespace of the parent template in an inheritance chain (otherwise undefined); see <%call expr="nav.toclink(path='inheritance',paged=paged,extension=extension,toc=toc)"></%call>
+     <code><%text filter='h'>parent</%text></code> - the namespace of the parent template in an inheritance chain (otherwise undefined); see <%call expr="nav.toclink(toc=toc,paged=paged,extension=extension,path='inheritance')"></%call>
  </li>
 
  <li>
-     <code><%text filter='h'>next</%text></code> - the namespace of the next template in an inheritance chain (otherwise undefined); see <%call expr="nav.toclink(path='inheritance',paged=paged,extension=extension,toc=toc)"></%call>
+     <code><%text filter='h'>next</%text></code> - the namespace of the next template in an inheritance chain (otherwise undefined); see <%call expr="nav.toclink(toc=toc,paged=paged,extension=extension,path='inheritance')"></%call>
  </li>
 
  <li>
-     <code><%text filter='h'>caller</%text></code> - a "mini" namespace created when using the <code><%text filter='h'><%call></%text></code> tag to define a "def call with content"; described in <%call expr="nav.toclink(path='defs_defswithcontent',paged=paged,extension=extension,toc=toc)"></%call>
+     <code><%text filter='h'>caller</%text></code> - a "mini" namespace created when using the <code><%text filter='h'><%call></%text></code> tag to define a "def call with content"; described in <%call expr="nav.toclink(toc=toc,paged=paged,extension=extension,path='defs_defswithcontent')"></%call>
  </li>
 
  <li>
-     <code><%text filter='h'>capture</%text></code> - a function that calls a given def and captures its resulting content into a string, which is returned.  Usage is described in <%call expr="nav.toclink(path='filtering_buffering',paged=paged,extension=extension,toc=toc)"></%call>
+     <code><%text filter='h'>capture</%text></code> - a function that calls a given def and captures its resulting content into a string, which is returned.  Usage is described in <%call expr="nav.toclink(toc=toc,paged=paged,extension=extension,path='filtering_buffering')"></%call>
  </li>
 
  <li>
@@ -148,7 +148,7 @@ output = template.render(attributes={})
  </li>
 
  <li>
-     <code><%text filter='h'>pageargs</%text></code> - this is a dictionary which is present in a template which does not define any <em></em>kwargs section in its <code><%text filter='h'><%page></%text></code> tag.  All keyword arguments sent to the <code><%text filter='h'>body()</%text></code> function of a template (when used via namespaces) go here by default unless otherwise defined as a page argument.  If this makes no sense, it shouldn't; read the section <%call expr="nav.toclink(path='namespaces_body',paged=paged,extension=extension,toc=toc)"></%call>.
+     <code><%text filter='h'>pageargs</%text></code> - this is a dictionary which is present in a template which does not define any <em></em>kwargs section in its <code><%text filter='h'><%page></%text></code> tag.  All keyword arguments sent to the <code><%text filter='h'>body()</%text></code> function of a template (when used via namespaces) go here by default unless otherwise defined as a page argument.  If this makes no sense, it shouldn't; read the section <%call expr="nav.toclink(toc=toc,paged=paged,extension=extension,path='namespaces_body')"></%call>.
  </li>
 </ul>
 

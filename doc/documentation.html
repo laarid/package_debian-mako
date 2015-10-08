@@ -30,7 +30,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.3.4   Last Updated: 06/22/10 17:39:23</div>
+<div class="versionheader">Version: 0.3.5   Last Updated: 10/20/10 12:02:51</div>
 
 
 
@@ -2768,6 +2768,17 @@ Heres comp2:  <span class="cp">${</span><span class="n">comp2</span><span class=
 </p>
 <p><strong>Note</strong> - in current versions of Mako, usage of "import='*'" is known to decrease performance of the template.  This will be fixed in a future release.
 </p>
+<p>The <code>file</code> argument allows expressions - if looking for context variables, the <code>context</code> must be named explicitly:
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">namespace</span> <span class="na">name=</span><span class="s">&quot;dyn&quot;</span> <span class="na">file=</span><span class="s">&quot;${context[&#39;namespace_name&#39;]}&quot;</span><span class="cp">/&gt;</span>
+</pre></div>
+
+    </div>
 
 
     
@@ -4187,7 +4198,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
     <div class="code">
         <div class="highlight"><pre><span class="cp">## -*- coding: utf-8 -*-</span>
 
-Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »
+Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petite voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »
 </pre></div>
 
     </div>
@@ -4428,7 +4439,7 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
         <div class="highlight"><pre><span class="c"># -*- encoding:utf-8 -*-</span>
 <span class="kn">from</span> <span class="nn">mako.template</span> <span class="kn">import</span> <span class="n">Template</span>
 
-<span class="n">t</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="s">&quot;drôle de petit voix m’a réveillé.&quot;</span><span class="p">,</span> <span class="n">disable_unicode</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">input_encoding</span><span class="o">=</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="s">&quot;drôle de petite voix m’a réveillé.&quot;</span><span class="p">,</span> <span class="n">disable_unicode</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">input_encoding</span><span class="o">=</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
 <span class="k">print</span> <span class="n">t</span><span class="o">.</span><span class="n">code</span>
 </pre></div>
 
@@ -4450,7 +4461,7 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
     <span class="k">try</span><span class="p">:</span>
         <span class="n">__M_locals</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">pageargs</span><span class="o">=</span><span class="n">pageargs</span><span class="p">)</span>
         <span class="c"># SOURCE LINE 1</span>
-        <span class="n">context</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;dr</span><span class="se">\xc3\xb4</span><span class="s">le de petit voix m</span><span class="se">\xe2\x80\x99</span><span class="s">a r</span><span class="se">\xc3\xa9</span><span class="s">veill</span><span class="se">\xc3\xa9</span><span class="s">.&#39;</span><span class="p">)</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;dr</span><span class="se">\xc3\xb4</span><span class="s">le de petite voix m</span><span class="se">\xe2\x80\x99</span><span class="s">a r</span><span class="se">\xc3\xa9</span><span class="s">veill</span><span class="se">\xc3\xa9</span><span class="s">.&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="s">&#39;&#39;</span>
     <span class="k">finally</span><span class="p">:</span>
         <span class="n">context</span><span class="o">.</span><span class="n">caller_stack</span><span class="o">.</span><span class="n">pop_frame</span><span class="p">()</span>

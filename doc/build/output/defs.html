@@ -10,7 +10,7 @@
 ## This file is generated.  Edit the .txt files instead of this one.
 
 
-<%call expr="formatting.section(path='defs',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='defs')">
 
 <p>The def is the single tag used to demarcate any block of text and/or code.  It exists within generated Python as a callable function. 
 </p>
@@ -47,7 +47,7 @@ ${account()}
 </%text></%call><p>When you declare an argument signature for your def, they are required to follow normal Python conventions (i.e., all arguments are required except keyword arguments with a default value).  This is in contrast to using context-level variables, which evaluate to <code><%text filter='h'>UNDEFINED</%text></code> if you reference a name that does not exist.
 </p>
 
-<%call expr="formatting.section(path='defs_remotedefs',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='defs_remotedefs')">
 
 <p>Top level <code><%text filter='h'><%defs></%text></code> are <strong>exported</strong> by your template's module, and can be called from the outside; including from other templates, as well as normal Python code.  Calling a <code><%text filter='h'><%def></%text></code> from another template is something like using an <code><%text filter='h'><%include></%text></code> - except you are calling a specific function within the template, not the whole template.
 </p>
@@ -64,11 +64,11 @@ ${account()}
 </%text></%call><p>The <code><%text filter='h'><%namespace></%text></code> tag also supports some of the other semantics of Python's <code><%text filter='h'>import</%text></code> statement, including pulling names into the local variable space, or using <code><%text filter='h'>*</%text></code> to represent all names, using the <code><%text filter='h'>import</%text></code> attribute:
 </p>
 <%call expr="formatting.code()"><%text><%namespace file="mystuff.html" import="foo, bar"/>
-</%text></%call><p>This is just a quick intro to the concept of a <strong>namespace</strong>, which is a central Mako concept that has its own chapter in these docs.  For more detail and examples, see <%call expr="nav.toclink(path='namespaces',paged=paged,extension=extension,toc=toc)"></%call>.
+</%text></%call><p>This is just a quick intro to the concept of a <strong>namespace</strong>, which is a central Mako concept that has its own chapter in these docs.  For more detail and examples, see <%call expr="nav.toclink(toc=toc,paged=paged,extension=extension,path='namespaces')"></%call>.
 </p>
 
 </%call>
-<%call expr="formatting.section(path='defs_programmatic',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='defs_programmatic')">
 
 <p>You can call def's programmatically from any <code><%text filter='h'>Template</%text></code> object using the <code><%text filter='h'>get_def()</%text></code> method, which returns a <code><%text filter='h'>DefTemplate</%text></code> object.  This is a <code><%text filter='h'>Template</%text></code> subclass which the parent <code><%text filter='h'>Template</%text></code> creates, and is usable like any other template:
 </p>
@@ -89,7 +89,7 @@ print template.get_def("hi").render(name="ed")
 print template.get_def("bye").render(name="ed")
 </%text></%call>
 </%call>
-<%call expr="formatting.section(path='defs_nesteddefs',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='defs_nesteddefs')">
 
 <p>The def model follows regular Python rules for closures.  Declaring <code><%text filter='h'><%def></%text></code> inside another <code><%text filter='h'><%def></%text></code> declares it within the parent's <strong>enclosing scope</strong>:
 </p>
@@ -131,11 +131,11 @@ print template.get_def("bye").render(name="ed")
 </p>
 
 </%call>
-<%call expr="formatting.section(path='defs_defswithcontent',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='defs_defswithcontent')">
 
 <p>A flip-side to def within def is a def call with content.  This is where you call a def, and at the same time declare a block of content (or multiple blocks) that can be used by the def being called.  The main point of such a call is to create custom, nestable tags, just like any other template language's custom-tag creation system - where the external tag controls the execution of the nested tags and can communicate state to them.  Only with Mako, you don't have to use any external Python modules, you can define arbitrarily nestable tags right in your templates.
 </p>
-<p>To achieve this, the target def is invoked using the form <code><%text filter='h'><%namepacename:defname></%text></code> instead of the normal <code><%text filter='h'>${}</%text></code> syntax.  This syntax, introduced in Mako 0.2.3, is functionally equivalent another tag known as <code><%text filter='h'>call</%text></code>, which takes the form <code><%text filter='h'><%call expr='namespacename.defname(args)'></%text></code>.  While <code><%text filter='h'>%call</%text></code> is available in all versions of Mako, the newer style is probably more familiar looking.  The <code><%text filter='h'>namespace</%text></code> portion of the call is the name of the <strong>namespace</strong> in which the def is defined - in the most simple cases, this can be <code><%text filter='h'>local</%text></code> or <code><%text filter='h'>self</%text></code> to reference the current template's namespace (the difference between <code><%text filter='h'>local</%text></code> and <code><%text filter='h'>self</%text></code> is one of inheritance - see <%call expr="nav.toclink(path='namespaces_builtin',paged=paged,extension=extension,toc=toc)"></%call> for details).
+<p>To achieve this, the target def is invoked using the form <code><%text filter='h'><%namepacename:defname></%text></code> instead of the normal <code><%text filter='h'>${}</%text></code> syntax.  This syntax, introduced in Mako 0.2.3, is functionally equivalent another tag known as <code><%text filter='h'>call</%text></code>, which takes the form <code><%text filter='h'><%call expr='namespacename.defname(args)'></%text></code>.  While <code><%text filter='h'>%call</%text></code> is available in all versions of Mako, the newer style is probably more familiar looking.  The <code><%text filter='h'>namespace</%text></code> portion of the call is the name of the <strong>namespace</strong> in which the def is defined - in the most simple cases, this can be <code><%text filter='h'>local</%text></code> or <code><%text filter='h'>self</%text></code> to reference the current template's namespace (the difference between <code><%text filter='h'>local</%text></code> and <code><%text filter='h'>self</%text></code> is one of inheritance - see <%call expr="nav.toclink(toc=toc,paged=paged,extension=extension,path='namespaces_builtin')"></%call> for details).
 </p>
 <p>When the target def is invoked, a variable <code><%text filter='h'>caller</%text></code> is placed in its context which contains another namespace containing the body and other defs defined by the caller.  The body itself is referenced by the method <code><%text filter='h'>body()</%text></code>.  Below, we build a <code><%text filter='h'>%def</%text></code> that operates upon <code><%text filter='h'>caller.body()</%text></code> to invoke the body of the custom tag:
 </p>

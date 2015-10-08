@@ -10,7 +10,7 @@
 ## This file is generated.  Edit the .txt files instead of this one.
 
 
-<%call expr="formatting.section(path='inheritance',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='inheritance')">
 
 <p>Using template inheritance, two or more templates can organize themselves into an <strong>inheritance chain</strong>, where content and functions from all involved templates can be intermixed.  The general paradigm of template inheritance is this:  if a template <code><%text filter='h'>A</%text></code> inherits from template <code><%text filter='h'>B</%text></code>, then template <code><%text filter='h'>A</%text></code> agrees to send the executional control to template <code><%text filter='h'>B</%text></code> at runtime (<code><%text filter='h'>A</%text></code> is called the <strong>inheriting</strong> template).  Template <code><%text filter='h'>B</%text></code>, the <strong>inherited</strong> template, then makes decisions as to what resources from <code><%text filter='h'>A</%text></code> shall be executed.
 </p>
@@ -52,7 +52,7 @@ this is the body content.
 
  </li>
 
- <li><p><code><%text filter='h'>base.html</%text></code> then renders the top part of an HTML document, then calls the method <code><%text filter='h'>header()</%text></code> off of a built in namespace called <code><%text filter='h'>self</%text></code> (this namespace was first introduced in the Namespaces chapter in <%call expr="nav.toclink(path='namespaces_builtin_self',paged=paged,extension=extension,toc=toc)"></%call>).  Since <code><%text filter='h'>index.html</%text></code> is the topmost template and also defines a def called <code><%text filter='h'>header()</%text></code>, its this <code><%text filter='h'>header()</%text></code> def that gets executed.
+ <li><p><code><%text filter='h'>base.html</%text></code> then renders the top part of an HTML document, then calls the method <code><%text filter='h'>header()</%text></code> off of a built in namespace called <code><%text filter='h'>self</%text></code> (this namespace was first introduced in the Namespaces chapter in <%call expr="nav.toclink(toc=toc,paged=paged,extension=extension,path='namespaces_builtin_self')"></%call>).  Since <code><%text filter='h'>index.html</%text></code> is the topmost template and also defines a def called <code><%text filter='h'>header()</%text></code>, its this <code><%text filter='h'>header()</%text></code> def that gets executed.
 </p>
 
  </li>
@@ -98,7 +98,7 @@ this is the body content.
 <p>...and that is template inheritance in a nutshell.  The main idea is that the methods that you call upon <code><%text filter='h'>self</%text></code> always correspond to the topmost definition of that method.  Very much the way <code><%text filter='h'>self</%text></code> works in a Python class, even though Mako is not actually using Python class inheritance to implement this functionality.  (Mako doesn't take the "inheritance" metaphor too seriously; while useful to setup some commonly recognized semantics, a textual template is not very much like an object-oriented class construct in practice).
 </p>
 
-<%call expr="formatting.section(path='inheritance_next',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='inheritance_next')">
 
 <p>Sometimes you have an inheritance chain that spans more than two templates.  Or maybe you don't, but youd like to build your system such that extra inherited templates can be inserted in the middle of a chain where they would be smoothly integrated.  If each template wants to define its layout just within its main body, you can't just call <code><%text filter='h'>self.body()</%text></code> to get at the inheriting template's body, since that is only the topmost body.  To get at the body of the <em>next</em> template, you call upon the namespace <code><%text filter='h'>next</%text></code>, which is the namespace of the template <strong>immediately following</strong> the current template.
 </p>
@@ -173,7 +173,7 @@ this is the body content.
 </p>
 
 </%call>
-<%call expr="formatting.section(path='inheritance_parent',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='inheritance_parent')">
 
 <p>Lets now look at the other inheritance-specific namespace, the opposite of <code><%text filter='h'>next</%text></code> called <code><%text filter='h'>parent</%text></code>.  <code><%text filter='h'>parent</%text></code> is the namespace of the template <strong>immediately preceding</strong> the current template.  What is most useful about this namespace is the methods within it which can be accessed within overridden versions of those methods.  This is not as hard as it sounds and is very much like using the <code><%text filter='h'>super</%text></code> keyword in Python.  Lets modify <code><%text filter='h'>index.html</%text></code> to augment the list of selections provided by the <code><%text filter='h'>toolbar</%text></code> function in <code><%text filter='h'>layout.html</%text></code>:
 </p>
@@ -221,7 +221,7 @@ this is the body content.
 </p>
 
 </%call>
-<%call expr="formatting.section(path='inheritance_inheritable',paged=paged,extension=extension,toc=toc)">
+<%call expr="formatting.section(toc=toc,paged=paged,extension=extension,path='inheritance_inheritable')">
 
 <p>The <code><%text filter='h'>attr</%text></code> accessor of the <code><%text filter='h'>Namespace</%text></code> object allows access to module level variables declared in a template.  By accessing <code><%text filter='h'>self.attr</%text></code>, you can access regular attributes from the inheritance chain as declared in <code><%text filter='h'><%! %></%text></code> sections.  Such as:
 </p>
