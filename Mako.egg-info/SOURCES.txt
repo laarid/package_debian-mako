@@ -151,6 +151,7 @@ test/templates/unicode_expr_py3k.html
 test/templates/unicode_runtime_error.html
 test/templates/unicode_syntax_error.html
 test/templates/foo/modtest.html.py
+test/templates/othersubdir/foo.html
 test/templates/subdir/incl.html
 test/templates/subdir/index.html
 test/templates/subdir/modtest.html
