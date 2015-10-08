@@ -3,11 +3,13 @@
 from mako.template import Template, ModuleTemplate
 from mako.lookup import TemplateLookup
 from mako.ext.preprocessors import convert_comments
-from mako import exceptions, util
-import re, os
+from mako import exceptions, util, runtime
+import re
+import os
 from util import flatten_result, result_lines
 import codecs
-from test import TemplateTest, eq_, template_base, module_base, skip_if, assert_raises
+from test import TemplateTest, eq_, template_base, module_base, \
+    skip_if, assert_raises
 
 class EncodingTest(TemplateTest):
     def test_unicode(self):
@@ -22,7 +24,7 @@ class EncodingTest(TemplateTest):
             u"""Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petite voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »""",
             output_encoding='utf-8'
         )
-        
+ 
     def test_unicode_arg(self):
         val = u"""Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petite voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »"""
         self._do_memory_test(
@@ -81,7 +83,7 @@ class EncodingTest(TemplateTest):
             ("## -*- coding: utf-8 -*-\n" + val).encode('utf-8'),
             u"""Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petite voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »"""
         )
-    
+ 
     def test_unicode_text(self):
         val = u"""<%text>Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petite voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »</%text>"""
         self._do_memory_test(
@@ -102,7 +104,7 @@ class EncodingTest(TemplateTest):
             u"""Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petite voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »""",
             filters=flatten_result
         )
-        
+ 
     def test_unicode_literal_in_expr(self):
         if util.py3k:
             self._do_memory_test(
@@ -149,7 +151,7 @@ class EncodingTest(TemplateTest):
                 u"""Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petite voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »""",
                 filters=lambda s:s.strip()
             )
-    
+ 
     def test_unicode_literal_in_controlline(self):
         if util.py3k:
             self._do_memory_test(
@@ -177,7 +179,7 @@ class EncodingTest(TemplateTest):
                 u"""hi, drôle de petite voix m’a réveillé.""",
                 filters=lambda s:s.strip(),
             )
-    
+ 
     def test_unicode_literal_in_tag(self):
         self._do_file_test(
             "unicode_arguments.html",
@@ -200,7 +202,7 @@ class EncodingTest(TemplateTest):
             ],
             filters=result_lines
         )
-        
+ 
     def test_unicode_literal_in_def(self):
         if util.py3k:
             self._do_memory_test(
@@ -237,7 +239,7 @@ class EncodingTest(TemplateTest):
                 u"""Foo: árvíztűrő tükörfúrógép Bar: ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP""",
                 filters=flatten_result
             )
-        
+ 
             self._do_memory_test(
                 u"""## -*- coding: utf-8 -*-
                 <%def name="hello(foo=u'árvíztűrő tükörfúrógép', bar=u'ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP')">
@@ -248,18 +250,18 @@ class EncodingTest(TemplateTest):
                 u"""Foo: árvíztűrő tükörfúrógép Bar: ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP""",
                 filters=flatten_result
             )
-        
+ 
     def test_input_encoding(self):
         """test the 'input_encoding' flag on Template, and that unicode 
             objects arent double-decoded"""
-        
+ 
         if util.py3k:
             self._do_memory_test(
                 u"hello ${f('śląsk')}",
                 u"hello śląsk",
                 input_encoding='utf-8',
                 template_args={'f':lambda x:x}
-            )    
+            ) 
 
             self._do_memory_test(
                 u"## -*- coding: utf-8 -*-\nhello ${f('śląsk')}",
@@ -272,7 +274,7 @@ class EncodingTest(TemplateTest):
                 u"hello śląsk",
                 input_encoding='utf-8',
                 template_args={'f':lambda x:x}
-            )    
+            ) 
 
             self._do_memory_test(
                 u"## -*- coding: utf-8 -*-\nhello ${f(u'śląsk')}",
@@ -281,14 +283,19 @@ class EncodingTest(TemplateTest):
             )
 
     def test_raw_strings(self):
-        """test that raw strings go straight thru with default_filters turned off"""
+        """test that raw strings go straight thru with default_filters turned off,
+        bytestring_passthrough enabled.
+        
+        """
 
         self._do_memory_test(
             u"## -*- coding: utf-8 -*-\nhello ${x}",
             "hello śląsk",
             default_filters=[],
             template_args={'x':'śląsk'},
-            unicode_=False
+            unicode_=False,
+            bytestring_passthrough=True,
+            output_encoding=None #'ascii'
         )
 
         # now, the way you *should* be doing it....
@@ -297,7 +304,7 @@ class EncodingTest(TemplateTest):
             u"hello śląsk",
             template_args={'x':u'śląsk'}
         )
-        
+ 
     def test_encoding(self):
         self._do_memory_test(
             u"""Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petite voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »""",
@@ -313,7 +320,7 @@ class EncodingTest(TemplateTest):
             output_encoding='iso-8859-1', encoding_errors='replace',
             unicode_=False
         )
-    
+ 
     def test_read_unicode(self):
         lookup = TemplateLookup(directories=[template_base], 
                                 filesystem_checks=True, output_encoding='utf-8')
@@ -321,6 +328,10 @@ class EncodingTest(TemplateTest):
             template = lookup.get_template('/read_unicode_py3k.html')
         else:
             template = lookup.get_template('/read_unicode.html')
+        # TODO: I've no idea what encoding this file is, Python 3.1.2 
+        # won't read the file even with open(...encoding='utf-8') unless
+        # errors is specified.   or if there's some quirk in 3.1.2
+        # since I'm pretty sure this test worked with py3k when I wrote it.
         data = template.render(path=self._file_path('internationalization.html'))
 
     @skip_if(lambda: util.py3k)
@@ -330,6 +341,7 @@ class EncodingTest(TemplateTest):
             '毛泽东 是 新中国的主席<br/> Welcome 你 to 北京. Welcome 你 to 北京.',
             default_filters=[],
             disable_unicode=True,
+            output_encoding=None,
             template_args={'name':'毛泽东'},
             filters=flatten_result, 
             unicode_=False
@@ -339,25 +351,44 @@ class EncodingTest(TemplateTest):
             'chs_utf8.html',
             '毛泽东 是 新中国的主席<br/> Welcome 你 to 北京. Welcome 你 to 北京.',
             disable_unicode=True,
+            output_encoding=None,
             template_args={'name':'毛泽东'},
             filters=flatten_result,
             unicode_=False
         )
 
-        template = self._file_template('chs_utf8.html', disable_unicode=True)
+        template = self._file_template('chs_utf8.html', 
+                    output_encoding=None,
+                    disable_unicode=True)
         self.assertRaises(UnicodeDecodeError, template.render_unicode, name='毛泽东')
 
-        template = Template("""${'Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petite voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »'}""", disable_unicode=True, input_encoding='utf-8')
-        assert template.render() == """Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petite voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »"""
-        template = Template("""${'Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petite voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »'}""", input_encoding='utf8', output_encoding='utf8', disable_unicode=False, default_filters=[])
-        self.assertRaises(UnicodeDecodeError, template.render)  # raises because expression contains an encoded bytestring which cannot be decoded
+        template = Template(
+            "${'Alors vous imaginez ma surprise, au lever"
+            " du jour, quand une drôle de petite voix m’a "
+            "réveillé. Elle disait: « S’il vous plaît… "
+            "dessine-moi un mouton! »'}", 
+            output_encoding=None,
+            disable_unicode=True, input_encoding='utf-8')
+        assert template.render() == "Alors vous imaginez ma surprise, "\
+                "au lever du jour, quand une drôle de petite "\
+                "voix m’a réveillé. Elle disait: « S’il vous "\
+                "plaît… dessine-moi un mouton! »"
+        template = Template(
+                "${'Alors vous imaginez ma surprise, au "
+                "lever du jour, quand une drôle de petite "
+                "voix m’a réveillé. Elle disait: « S’il "
+                "vous plaît… dessine-moi un mouton! »'}", 
+                input_encoding='utf8', output_encoding='utf8', 
+                disable_unicode=False, default_filters=[])
+        # raises because expression contains an encoded bytestring which cannot be decoded
+        self.assertRaises(UnicodeDecodeError, template.render)
 
 
 class PageArgsTest(TemplateTest):
     def test_basic(self):
         template = Template("""
             <%page args="x, y, z=7"/>
-            
+ 
             this is page, ${x}, ${y}, ${z}
 """)
 
@@ -368,7 +399,7 @@ class PageArgsTest(TemplateTest):
             assert False
         except TypeError, e:
             assert True
-    
+ 
     def test_inherits(self):
         lookup = TemplateLookup()
         lookup.put_string("base.tmpl",
@@ -390,7 +421,7 @@ class PageArgsTest(TemplateTest):
             "bar foo var",
             filters=flatten_result,
             template_args={'variable':'var', 'bar':'bar', 'foo':'foo'}
-            
+ 
         )
 
     def test_includes(self):
@@ -421,7 +452,11 @@ class PageArgsTest(TemplateTest):
             template_args={'variable':'var', 'bar':'bar', 'foo':'foo'}
 
         )
-        
+
+    def test_context_small(self):
+        ctx = runtime.Context([].append, x=5, y=4)
+        eq_(sorted(ctx.keys()), ['caller', 'capture', 'x', 'y'])
+
     def test_with_context(self):
         template = Template("""
             <%page args="x, y, z=7"/>
@@ -434,12 +469,12 @@ class PageArgsTest(TemplateTest):
     def test_overrides_builtins(self):
         template = Template("""
             <%page args="id"/>
-            
+ 
             this is page, id is ${id}
         """)
-        
+ 
         assert flatten_result(template.render(id="im the id")) == "this is page, id is im the id"
-    
+ 
     def test_canuse_builtin_names(self):
         template = Template("""
             exception: ${Exception}
@@ -465,7 +500,7 @@ class PageArgsTest(TemplateTest):
             assert flatten_result(lookup.get_template(template).render()) == "foo"
             assert flatten_result(lookup.get_template(template).render(id=5)) == "5"
             assert flatten_result(lookup.get_template(template).render(id=id)) == "<built-in function id>"
-    
+ 
     def test_dict_locals(self):
         template = Template("""
             <%
@@ -501,8 +536,8 @@ class IncludeTest(TemplateTest):
             this is b.  ${a}, ${b}, ${c}
         """)
         assert flatten_result(lookup.get_template("a").render(a=7,b=8)) == "this is a this is b. 7, 8, 5"
-    
-    def test_viakwargs(self):    
+ 
+    def test_viakwargs(self): 
         lookup = TemplateLookup()
         lookup.put_string("a", """
             this is a
@@ -526,7 +561,7 @@ class IncludeTest(TemplateTest):
             this is b.  ${a}, ${b}, ${c}
         """)
         assert flatten_result(lookup.get_template("a").render(a=7,b=8,i='b')) == "this is a this is b. 7, 8, 5"
-    
+ 
     def test_within_ccall(self):
         lookup = TemplateLookup()
         lookup.put_string("a", """this is a""")
@@ -553,7 +588,7 @@ class UndefinedVarsTest(TemplateTest):
                 x: ${x}
             % endif
         """)
-        
+ 
         assert result_lines(t.render(x=12)) == ["x: 12"]
         assert result_lines(t.render(y=12)) == ["undefined"]
 
@@ -565,14 +600,14 @@ class UndefinedVarsTest(TemplateTest):
                 x: ${x}
             % endif
         """, strict_undefined=True)
-        
+ 
         assert result_lines(t.render(x=12)) == ['x: 12']
-        
+ 
         assert_raises(
             NameError,
             t.render, y=12
         )
-        
+ 
         l = TemplateLookup(strict_undefined=True)
         l.put_string("a", "some template")
         l.put_string("b", """
@@ -585,41 +620,41 @@ class UndefinedVarsTest(TemplateTest):
         """)
 
         assert result_lines(t.render(x=12)) == ['x: 12']
-        
+ 
         assert_raises(
             NameError,
             t.render, y=12
         )
-    
+ 
     def test_expression_declared(self):
         t = Template("""
             ${",".join([t for t in ("a", "b", "c")])}
         """, strict_undefined=True)
-        
+ 
         eq_(result_lines(t.render()), ['a,b,c'])
 
         t = Template("""
             <%self:foo value="${[(val, n) for val, n in [(1, 2)]]}"/>
-            
+ 
             <%def name="foo(value)">
                 ${value}
             </%def>
-            
+ 
         """, strict_undefined=True)
-        
+ 
         eq_(result_lines(t.render()), ['[(1, 2)]'])
 
         t = Template("""
             <%call expr="foo(value=[(val, n) for val, n in [(1, 2)]])" />
-            
+ 
             <%def name="foo(value)">
                 ${value}
             </%def>
-            
+ 
         """, strict_undefined=True)
-        
+ 
         eq_(result_lines(t.render()), ['[(1, 2)]'])
-        
+ 
         l = TemplateLookup(strict_undefined=True)
         l.put_string("i", "hi, ${pageargs['y']}")
         l.put_string("t", """
@@ -628,7 +663,7 @@ class UndefinedVarsTest(TemplateTest):
         eq_(
             result_lines(l.get_template("t").render()), ['hi, [0, 1, 2]']
         )
-        
+ 
         l.put_string('q', """
             <%namespace name="i" file="${(str([x for x in range(3)][2]) + 'i')[-1]}" />
             ${i.body(y='x')}
@@ -652,19 +687,19 @@ class UndefinedVarsTest(TemplateTest):
         # is treated as an "undefined", so is pulled from the context.
         t = Template("""
             t is: ${t}
-        
+ 
             ${",".join([t for t in ("a", "b", "c")])}
         """)
-        
+ 
         eq_(
             result_lines(t.render(t="T")),
             ['t is: T', 'a,b,c'] 
         )
-    
+ 
     def test_traditional_assignment_plus_undeclared(self):
         t = Template("""
             t is: ${t}
-            
+ 
             <%
                 t = 12
             %>
@@ -673,22 +708,22 @@ class UndefinedVarsTest(TemplateTest):
             UnboundLocalError,
             t.render, t="T"
         )
-        
+ 
     def test_list_comprehensions_plus_undeclared_strict(self):
         # with strict, a list comprehension now behaves
         # like the undeclared case above.
         t = Template("""
             t is: ${t}
-        
+ 
             ${",".join([t for t in ("a", "b", "c")])}
         """, strict_undefined=True)
-        
+ 
         eq_(
             result_lines(t.render(t="T")),
             ['t is: T', 'a,b,c']
         )
-    
-        
+ 
+ 
 class ControlTest(TemplateTest):
     def test_control(self):
         t = Template("""
@@ -706,7 +741,7 @@ class ControlTest(TemplateTest):
             "no x does not have test",
             "yes x has test"
         ]
-    
+ 
     def test_blank_control(self):
         self._do_memory_test(
             """
@@ -716,7 +751,7 @@ class ControlTest(TemplateTest):
             "",
             filters=lambda s:s.strip()
         )
-        
+ 
     def test_multiline_control(self):
         t = Template("""
     % for x in \\
@@ -726,7 +761,7 @@ class ControlTest(TemplateTest):
 """)
         #print t.code
         assert flatten_result(t.render()) == "1 2 3"
-        
+ 
 class GlobalsTest(TemplateTest):
     def test_globals(self):
         self._do_memory_test(
@@ -741,7 +776,7 @@ class GlobalsTest(TemplateTest):
         )
 
 class RichTracebackTest(TemplateTest):
-    
+ 
     def _do_test_traceback(self, utf8, memory, syntax):
         if memory:
             if syntax:
@@ -825,7 +860,7 @@ class ModuleDirTest(TemplateTest):
 class FilenameToURITest(TemplateTest):
     def test_windows_paths(self):
         """test that windows filenames are handled appropriately by Template."""
-        
+ 
         current_path = os.path
         import ntpath
         os.path = ntpath
@@ -834,11 +869,11 @@ class FilenameToURITest(TemplateTest):
                 def _compile_from_file(self, path, filename):
                     self.path = path
                     return Template("foo bar").module
-                    
+ 
             t1 = NoCompileTemplate(
                                     filename="c:\\foo\\template.html", 
                                     module_directory="c:\\modules\\")
-            
+ 
             eq_(t1.uri, "/foo/template.html")
             eq_(t1.path, "c:\\modules\\foo\\template.html.py")
 
@@ -846,7 +881,7 @@ class FilenameToURITest(TemplateTest):
                                     filename="c:\\path\\to\\templates\\template.html", 
                                     uri = "/bar/template.html",
                                     module_directory="c:\\modules\\")
-            
+ 
             eq_(t1.uri, "/bar/template.html")
             eq_(t1.path, "c:\\modules\\bar\\template.html.py")
 
@@ -882,16 +917,16 @@ class FilenameToURITest(TemplateTest):
 
         finally:
             os.path = current_path
-        
-    
-    
+ 
+ 
+ 
 class ModuleTemplateTest(TemplateTest):
     def test_module_roundtrip(self):
         lookup = TemplateLookup()
 
         template = Template("""
         <%inherit file="base.html"/>
-        
+ 
         % for x in range(5):
             ${x}
         % endfor
@@ -904,30 +939,30 @@ class ModuleTemplateTest(TemplateTest):
 
         lookup.put_template("base.html", base)
         lookup.put_template("template.html", template)
-        
+ 
         assert result_lines(template.render()) == [
             "This is base.", "0", "1", "2", "3", "4"
         ]
-        
+ 
         lookup = TemplateLookup()
         template = ModuleTemplate(template.module, lookup=lookup)
         base = ModuleTemplate(base.module, lookup=lookup)
 
         lookup.put_template("base.html", base)
         lookup.put_template("template.html", template)
-        
+ 
         assert result_lines(template.render()) == [
             "This is base.", "0", "1", "2", "3", "4"
         ]
-        
-    
+ 
+ 
 class PreprocessTest(TemplateTest):
     def test_old_comments(self):
         t = Template("""
         im a template
 # old style comment
     # more old style comment
-    
+ 
     ## new style comment
     - # not a comment
     - ## not a comment

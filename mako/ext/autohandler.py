@@ -1,3 +1,9 @@
+# ext/autohandler.py
+# Copyright (C) 2006-2011 the Mako authors and contributors <see AUTHORS file>
+#
+# This module is part of Mako and is released under
+# the MIT License: http://www.opensource.org/licenses/mit-license.php
+
 """adds autohandler functionality to Mako templates.
 
 requires that the TemplateLookup class is used with templates.
@@ -42,7 +48,7 @@ def autohandler(template, context, name='autohandler'):
         if len(tokens) == 1:
             break
         tokens[-2:] = [name]
-        
+ 
     if not lookup.filesystem_checks:
         return lookup._uri_cache.setdefault(
                             (autohandler, _template_uri, name), None)
@@ -56,4 +62,4 @@ def _file_exists(lookup, path):
             return True
     else:
         return False
-    
+ 

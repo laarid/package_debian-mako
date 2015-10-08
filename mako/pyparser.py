@@ -1,5 +1,5 @@
-# ast.py
-# Copyright (C) Mako developers
+# mako/pyparser.py
+# Copyright (C) 2006-2011 the Mako authors and contributors <see AUTHORS file>
 #
 # This module is part of Mako and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
@@ -25,7 +25,7 @@ else:
     # words that cannot be assigned to (notably 
     # smaller than the total keys in __builtins__)
     reserved = set(['True', 'False', 'None'])
-    
+ 
     # the "id" attribute on a function node
     arg_id = operator.attrgetter('id')
 
@@ -42,7 +42,7 @@ except ImportError:
 
 def parse(code, mode='exec', **exception_kwargs):
     """Parse an expression into AST"""
-    
+ 
 
     try:
         if _ast:

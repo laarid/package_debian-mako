@@ -121,6 +121,7 @@ test/test_namespace.py
 test/test_pygen.py
 test/test_template.py
 test/test_tgplugin.py
+test/test_util.py
 test/util.py
 test/foo/__init__.py
 test/foo/test_ns.py
