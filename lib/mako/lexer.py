@@ -11,7 +11,7 @@ from mako import parsetree, exceptions
 from mako.pygen import adjust_whitespace
 
 class Lexer(object):
-    def __init__(self, text, filename=None, input_encoding=None):
+    def __init__(self, text, filename=None, input_encoding=None, preprocessor=None):
         self.text = text
         self.filename = filename
         self.template = parsetree.TemplateNode(self.filename)
@@ -22,6 +22,12 @@ class Lexer(object):
         self.tag = []
         self.control_line = []
         self.encoding = input_encoding
+        if preprocessor is None:
+            self.preprocessor = []
+        elif not hasattr(preprocessor, '__iter__'):
+            self.preprocessor = [preprocessor]
+        else:
+            self.preprocessor = preprocessor
         
     def match(self, regexp, flags=None):
         """match the given regular expression string and flags to the current text position.
@@ -95,6 +101,8 @@ class Lexer(object):
             return text
             
     def parse(self):
+        for preproc in self.preprocessor:
+            self.text = preproc(self.text)
         parsed_encoding = self.match_encoding()
         if parsed_encoding:
             self.encoding = parsed_encoding
@@ -122,6 +130,8 @@ class Lexer(object):
                 continue
             if self.match_control_line():
                 continue
+            if self.match_comment():
+                continue
             if self.match_tag_start(): 
                 continue
             if self.match_tag_end():
@@ -137,6 +147,8 @@ class Lexer(object):
             
         if len(self.tag):
             raise exceptions.SyntaxException("Unclosed tag: <%%%s>" % self.tag[-1].keyword, self.matched_lineno, self.matched_charpos, self.filename)
+        if len(self.control_line):
+            raise exceptions.SyntaxException("Unterminated control keyword: '%s'" % self.control_line[-1].keyword, self.control_line[-1].lineno, self.control_line[-1].pos, self.filename)
         return self.template
 
     def match_encoding(self):
@@ -211,9 +223,11 @@ class Lexer(object):
         match = self.match(r"""
                 (.*?)         # anything, followed by:
                 (
-                 (?<=\n)(?=[ \t]*[%#]) # an eval or comment line, preceded by a consumed \n and whitespace
+                 (?<=\n)(?=[ \t]*(?=%|\#\#)) # an eval or line-based comment preceded by a consumed \n and whitespace
                  |
                  (?=\${)   # an expression
+                 |
+                 (?=\#\*) # multiline comment
                  |
                  (?=</?[%&])  # a substitution or block or call start or end
                                               # - don't consume
@@ -256,7 +270,7 @@ class Lexer(object):
             return False
 
     def match_control_line(self):
-        match = self.match(r"(?<=^)[\t ]*([%#])[\t ]*([^\r\n]*)(?:\r?\n|\Z)", re.M)
+        match = self.match(r"(?<=^)[\t ]*(%|##)[\t ]*([^\r\n]*)(?:\r?\n|\Z)", re.M)
         if match:
             operator = match.group(1)
             text = match.group(2)
@@ -278,6 +292,15 @@ class Lexer(object):
             return True
         else:
             return False
-            
+
+    def match_comment(self):
+        """matches the multiline version of a comment"""
+        match = self.match(r"<%doc>(.*)</%doc>", re.S)
+        if match:
+            self.append_node(parsetree.Comment, match.group(1))
+            return True
+        else:
+            return False
+             
     def _count_lines(self, text):
         return len(re.findall(r"\n", text)) 

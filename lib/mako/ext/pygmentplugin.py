@@ -24,8 +24,9 @@ class MakoLexer(RegexLexer):
              bygroups(Text, Comment.Preproc, Keyword, Other)),
             (r'(\s*)(\%)([^\n]*)(\n|\Z)',
              bygroups(Text, Comment.Preproc, using(PythonLexer), Other)),
-             (r'(\s*)(#[^\n]*)(\n|\Z)',
+             (r'(\s*)(##[^\n]*)(\n|\Z)',
               bygroups(Text, Comment.Preproc, Other)),
+              (r'''(?s)<%doc>.*?</%doc>''', Comment.Preproc),
             (r'(<%)(def|call|namespace|text)', bygroups(Comment.Preproc, Name.Builtin), 'tag'),
             (r'(</%)(def|call|namespace|text)(>)', bygroups(Comment.Preproc, Name.Builtin, Comment.Preproc)),
             (r'<%(?=(include|inherit|namespace|page))', Comment.Preproc, 'ondeftags'),
@@ -35,7 +36,8 @@ class MakoLexer(RegexLexer):
             (r'''(?sx)
                 (.+?)               # anything, followed by:
                 (?:
-                 (?<=\n)(?=[%#]) |  # an eval or comment line
+                 (?<=\n)(?=%|\#\#) |  # an eval or comment line
+                 (?=\#\*) |          # multiline comment
                  (?=</?%) |         # a python block
                                     # call start or end
                  (?=\$\{) |         # a substitution
