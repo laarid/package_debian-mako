@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.2.0   Last Updated: 06/03/08 15:05:59</div>
+<div class="versionheader">Version: 0.2.1   Last Updated: 06/16/08 15:21:34</div>
 
 
 
@@ -143,12 +143,18 @@ template text
 
  </li>
 
- <li><p>cache_type - type of caching.  <code>memory</code>, <code>file</code>, <code>dbm</code>, or <code>memcached</code>.  (TODO: describe extra arguments for memcached)
+ <li><p>cache_type - type of caching.  <code>memory</code>, <code>file</code>, <code>dbm</code>, or <code>memcached</code>.
+</p>
+
+ </li>
+
+ <li><p>cache_url - (only used for <code>memcached</code> but required) a single IP address or a semi-colon separated list of IP address of memcache servers to use.
 </p>
 
  </li>
 
  <li><p>cache_dir  - In the case of the <code>file</code> and <code>dbm</code> cache types, this is the filesystem directory with which to store data files.  If this option is not present, the value of <code>module_directory</code> is used (i.e. the directory where compiled template modules are stored).  If neither option is available an exception is thrown.
+   In the case of the <code>memcached</code> type, this attribute is required and it's used to store the lock files.
 </p>
 
  </li>
