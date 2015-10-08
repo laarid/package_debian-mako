@@ -6,3 +6,6 @@
 mako_1.0.2+ds1.orig.tar.gz
 73897da770a7747ba6f98f914601cff2283fe3d9
 269314
+debianTag="debian/%e%v"
+patchedTag="patched/%e%v"
+upstreamTag="upstream/%e%u"
