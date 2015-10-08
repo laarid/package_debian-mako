@@ -22,7 +22,7 @@ class Context(object):
         data['capture'] = lambda x, *args, **kwargs: capture(self, x, *args, **kwargs)
         
         # "caller" stack used by def calls with content
-        self.caller_stack = [Undefined]
+        self.caller_stack = [UNDEFINED]
         data['caller'] = _StackFacade(self, None)
     lookup = property(lambda self:self._with_template.lookup)
     kwargs = property(lambda self:self._kwargs.copy())
@@ -74,6 +74,8 @@ class _StackFacade(object):
     def __init__(self, context, local):
         self.__stack = context.caller_stack
         self.__local = local
+    def __nonzero__(self):
+        return self._get_actual_caller() and True or False
     def _get_actual_caller(self):
         caller = self.__stack[-1]
         if caller is None:
@@ -156,9 +158,9 @@ class Namespace(object):
                 kwargs.setdefault('type', self.template.cache_type)
         return self.template.module._template_cache.get(key, **kwargs)
         
-    def include_file(self, uri):
+    def include_file(self, uri, **kwargs):
         """include a file at the given uri"""
-        _include_file(self.context, uri, self._templateuri)
+        _include_file(self.context, uri, self._templateuri, **kwargs)
         
     def _populate(self, d, l):
         for ident in l:
@@ -219,11 +221,11 @@ def capture(context, callable_, *args, **kwargs):
         buf = context.pop_buffer()
     return buf.getvalue()
         
-def _include_file(context, uri, calling_uri):
+def _include_file(context, uri, calling_uri, **kwargs):
     """locate the template from the given uri and include it in the current output."""
     template = _lookup_template(context, uri, calling_uri)
     (callable_, ctx) = _populate_self_namespace(context._clean_inheritance_tokens(), template)
-    callable_(ctx, **_kwargs_for_callable(callable_, context._data))
+    callable_(ctx, **_kwargs_for_callable(callable_, context._data, **kwargs))
         
 def _inherit_from(context, uri, calling_uri):
     """called by the _inherit method in template modules to set up the inheritance chain at the start
@@ -282,12 +284,11 @@ def _render(template, callable_, args, data, as_unicode=False):
     _render_context(template, callable_, context, *args, **_kwargs_for_callable(callable_, data))
     return context.pop_buffer().getvalue()
 
-def _kwargs_for_callable(callable_, data):
-    kwargs = {}
+def _kwargs_for_callable(callable_, data, **kwargs):
     argspec = inspect.getargspec(callable_)
     namedargs = argspec[0] + [v for v in argspec[1:3] if v is not None]
     for arg in namedargs:
-        if arg != 'context' and arg in data:
+        if arg != 'context' and arg in data and arg not in kwargs:
             kwargs[arg] = data[arg]
     return kwargs
     
