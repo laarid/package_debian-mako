@@ -220,11 +220,12 @@ class IncludeTag(Tag):
     __keyword__ = 'include'
     def __init__(self, keyword, attributes, **kwargs):
         super(IncludeTag, self).__init__(keyword, attributes, ('file', 'import', 'args'), (), ('file',), **kwargs)
-        self.page_args = ast.PythonCode("foo(%s)" % attributes.get('args', ''), self.lineno, self.pos, self.filename)
+        self.page_args = ast.PythonCode("__DUMMY(%s)" % attributes.get('args', ''), self.lineno, self.pos, self.filename)
     def declared_identifiers(self):
         return []
     def undeclared_identifiers(self):
-        return self.page_args.undeclared_identifiers
+        identifiers = self.page_args.undeclared_identifiers.difference(util.Set(["__DUMMY"]))
+        return identifiers.union(super(IncludeTag, self).undeclared_identifiers())
     
 class NamespaceTag(Tag):
     __keyword__ = 'namespace'
@@ -245,7 +246,7 @@ class TextTag(Tag):
 class DefTag(Tag):
     __keyword__ = 'def'
     def __init__(self, keyword, attributes, **kwargs):
-        super(DefTag, self).__init__(keyword, attributes, ('buffered', 'cached', 'cache_key', 'cache_timeout', 'cache_type', 'cache_dir'), ('name','filter'), ('name',), **kwargs)
+        super(DefTag, self).__init__(keyword, attributes, ('buffered', 'cached', 'cache_key', 'cache_timeout', 'cache_type', 'cache_dir', 'cache_url'), ('name','filter'), ('name',), **kwargs)
         name = attributes['name']
         if re.match(r'^[\w_]+$',name):
             raise exceptions.CompileException("Missing parenthesis in %def", self.lineno, self.pos, self.filename)
@@ -279,7 +280,7 @@ class InheritTag(Tag):
 class PageTag(Tag):
     __keyword__ = 'page'
     def __init__(self, keyword, attributes, **kwargs):
-        super(PageTag, self).__init__(keyword, attributes, ('cached', 'cache_key', 'cache_timeout', 'cache_type', 'cache_dir', 'args', 'expression_filter'), (), (), **kwargs)
+        super(PageTag, self).__init__(keyword, attributes, ('cached', 'cache_key', 'cache_timeout', 'cache_type', 'cache_dir', 'cache_url', 'args', 'expression_filter'), (), (), **kwargs)
         self.body_decl = ast.FunctionArgs(attributes.get('args', ''), self.lineno, self.pos, self.filename)
         self.filter_args = ast.ArgumentList(attributes.get('expression_filter', ''), self.lineno, self.pos, self.filename)
     def declared_identifiers(self):
