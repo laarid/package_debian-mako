@@ -11,7 +11,7 @@ module is used.
 """
 
 from mako import exceptions, util, compat
-from mako.compat import StringIO
+from mako.compat import StringIO, arg_stringname
 import operator
 
 if compat.py3k:
@@ -38,6 +38,7 @@ except ImportError:
     _ast = None
     from compiler import parse as compiler_parse
     from compiler import visitor
+
 
 
 def parse(code, mode='exec', **exception_kwargs):
@@ -215,14 +216,13 @@ if _ast:
             self.listener.funcname = node.name
             argnames = [arg_id(arg) for arg in node.args.args]
             if node.args.vararg:
-                argnames.append(node.args.vararg)
+                argnames.append(arg_stringname(node.args.vararg))
             if node.args.kwarg:
-                argnames.append(node.args.kwarg)
+                argnames.append(arg_stringname(node.args.kwarg))
             self.listener.argnames = argnames
             self.listener.defaults = node.args.defaults  # ast
             self.listener.varargs = node.args.vararg
             self.listener.kwargs = node.args.kwarg
-
 
     class ExpressionGenerator(object):
 

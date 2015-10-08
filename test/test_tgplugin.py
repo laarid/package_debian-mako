@@ -1,8 +1,7 @@
-import unittest
-
 from mako.ext.turbogears import TGPlugin
-from test.util import flatten_result, result_lines
+from test.util import result_lines
 from test import TemplateTest, template_base
+from mako import compat
 
 tl = TGPlugin(options=dict(directories=[template_base]), extension='html')
 
@@ -40,3 +39,11 @@ class TestTGPlugin(TemplateTest):
     def test_string(self):
         t = tl.load_template('foo', "hello world")
         assert t.render() == "hello world"
+
+    def test_render(self):
+        assert result_lines(tl.render({}, template='/index.html')) == [
+            "this is index"
+        ]
+        assert result_lines(tl.render({}, template=compat.u('/index.html'))) == [
+            "this is index"
+        ]
