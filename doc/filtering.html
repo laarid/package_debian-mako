@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.1.9   Last Updated: 09/25/07 16:19:18</div>
+<div class="versionheader">Version: 0.1.10   Last Updated: 12/27/07 00:53:49</div>
 
 
 
@@ -131,7 +131,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">${</span><span class="s">&quot;this is some text&quot;</span> <span class="o">|</span> <span class="n">u</span><span class="cp">}</span>
+        <div class="highlight"><pre><span class="cp">${</span><span class="s">&quot;this is some text&quot;</span> <span class="o">|</span> <span class="n">u</span><span class="cp">}</span>
 </pre></div>
 
     </div>
@@ -179,7 +179,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">${</span><span class="s">&quot;  &lt;tag&gt;some value&lt;/tag&gt; &quot;</span> <span class="o">|</span> <span class="n">h</span><span class="p">,</span><span class="n">trim</span><span class="cp">}</span>
+        <div class="highlight"><pre><span class="cp">${</span><span class="s">&quot;  &lt;tag&gt;some value&lt;/tag&gt; &quot;</span> <span class="o">|</span> <span class="n">h</span><span class="p">,</span><span class="n">trim</span><span class="cp">}</span>
 </pre></div>
 
     </div>
@@ -192,7 +192,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">&lt;%!</span>
+        <div class="highlight"><pre><span class="cp">&lt;%!</span>
     <span class="k">def</span> <span class="nf">myescape</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
         <span class="k">return</span> <span class="s">&quot;&lt;TAG&gt;&quot;</span> <span class="o">+</span> <span class="n">text</span> <span class="o">+</span> <span class="s">&quot;&lt;/TAG&gt;&quot;</span>
 <span class="cp">%&gt;</span>
@@ -208,7 +208,7 @@ Heres some tagged text: <span class="cp">${</span><span class="s">&quot;text&quo
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">&lt;%!</span>
+        <div class="highlight"><pre><span class="cp">&lt;%!</span>
     <span class="k">import</span> <span class="nn">myfilters</span>
 <span class="cp">%&gt;</span>
 
@@ -223,7 +223,7 @@ Heres some tagged text: <span class="cp">${</span><span class="s">&quot;text&quo
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">&lt;%</span><span class="nb">page</span> <span class="na">expression_filter=</span><span class="s">&quot;h&quot;</span><span class="cp">/&gt;</span>
+        <div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">page</span> <span class="na">expression_filter=</span><span class="s">&quot;h&quot;</span><span class="cp">/&gt;</span>
 
 Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some html&lt;/html&gt;&quot;</span><span class="cp">}</span>
 </pre></div>
@@ -236,7 +236,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
     
 
     <div class="code">
-        <div class="highlight" ><pre>Escaped text: <span class="ni">&amp;lt;</span>html<span class="ni">&amp;gt;</span>some html<span class="ni">&amp;lt;</span>/html<span class="ni">&amp;gt;</span>
+        <div class="highlight"><pre>Escaped text: <span class="ni">&amp;lt;</span>html<span class="ni">&amp;gt;</span>some html<span class="ni">&amp;lt;</span>/html<span class="ni">&amp;gt;</span>
 </pre></div>
 
     </div>
@@ -261,7 +261,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="n">t</span> <span class="o">=</span> <span class="n">TemplateLookup</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;/tmp&#39;</span><span class="p">],</span> <span class="n">default_filters</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;unicode&#39;</span><span class="p">])</span>
+        <div class="highlight"><pre><span class="n">t</span> <span class="o">=</span> <span class="n">TemplateLookup</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;/tmp&#39;</span><span class="p">],</span> <span class="n">default_filters</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;unicode&#39;</span><span class="p">])</span>
 </pre></div>
 
     </div>
@@ -272,7 +272,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="n">t</span> <span class="o">=</span> <span class="n">TemplateLookup</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;/tmp&#39;</span><span class="p">],</span> <span class="n">default_filters</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;decode.utf8&#39;</span><span class="p">])</span>
+        <div class="highlight"><pre><span class="n">t</span> <span class="o">=</span> <span class="n">TemplateLookup</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;/tmp&#39;</span><span class="p">],</span> <span class="n">default_filters</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;decode.utf8&#39;</span><span class="p">])</span>
 </pre></div>
 
     </div>
@@ -283,7 +283,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="n">t</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">templatetext</span><span class="p">,</span> <span class="n">default_filters</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;unicode&#39;</span><span class="p">,</span> <span class="s">&#39;myfilter&#39;</span><span class="p">])</span>
+        <div class="highlight"><pre><span class="n">t</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">templatetext</span><span class="p">,</span> <span class="n">default_filters</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;unicode&#39;</span><span class="p">,</span> <span class="s">&#39;myfilter&#39;</span><span class="p">])</span>
 </pre></div>
 
     </div>
@@ -294,7 +294,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="n">t</span> <span class="o">=</span> <span class="n">TemplateLookup</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;/tmp&#39;</span><span class="p">],</span> 
+        <div class="highlight"><pre><span class="n">t</span> <span class="o">=</span> <span class="n">TemplateLookup</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;/tmp&#39;</span><span class="p">],</span> 
     <span class="n">default_filters</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;unicode&#39;</span><span class="p">,</span> <span class="s">&#39;myfilter&#39;</span><span class="p">],</span> 
     <span class="n">imports</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;from mypackage import myfilter&#39;</span><span class="p">])</span>
 </pre></div>
@@ -307,7 +307,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="c"># ....</span>
+        <div class="highlight"><pre><span class="c"># ....</span>
 <span class="k">from</span> <span class="nn">mypackage</span> <span class="k">import</span> <span class="n">myfilter</span>
 
 <span class="k">def</span> <span class="nf">render_body</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
@@ -340,7 +340,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">${</span><span class="s">&#39;myexpression&#39;</span> <span class="o">|</span> <span class="n">n</span><span class="cp">}</span>
+        <div class="highlight"><pre><span class="cp">${</span><span class="s">&#39;myexpression&#39;</span> <span class="o">|</span> <span class="n">n</span><span class="cp">}</span>
 </pre></div>
 
     </div>
@@ -351,7 +351,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">${</span><span class="s">&#39;myexpression&#39;</span> <span class="o">|</span> <span class="n">n</span><span class="p">,</span> <span class="n">trim</span><span class="cp">}</span>
+        <div class="highlight"><pre><span class="cp">${</span><span class="s">&#39;myexpression&#39;</span> <span class="o">|</span> <span class="n">n</span><span class="p">,</span> <span class="n">trim</span><span class="cp">}</span>
 </pre></div>
 
     </div>
@@ -387,7 +387,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;foo()&quot;</span> <span class="na">filter=</span><span class="s">&quot;h, trim&quot;</span><span class="cp">&gt;</span>
+        <div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;foo()&quot;</span> <span class="na">filter=</span><span class="s">&quot;h, trim&quot;</span><span class="cp">&gt;</span>
     <span class="nt">&lt;b&gt;</span>this is bold<span class="nt">&lt;/b&gt;</span>
 <span class="cp">&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span>
 </pre></div>
@@ -422,7 +422,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">${</span><span class="s">&quot; results &quot;</span> <span class="o">+</span> <span class="n">somedef</span><span class="p">()</span> <span class="o">+</span> <span class="s">&quot; more results &quot;</span><span class="cp">}</span>
+        <div class="highlight"><pre><span class="cp">${</span><span class="s">&quot; results &quot;</span> <span class="o">+</span> <span class="n">somedef</span><span class="p">()</span> <span class="o">+</span> <span class="s">&quot; more results &quot;</span><span class="cp">}</span>
 </pre></div>
 
     </div>
@@ -433,7 +433,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
     
 
     <div class="code">
-        <div class="highlight" ><pre>somedef&#39;s results results more results
+        <div class="highlight"><pre>somedef&#39;s results results more results
 </pre></div>
 
     </div>
@@ -446,7 +446,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;somedef()&quot;</span> <span class="na">buffered=</span><span class="s">&quot;true&quot;</span><span class="cp">&gt;</span>
+        <div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;somedef()&quot;</span> <span class="na">buffered=</span><span class="s">&quot;true&quot;</span><span class="cp">&gt;</span>
     somedef&#39;s results
 <span class="cp">&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span>
 </pre></div>
@@ -459,7 +459,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
     
 
     <div class="code">
-        <div class="highlight" ><pre>def somedef():
+        <div class="highlight"><pre>def somedef():
     context.push_buffer()
     try:
         context.write(&quot;somedef&#39;s results&quot;)
@@ -480,7 +480,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">${</span><span class="s">&quot; results &quot;</span> <span class="o">+</span> <span class="n">capture</span><span class="p">(</span><span class="n">somedef</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; more results &quot;</span><span class="cp">}</span>
+        <div class="highlight"><pre><span class="cp">${</span><span class="s">&quot; results &quot;</span> <span class="o">+</span> <span class="n">capture</span><span class="p">(</span><span class="n">somedef</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; more results &quot;</span><span class="cp">}</span>
 </pre></div>
 
     </div>
@@ -491,7 +491,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">${</span><span class="n">capture</span><span class="p">(</span><span class="n">somedef</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="s">&#39;hi&#39;</span><span class="p">,</span> <span class="n">use_paging</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="cp">}</span>
+        <div class="highlight"><pre><span class="cp">${</span><span class="n">capture</span><span class="p">(</span><span class="n">somedef</span><span class="p">,</span> <span class="mf">17</span><span class="p">,</span> <span class="s">&#39;hi&#39;</span><span class="p">,</span> <span class="n">use_paging</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="cp">}</span>
 </pre></div>
 
     </div>
@@ -502,7 +502,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">${</span><span class="n">somedef</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="s">&#39;hi&#39;</span><span class="p">,</span> <span class="n">use_paging</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="cp">}</span>
+        <div class="highlight"><pre><span class="cp">${</span><span class="n">somedef</span><span class="p">(</span><span class="mf">17</span><span class="p">,</span> <span class="s">&#39;hi&#39;</span><span class="p">,</span> <span class="n">use_paging</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="cp">}</span>
 </pre></div>
 
     </div>

@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.1.9   Last Updated: 09/25/07 16:19:18</div>
+<div class="versionheader">Version: 0.1.10   Last Updated: 12/27/07 00:53:49</div>
 
 
 
@@ -139,7 +139,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">## components.html</span>
+        <div class="highlight"><pre><span class="cp">## components.html</span>
 <span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;comp1()&quot;</span><span class="cp">&gt;</span>
     this is comp1
 <span class="cp">&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span>
@@ -157,7 +157,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">## index.html</span>
+        <div class="highlight"><pre><span class="cp">## index.html</span>
 <span class="cp">&lt;%</span><span class="nb">namespace</span> <span class="na">name=</span><span class="s">&quot;comp&quot;</span> <span class="na">file=</span><span class="s">&quot;components.html&quot;</span><span class="cp">/&gt;</span>
 
 Heres comp1:  <span class="cp">${</span><span class="n">comp</span><span class="o">.</span><span class="n">comp1</span><span class="p">()</span><span class="cp">}</span>
@@ -174,7 +174,7 @@ Heres comp2:  <span class="cp">${</span><span class="n">comp</span><span class="
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">&lt;%</span><span class="nb">namespace</span> <span class="na">file=</span><span class="s">&quot;components.html&quot;</span> <span class="na">import=</span><span class="s">&quot;comp1, comp2&quot;</span><span class="cp">/&gt;</span>
+        <div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">namespace</span> <span class="na">file=</span><span class="s">&quot;components.html&quot;</span> <span class="na">import=</span><span class="s">&quot;comp1, comp2&quot;</span><span class="cp">/&gt;</span>
 
 Heres comp1:  <span class="cp">${</span><span class="n">comp1</span><span class="p">()</span><span class="cp">}</span>
 Heres comp2:  <span class="cp">${</span><span class="n">comp2</span><span class="p">()</span><span class="cp">}</span>
@@ -188,7 +188,7 @@ Heres comp2:  <span class="cp">${</span><span class="n">comp2</span><span class=
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">&lt;%</span><span class="nb">namespace</span> <span class="na">file=</span><span class="s">&quot;components.html&quot;</span> <span class="na">import=</span><span class="s">&quot;*&quot;</span><span class="cp">/&gt;</span>
+        <div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">namespace</span> <span class="na">file=</span><span class="s">&quot;components.html&quot;</span> <span class="na">import=</span><span class="s">&quot;*&quot;</span><span class="cp">/&gt;</span>
 
 Heres comp1:  <span class="cp">${</span><span class="n">comp1</span><span class="p">()</span><span class="cp">}</span>
 Heres comp2:  <span class="cp">${</span><span class="n">comp2</span><span class="p">()</span><span class="cp">}</span>
@@ -218,7 +218,7 @@ Heres comp2:  <span class="cp">${</span><span class="n">comp2</span><span class=
     
 
     <div class="code">
-        <div class="highlight" ><pre>def my_tag(context):
+        <div class="highlight"><pre>def my_tag(context):
     context.write(&quot;hello world&quot;)
 </pre></div>
 
@@ -230,7 +230,7 @@ Heres comp2:  <span class="cp">${</span><span class="n">comp2</span><span class=
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">&lt;%</span><span class="nb">namespace</span> <span class="na">name=</span><span class="s">&quot;hw&quot;</span> <span class="na">module=</span><span class="s">&quot;some.module&quot;</span><span class="cp">/&gt;</span>
+        <div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">namespace</span> <span class="na">name=</span><span class="s">&quot;hw&quot;</span> <span class="na">module=</span><span class="s">&quot;some.module&quot;</span><span class="cp">/&gt;</span>
 
 <span class="cp">${</span><span class="n">hw</span><span class="o">.</span><span class="n">my_tag</span><span class="p">()</span><span class="cp">}</span>
 </pre></div>
@@ -263,7 +263,7 @@ Heres comp2:  <span class="cp">${</span><span class="n">comp2</span><span class=
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">## define a namespace</span>
+        <div class="highlight"><pre><span class="cp">## define a namespace</span>
 <span class="cp">&lt;%</span><span class="nb">namespace</span> <span class="na">name=</span><span class="s">&quot;stuff&quot;</span><span class="cp">&gt;</span>
     <span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;comp1()&quot;</span><span class="cp">&gt;</span>
         comp1
@@ -302,7 +302,7 @@ Heres comp2:  <span class="cp">${</span><span class="n">comp2</span><span class=
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">&lt;%</span><span class="nb">page</span> <span class="na">args=</span><span class="s">&quot;x, y, someval=8, scope=&#39;foo&#39;, **kwargs&quot;</span><span class="cp">/&gt;</span>
+        <div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">page</span> <span class="na">args=</span><span class="s">&quot;x, y, someval=8, scope=&#39;foo&#39;, **kwargs&quot;</span><span class="cp">/&gt;</span>
 </pre></div>
 
     </div>
@@ -313,7 +313,7 @@ Heres comp2:  <span class="cp">${</span><span class="n">comp2</span><span class=
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">${</span><span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">someval</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span><span class="cp">}</span>
+        <div class="highlight"><pre><span class="cp">${</span><span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="p">(</span><span class="mf">5</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">10</span><span class="p">,</span> <span class="n">someval</span><span class="o">=</span><span class="mf">15</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">7</span><span class="p">)</span><span class="cp">}</span>
 </pre></div>
 
     </div>
@@ -324,7 +324,7 @@ Heres comp2:  <span class="cp">${</span><span class="n">comp2</span><span class=
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">${</span><span class="n">next</span><span class="o">.</span><span class="n">body</span><span class="p">(</span><span class="o">**</span><span class="n">context</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span><span class="cp">}</span>
+        <div class="highlight"><pre><span class="cp">${</span><span class="n">next</span><span class="o">.</span><span class="n">body</span><span class="p">(</span><span class="o">**</span><span class="n">context</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span><span class="cp">}</span>
 </pre></div>
 
     </div>
@@ -461,7 +461,7 @@ Heres comp2:  <span class="cp">${</span><span class="n">comp2</span><span class=
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">## base.html</span>
+        <div class="highlight"><pre><span class="cp">## base.html</span>
 <span class="cp">&lt;%</span><span class="nb">namespace</span> <span class="na">name=</span><span class="s">&quot;foo&quot;</span> <span class="na">file=</span><span class="s">&quot;foo.html&quot;</span> <span class="na">inheritable=</span><span class="s">&quot;True&quot;</span><span class="cp">/&gt;</span>
 
 <span class="cp">${</span><span class="n">next</span><span class="o">.</span><span class="n">body</span><span class="p">()</span><span class="cp">}</span>

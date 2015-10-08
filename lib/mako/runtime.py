@@ -73,16 +73,16 @@ class CallerStack(list):
     def __init__(self):
         self.nextcaller = None
     def __nonzero__(self):
-          return self._get_caller() and True or False
+        return self._get_caller() and True or False
     def _get_caller(self):
-        return self.nextcaller or self[-1]
+        return self[-1]
     def __getattr__(self, key):
         return getattr(self._get_caller(), key)
     def push_frame(self):
         self.append(self.nextcaller or None)
         self.nextcaller = None
     def pop_frame(self):
-        self.pop()
+        self.nextcaller = self.pop()
         
         
 class Undefined(object):
@@ -120,7 +120,7 @@ class Namespace(object):
         else:
             self.callables = None
         if populate_self and self.template is not None:
-            (lclcallable, self.context) = _populate_self_namespace(context, self.template, self_ns=self)
+            (lclcallable, lclcontext) = _populate_self_namespace(context, self.template, self_ns=self)
 
     module = property(lambda s:s._module or s.template.module)
     filename = property(lambda s:s._module and s._module.__file__ or s.template.filename)
@@ -134,7 +134,7 @@ class Namespace(object):
         if self.context.namespaces.has_key(key):
             return self.context.namespaces[key]
         else:
-            ns = Namespace(uri, self.context, templateuri=uri, calling_uri=self._templateuri) 
+            ns = Namespace(uri, self.context._copy(), templateuri=uri, calling_uri=self._templateuri) 
             self.context.namespaces[key] = ns
             return ns
     

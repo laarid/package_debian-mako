@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.1.9   Last Updated: 09/25/07 16:19:18</div>
+<div class="versionheader">Version: 0.1.10   Last Updated: 12/27/07 00:53:49</div>
 
 
 
@@ -199,7 +199,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre>this is x: <span class="cp">${</span><span class="n">x</span><span class="cp">}</span>
+        <div class="highlight"><pre>this is x: <span class="cp">${</span><span class="n">x</span><span class="cp">}</span>
 </pre></div>
 
     </div>
@@ -212,7 +212,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre>pythagorean theorem:  <span class="cp">${</span><span class="nb">pow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="nb">pow</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="cp">}</span>
+        <div class="highlight"><pre>pythagorean theorem:  <span class="cp">${</span><span class="nb">pow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mf">2</span><span class="p">)</span> <span class="o">+</span> <span class="nb">pow</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="mf">2</span><span class="p">)</span><span class="cp">}</span>
 </pre></div>
 
     </div>
@@ -237,7 +237,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">${</span><span class="s">&quot;this is some text&quot;</span> <span class="o">|</span> <span class="n">u</span><span class="cp">}</span>
+        <div class="highlight"><pre><span class="cp">${</span><span class="s">&quot;this is some text&quot;</span> <span class="o">|</span> <span class="n">u</span><span class="cp">}</span>
 </pre></div>
 
     </div>
@@ -275,7 +275,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">%</span> <span class="k">if</span> <span class="n">x</span><span class="o">==</span><span class="mi">5</span><span class="p">:</span>
+        <div class="highlight"><pre><span class="cp">%</span> <span class="k">if</span> <span class="n">x</span><span class="o">==</span><span class="mf">5</span><span class="p">:</span>
     this is some output
 <span class="cp">%</span><span class="k"> endif</span>
 </pre></div>
@@ -288,10 +288,10 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">%</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;one&#39;</span><span class="p">,</span> <span class="s">&#39;two&#39;</span><span class="p">,</span> <span class="s">&#39;three&#39;</span><span class="p">,</span> <span class="s">&#39;four&#39;</span><span class="p">,</span> <span class="s">&#39;five&#39;</span><span class="p">]:</span>
-    <span class="cp">%</span> <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;t&#39;</span><span class="p">:</span>
+        <div class="highlight"><pre><span class="cp">%</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;one&#39;</span><span class="p">,</span> <span class="s">&#39;two&#39;</span><span class="p">,</span> <span class="s">&#39;three&#39;</span><span class="p">,</span> <span class="s">&#39;four&#39;</span><span class="p">,</span> <span class="s">&#39;five&#39;</span><span class="p">]:</span>
+    <span class="cp">%</span> <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;t&#39;</span><span class="p">:</span>
      its two or three
-    <span class="cp">%</span> <span class="k">elif</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;f&#39;</span><span class="p">:</span>
+    <span class="cp">%</span> <span class="k">elif</span> <span class="n">a</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;f&#39;</span><span class="p">:</span>
     four/five
     <span class="cp">%</span> <span class="k">else</span><span class="p">:</span>
     one
@@ -325,7 +325,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">## this is a comment.</span>
+        <div class="highlight"><pre><span class="cp">## this is a comment.</span>
 ...text ...
 </pre></div>
 
@@ -337,7 +337,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">&lt;%doc&gt;</span>
+        <div class="highlight"><pre><span class="cp">&lt;%doc&gt;</span>
 <span class="cp">    these are comments</span>
 <span class="cp">    more comments</span>
 <span class="cp">&lt;/%doc&gt;</span>
@@ -371,8 +371,8 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre>here is a line that goes onto <span class="o">\</span>
-<span class="o"></span>another line.
+        <div class="highlight"><pre>here is a line that goes onto <span class="o">\</span>
+another line.
 </pre></div>
 
     </div>
@@ -383,7 +383,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre>here is a line that goes onto another line.
+        <div class="highlight"><pre>here is a line that goes onto another line.
 </pre></div>
 
     </div>
@@ -412,10 +412,10 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre>this is a template
+        <div class="highlight"><pre>this is a template
 <span class="cp">&lt;%</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_resource</span><span class="p">(</span><span class="s">&#39;foo&#39;</span><span class="p">)</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">z</span><span class="o">.</span><span class="n">element</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">x</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">frobnizzle</span><span class="o">==</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">z</span><span class="o">.</span><span class="n">element</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">x</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">frobnizzle</span><span class="o">==</span><span class="mf">5</span><span class="p">]</span>
 <span class="cp">%&gt;</span>
 <span class="cp">%</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">y</span><span class="p">:</span>
     element: <span class="cp">${</span><span class="n">y</span><span class="cp">}</span>
@@ -444,7 +444,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">&lt;%!</span>
+        <div class="highlight"><pre><span class="cp">&lt;%!</span>
     <span class="k">import</span> <span class="nn">mylib</span>
     <span class="k">import</span> <span class="nn">re</span>
 
@@ -486,7 +486,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">&lt;%</span><span class="nb">include</span> <span class="na">file=</span><span class="s">&quot;foo.txt&quot;</span><span class="cp">/&gt;</span>
+        <div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">include</span> <span class="na">file=</span><span class="s">&quot;foo.txt&quot;</span><span class="cp">/&gt;</span>
 
 <span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;foo&quot;</span> <span class="na">buffered=</span><span class="s">&quot;True&quot;</span><span class="cp">&gt;</span>
     this is a def
@@ -501,7 +501,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">&lt;%</span><span class="nb">include</span> <span class="na">file=</span><span class="s">&quot;/foo/bar/${myfile}.txt&quot;</span><span class="cp">/&gt;</span>
+        <div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">include</span> <span class="na">file=</span><span class="s">&quot;/foo/bar/${myfile}.txt&quot;</span><span class="cp">/&gt;</span>
 </pre></div>
 
     </div>
@@ -528,7 +528,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">&lt;%</span><span class="nb">page</span> <span class="na">args=</span><span class="s">&quot;x, y, z=&#39;default&#39;&quot;</span><span class="cp">/&gt;</span>
+        <div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">page</span> <span class="na">args=</span><span class="s">&quot;x, y, z=&#39;default&#39;&quot;</span><span class="cp">/&gt;</span>
 </pre></div>
 
     </div>
@@ -539,7 +539,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">&lt;%</span><span class="nb">page</span> <span class="na">cached=</span><span class="s">&quot;True&quot;</span> <span class="na">cache_type=</span><span class="s">&quot;memory&quot;</span><span class="cp">/&gt;</span>
+        <div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">page</span> <span class="na">cached=</span><span class="s">&quot;True&quot;</span> <span class="na">cache_type=</span><span class="s">&quot;memory&quot;</span><span class="cp">/&gt;</span>
 </pre></div>
 
     </div>
@@ -570,7 +570,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">&lt;%</span><span class="nb">include</span> <span class="na">file=</span><span class="s">&quot;header.html&quot;</span><span class="cp">/&gt;</span>
+        <div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">include</span> <span class="na">file=</span><span class="s">&quot;header.html&quot;</span><span class="cp">/&gt;</span>
 
     hello world
 
@@ -603,11 +603,11 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;myfunc(x)&quot;</span><span class="cp">&gt;</span>
+        <div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;myfunc(x)&quot;</span><span class="cp">&gt;</span>
     this is myfunc, x is <span class="cp">${</span><span class="n">x</span><span class="cp">}</span>
 <span class="cp">&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span>
 
-<span class="cp">${</span><span class="n">myfunc</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span><span class="cp">}</span>
+<span class="cp">${</span><span class="n">myfunc</span><span class="p">(</span><span class="mf">7</span><span class="p">)</span><span class="cp">}</span>
 </pre></div>
 
     </div>
@@ -638,7 +638,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">&lt;%</span><span class="nb">namespace</span> <span class="na">file=</span><span class="s">&quot;functions.html&quot;</span> <span class="na">import=</span><span class="s">&quot;*&quot;</span><span class="cp">/&gt;</span>
+        <div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">namespace</span> <span class="na">file=</span><span class="s">&quot;functions.html&quot;</span> <span class="na">import=</span><span class="s">&quot;*&quot;</span><span class="cp">/&gt;</span>
 </pre></div>
 
     </div>
@@ -669,7 +669,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">&lt;%</span><span class="nb">inherit</span> <span class="na">file=</span><span class="s">&quot;base.html&quot;</span><span class="cp">/&gt;</span>
+        <div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">inherit</span> <span class="na">file=</span><span class="s">&quot;base.html&quot;</span><span class="cp">/&gt;</span>
 </pre></div>
 
     </div>
@@ -720,7 +720,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">&lt;%doc&gt;</span>
+        <div class="highlight"><pre><span class="cp">&lt;%doc&gt;</span>
 <span class="cp">    these are comments</span>
 <span class="cp">    more comments</span>
 <span class="cp">&lt;/%doc&gt;</span>
@@ -754,7 +754,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">&lt;%</span><span class="nb">text</span> <span class="na">filter=</span><span class="s">&quot;h&quot;</span><span class="cp">&gt;</span>
+        <div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">text</span> <span class="na">filter=</span><span class="s">&quot;h&quot;</span><span class="cp">&gt;</span>
     heres some fake mako <span class="cp">${</span><span class="n">syntax</span><span class="cp">}</span>
     <span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;x()&quot;</span><span class="cp">&gt;${</span><span class="n">x</span><span class="cp">}&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span>
 <span class="cp">&lt;/%</span><span class="nb">text</span><span class="cp">&gt;</span>

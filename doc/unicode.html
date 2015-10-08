@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.1.9   Last Updated: 09/25/07 16:19:18</div>
+<div class="versionheader">Version: 0.1.10   Last Updated: 12/27/07 00:53:49</div>
 
 
 
@@ -137,7 +137,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">## -*- coding: utf-8 -*-</span>
+        <div class="highlight"><pre><span class="cp">## -*- coding: utf-8 -*-</span>
 
 Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »
 </pre></div>
@@ -150,7 +150,7 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="c">#.*coding[:=]\s*([-\w.]+).*\n</span>
+        <div class="highlight"><pre><span class="c">#.*coding[:=]\s*([-\w.]+).*\n</span>
 </pre></div>
 
     </div>
@@ -163,7 +163,7 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="n">t</span> <span class="o">=</span> <span class="n">TemplateLookup</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;./&#39;</span><span class="p">],</span> <span class="n">input_encoding</span><span class="o">=</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+        <div class="highlight"><pre><span class="n">t</span> <span class="o">=</span> <span class="n">TemplateLookup</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;./&#39;</span><span class="p">],</span> <span class="n">input_encoding</span><span class="o">=</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -194,7 +194,7 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">${</span><span class="s">&quot;hello world&quot;</span><span class="cp">}</span>
+        <div class="highlight"><pre><span class="cp">${</span><span class="s">&quot;hello world&quot;</span><span class="cp">}</span>
 </pre></div>
 
     </div>
@@ -205,7 +205,7 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="n">context</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="s">&quot;hello world&quot;</span><span class="p">))</span>
+        <div class="highlight"><pre><span class="n">context</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="s">&quot;hello world&quot;</span><span class="p">))</span>
 </pre></div>
 
     </div>
@@ -216,7 +216,7 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">${</span><span class="s">&quot;voix m’a réveillé.&quot;</span><span class="cp">}</span>  <span class="cp">## error !</span>
+        <div class="highlight"><pre><span class="cp">${</span><span class="s">&quot;voix m’a réveillé.&quot;</span><span class="cp">}</span>  <span class="cp">## error !</span>
 </pre></div>
 
     </div>
@@ -227,7 +227,7 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">${</span><span class="n">u</span><span class="s">&quot;voix m’a réveillé.&quot;</span><span class="cp">}</span>  <span class="cp">## OK !</span>
+        <div class="highlight"><pre><span class="cp">${</span><span class="s">u&quot;voix m’a réveillé.&quot;</span><span class="cp">}</span>  <span class="cp">## OK !</span>
 </pre></div>
 
     </div>
@@ -238,7 +238,7 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="cp">${</span><span class="n">call_my_object</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span><span class="cp">}</span>
+        <div class="highlight"><pre><span class="cp">${</span><span class="n">call_my_object</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span><span class="cp">}</span>
 </pre></div>
 
     </div>
@@ -249,7 +249,7 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="n">t</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">templatetext</span><span class="p">,</span> <span class="n">default_filters</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;decode.utf8&#39;</span><span class="p">])</span>
+        <div class="highlight"><pre><span class="n">t</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">templatetext</span><span class="p">,</span> <span class="n">default_filters</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;decode.utf8&#39;</span><span class="p">])</span>
 </pre></div>
 
     </div>
@@ -284,7 +284,7 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="k">from</span> <span class="nn">mako.template</span> <span class="k">import</span> <span class="n">Template</span>
+        <div class="highlight"><pre><span class="k">from</span> <span class="nn">mako.template</span> <span class="k">import</span> <span class="n">Template</span>
 <span class="k">from</span> <span class="nn">mako.lookup</span> <span class="k">import</span> <span class="n">TemplateLookup</span>
 
 <span class="n">mylookup</span> <span class="o">=</span> <span class="n">TemplateLookup</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;/docs&#39;</span><span class="p">],</span> <span class="n">output_encoding</span><span class="o">=</span><span class="s">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">encoding_errors</span><span class="o">=</span><span class="s">&#39;replace&#39;</span><span class="p">)</span>
@@ -301,7 +301,7 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="k">print</span> <span class="n">mytemplate</span><span class="o">.</span><span class="n">render_unicode</span><span class="p">()</span>
+        <div class="highlight"><pre><span class="k">print</span> <span class="n">mytemplate</span><span class="o">.</span><span class="n">render_unicode</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -312,7 +312,7 @@ Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voi
     
 
     <div class="code">
-        <div class="highlight" ><pre><span class="k">print</span> <span class="n">mytemplate</span><span class="o">.</span><span class="n">render_unicode</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">,</span> <span class="s">&#39;replace&#39;</span><span class="p">)</span>
+        <div class="highlight"><pre><span class="k">print</span> <span class="n">mytemplate</span><span class="o">.</span><span class="n">render_unicode</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">,</span> <span class="s">&#39;replace&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
