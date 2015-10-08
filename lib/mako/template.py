@@ -10,13 +10,13 @@ as well as template runtime operations."""
 from mako.lexer import Lexer
 from mako import codegen
 from mako import runtime, util, exceptions
-import imp, time, weakref, tempfile, shutil,  os, stat, posixpath, sys, re
+import imp, time, weakref, tempfile, shutil,  os, stat, sys, re
 
 
     
 class Template(object):
     """a compiled template"""
-    def __init__(self, text=None, filename=None, uri=None, format_exceptions=False, error_handler=None, lookup=None, output_encoding=None, module_directory=None, cache_type=None, cache_dir=None):
+    def __init__(self, text=None, filename=None, uri=None, format_exceptions=False, error_handler=None, lookup=None, output_encoding=None, module_directory=None, cache_type=None, cache_dir=None, module_filename=None, input_encoding=None, default_filters=['unicode'], imports=None):
         """construct a new Template instance using either literal template text, or a previously loaded template module
         
         text - textual template source, or None if a module is to be provided
@@ -38,36 +38,44 @@ class Template(object):
             self.module_id = "memory:" + hex(id(self))
             self.uri = self.module_id
         
+        self.default_filters = default_filters
+        self.input_encoding = input_encoding
+        self.imports = imports
+        
         # if plain text, compile code in memory only
         if text is not None:
-            (code, module) = _compile_text(text, self.module_id, filename, self.uri)
+            (code, module) = _compile_text(self, text, filename)
             self._code = code
             self._source = text
             ModuleInfo(module, None, self, filename, code, text)
         elif filename is not None:
             # if template filename and a module directory, load
             # a filesystem-based module file, generating if needed
-            if module_directory is not None:
+            if module_filename is not None:
+                path = module_filename
+            elif module_directory is not None:
                 u = self.uri
                 if u[0] == '/':
                     u = u[1:]
-                path = posixpath.join(module_directory, u + ".py")
-                util.verify_directory(posixpath.dirname(path))
+                path = os.path.normpath(os.path.join(module_directory.replace('/', os.path.sep), u + ".py"))
+            else:
+                path = None    
+            if path is not None:
+                util.verify_directory(os.path.dirname(path))
                 filemtime = os.stat(filename)[stat.ST_MTIME]
                 if not os.access(path, os.F_OK) or os.stat(path)[stat.ST_MTIME] < filemtime:
-                    util.verify_directory(module_directory)
-                    _compile_module_file(file(filename).read(), self.module_id, filename, path, self.uri)
+                    _compile_module_file(self, file(filename).read(), filename, path)
                 module = imp.load_source(self.module_id, path, file(path))
                 del sys.modules[self.module_id]
                 if module._magic_number != codegen.MAGIC_NUMBER:
-                    _compile_module_file(file(filename).read(), self.module_id, filename, path, self.uri)
+                    _compile_module_file(self, file(filename).read(), filename, path)
                     module = imp.load_source(self.module_id, path, file(path))
                     del sys.modules[self.module_id]
                 ModuleInfo(module, path, self, filename, None, None)
             else:
                 # template filename and no module directory, compile code
                 # in memory
-                (code, module) = _compile_text(file(filename).read(), self.module_id, filename, self.uri)
+                (code, module) = _compile_text(self, file(filename).read(), filename)
                 self._source = None
                 self._code = code
                 ModuleInfo(module, None, self, filename, code, None)
@@ -118,6 +126,18 @@ class DefTemplate(Template):
     def __init__(self, parent, callable_):
         self.parent = parent
         self.callable_ = callable_
+        self.default_filters = parent.default_filters
+        self.input_encoding = parent.input_encoding
+        self.imports = parent.imports
+        self.output_encoding = parent.output_encoding
+        self.format_exceptions = parent.format_exceptions
+        self.error_handler = parent.error_handler
+        self.lookup = parent.lookup
+        self.module = parent.module
+        self.filename = parent.filename
+        self.cache_type = parent.cache_type
+        self.cache_dir = parent.cache_dir
+
     def get_def(self, name):
         return self.parent.get_def(name)
 
@@ -149,19 +169,21 @@ class ModuleInfo(object):
             return file(self.template_filename).read()
     source = property(_get_source)
         
-def _compile_text(text, identifier, filename, uri):
-    node = Lexer(text, filename).parse()
-    source = codegen.compile(node, uri, filename)
+def _compile_text(template, text, filename):
+    identifier = template.module_id
+    node = Lexer(text, filename, input_encoding=template.input_encoding).parse()
+    source = codegen.compile(node, template.uri, filename, default_filters=template.default_filters, imports=template.imports)
     cid = identifier
     module = imp.new_module(cid)
     code = compile(source, cid, 'exec')
     exec code in module.__dict__, module.__dict__
     return (source, module)
 
-def _compile_module_file(text, identifier, filename, outputpath, uri):
+def _compile_module_file(template, text, filename, outputpath):
+    identifier = template.module_id
     (dest, name) = tempfile.mkstemp()
-    node = Lexer(text, filename).parse()
-    source = codegen.compile(node, uri, filename)
+    node = Lexer(text, filename, input_encoding=template.input_encoding).parse()
+    source = codegen.compile(node, template.uri, filename, default_filters=template.default_filters, imports=template.imports)
     os.write(dest, source)
     os.close(dest)
     shutil.move(name, outputpath)

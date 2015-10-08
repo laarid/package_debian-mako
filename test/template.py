@@ -7,9 +7,11 @@ from util import flatten_result, result_lines
 
 if not os.access('./test_htdocs', os.F_OK):
     os.mkdir('./test_htdocs')
+if not os.access('./test_htdocs/subdir', os.F_OK):
+    os.mkdir('./test_htdocs/subdir')
 file('./test_htdocs/unicode.html', 'w').write("""# -*- coding: utf-8 -*-
 Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »""")
-
+    
 class EncodingTest(unittest.TestCase):
     def test_unicode(self):
         template = Template(u"""Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »""")
@@ -28,8 +30,78 @@ class EncodingTest(unittest.TestCase):
         val = u"""Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »"""
         val = "# -*- coding: utf-8 -*-\n" + val.encode('utf-8')
         template = Template(val)
+        #print template.code
+        assert template.render_unicode() == u"""Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »"""
+    
+    def test_unicode_text(self):
+        val = u"""<%text>Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »</%text>"""
+        val = "# -*- coding: utf-8 -*-\n" + val.encode('utf-8')
+        template = Template(val)
+        print template.code
         assert template.render_unicode() == u"""Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »"""
 
+    def test_unicode_text_ccall(self):
+        val = u"""
+        <%def name="foo()">
+            ${capture(caller.body)}
+        </%def>
+        <%call expr="foo()">
+        <%text>Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »</%text>
+        </%call>"""
+        val = "# -*- coding: utf-8 -*-\n" + val.encode('utf-8')
+        template = Template(val)
+        #print template.code
+        assert flatten_result(template.render_unicode()) == u"""Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »"""
+        
+    def test_unicode_literal_in_expr(self):
+        template = Template(u"""# -*- coding: utf-8 -*-
+        ${u"Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »"}
+        """.encode('utf-8'))
+        assert template.render_unicode().strip() == u"""Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »"""
+
+    def test_unicode_literal_in_code(self):
+        template = Template(u"""# -*- coding: utf-8 -*-
+        <%
+            context.write(u"Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »")
+        %>
+        """.encode('utf-8'))
+        assert template.render_unicode().strip() == u"""Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »"""
+
+    def test_unicode_literal_in_controlline(self):
+        template = Template(u"""# -*- coding: utf-8 -*-
+        <%
+            x = u"drôle de petit voix m’a réveillé."
+        %>
+        % if x==u"drôle de petit voix m’a réveillé.":
+            hi, ${x}
+        % endif
+        """.encode('utf-8'))
+        assert template.render_unicode().strip() == u"""hi, drôle de petit voix m’a réveillé."""
+    
+        
+    def test_input_encoding(self):
+        """test the 'input_encoding' flag on Template, and that unicode objects arent double-decoded"""
+        s2 = u"hello ${f(u'śląsk')}"
+        res = Template(s2, input_encoding='utf-8').render_unicode(f=lambda x:x)
+        assert res == u"hello śląsk"
+
+        s2 = u"# -*- coding: utf-8 -*-\nhello ${f(u'śląsk')}"
+        res = Template(s2).render_unicode(f=lambda x:x)
+        assert res == u"hello śląsk"
+
+    def test_raw_strings(self):
+        """test that raw strings go straight thru with default_filters turned off"""
+        g = 'śląsk'
+        s = u"# -*- coding: utf-8 -*-\nhello ${x}"
+        t = Template(s, default_filters=[])
+        y = t.render(x=g)
+        assert y == "hello śląsk"
+
+        # now, the way you *should* be doing it....
+        q = g.decode('utf-8')
+        y = t.render_unicode(x=q)
+        assert y == u"hello śląsk"
+        
     def test_encoding(self):
         val = u"""Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petit voix m’a réveillé. Elle disait: « S’il vous plaît… dessine-moi un mouton! »"""
         template = Template(val, output_encoding='utf-8')
@@ -63,7 +135,7 @@ class PageArgsTest(unittest.TestCase):
 
             this is page, ${x}, ${y}, ${z}, ${w}
 """)
-
+        #print template.code
         assert flatten_result(template.render(x=5, y=10, w=17)) == "this is page, 5, 10, 7, 17"
 
     def test_overrides_builtins(self):
@@ -105,7 +177,26 @@ class GlobalsTest(unittest.TestCase):
 """)
         assert t.render().strip() == "y is hi"
 
-    
+
+class ModuleDirTest(unittest.TestCase):
+    def test_basic(self):
+        file('./test_htdocs/modtest.html', 'w').write("""this is a test""")
+        file('./test_htdocs/subdir/modtest.html', 'w').write("""this is a test""")
+        t = Template(filename='./test_htdocs/modtest.html', module_directory='./test_htdocs/modules')
+        t2 = Template(filename='./test_htdocs/subdir/modtest.html', module_directory='./test_htdocs/modules')
+        assert t.module.__file__ == os.path.normpath('./test_htdocs/modules/test_htdocs/modtest.html.py')
+        assert t2.module.__file__ == os.path.normpath('./test_htdocs/modules/test_htdocs/subdir/modtest.html.py')
+    def test_callable(self):
+        file('./test_htdocs/modtest.html', 'w').write("""this is a test""")
+        file('./test_htdocs/subdir/modtest.html', 'w').write("""this is a test""")
+        def get_modname(filename, uri):
+            return os.path.dirname(filename) + "/foo/" + os.path.basename(filename) + ".py"
+        lookup = TemplateLookup('./test_htdocs', modulename_callable=get_modname)
+        t = lookup.get_template('/modtest.html')
+        t2 = lookup.get_template('/subdir/modtest.html')
+        assert t.module.__file__ == 'test_htdocs/foo/modtest.html.py'
+        assert t2.module.__file__ == 'test_htdocs/subdir/foo/modtest.html.py'
+        
             
 if __name__ == '__main__':
     unittest.main()

@@ -11,7 +11,7 @@ from mako import parsetree, exceptions
 from mako.pygen import adjust_whitespace
 
 class Lexer(object):
-    def __init__(self, text, filename=None):
+    def __init__(self, text, filename=None, input_encoding=None):
         self.text = text
         self.filename = filename
         self.template = parsetree.TemplateNode(self.filename)
@@ -21,6 +21,7 @@ class Lexer(object):
         self.match_position = 0
         self.tag = []
         self.control_line = []
+        self.encoding = input_encoding
         
     def match(self, regexp, flags=None):
         """match the given regular expression string and flags to the current text position.
@@ -87,10 +88,27 @@ class Lexer(object):
             elif len(self.control_line) and not self.control_line[-1].is_ternary(node.keyword):
                 raise exceptions.SyntaxException("Keyword '%s' not a legal ternary for keyword '%s'" % (node.keyword, self.control_line[-1].keyword), self.matched_lineno, self.matched_charpos, self.filename)
 
+    def escape_code(self, text):
+        if self.encoding:
+            return text.encode('ascii', 'backslashreplace')
+        else:
+            return text
+            
     def parse(self):
-        encoding = self.match_encoding()
-        if encoding:
-            self.text = self.text.decode(encoding)
+        parsed_encoding = self.match_encoding()
+        if parsed_encoding:
+            self.encoding = parsed_encoding
+        if not isinstance(self.text, unicode):
+            if self.encoding:
+                try:
+                    self.text = self.text.decode(self.encoding)
+                except UnicodeDecodeError, e:
+                    raise exceptions.CompileException("Unicode decode operation of encoding '%s' failed" % self.encoding, 0, 0, self.filename)
+            else:
+                try:
+                    self.text = self.text.decode()
+                except UnicodeDecodeError, e:
+                    raise exceptions.CompileException("Could not read template using encoding of 'ascii'.  Did you forget a magic encoding comment?", 0, 0, self.filename)
 
         length = len(self.text)
             
@@ -122,7 +140,7 @@ class Lexer(object):
         return self.template
 
     def match_encoding(self):
-        match = self.match(r'#.*coding[:=]\s*([-\w.]+).*\n')
+        match = self.match(r'#.*coding[:=]\s*([-\w.]+).*\r?\n')
         if match:
             return match.group(1)
         else:
@@ -200,7 +218,7 @@ class Lexer(object):
                  (?=</?[%&])  # a substitution or block or call start or end
                                               # - don't consume
                  |
-                 (\\\n)         # an escaped newline  - throw away
+                 (\\\r?\n)         # an escaped newline  - throw away
                  |
                  \Z           # end of string
                 )""", re.X | re.S)
@@ -218,7 +236,7 @@ class Lexer(object):
             (line, pos) = (self.matched_lineno, self.matched_charpos)
             (text, end) = self.parse_until_text(r'%>')
             text = adjust_whitespace(text)
-            self.append_node(parsetree.Code, text, match.group(1)=='!', lineno=line, pos=pos)
+            self.append_node(parsetree.Code, self.escape_code(text), match.group(1)=='!', lineno=line, pos=pos)
             return True
         else:
             return False
@@ -232,13 +250,13 @@ class Lexer(object):
                 (escapes, end) = self.parse_until_text(r'}')
             else:
                 escapes = ""
-            self.append_node(parsetree.Expression, text, escapes.strip(), lineno=line, pos=pos)
+            self.append_node(parsetree.Expression, self.escape_code(text), escapes.strip(), lineno=line, pos=pos)
             return True
         else:
             return False
 
     def match_control_line(self):
-        match = self.match(r"(?<=^)[\t ]*([%#])[\t ]*([^\n]*)(?:\n|\Z)", re.M)
+        match = self.match(r"(?<=^)[\t ]*([%#])[\t ]*([^\r\n]*)(?:\r?\n|\Z)", re.M)
         if match:
             operator = match.group(1)
             text = match.group(2)
@@ -254,7 +272,7 @@ class Lexer(object):
                         raise exceptions.SyntaxException("No starting keyword '%s' for '%s'" % (keyword, text), self.matched_lineno, self.matched_charpos, self.filename)
                     elif self.control_line[-1].keyword != keyword:
                         raise exceptions.SyntaxException("Keyword '%s' doesn't match keyword '%s'" % (text, self.control_line[-1].keyword), self.matched_lineno, self.matched_charpos, self.filename)
-                self.append_node(parsetree.ControlLine, keyword, isend, text)
+                self.append_node(parsetree.ControlLine, keyword, isend, self.escape_code(text))
             else:
                 self.append_node(parsetree.Comment, text)
             return True

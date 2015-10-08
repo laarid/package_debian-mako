@@ -1,5 +1,6 @@
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<title>Mako Documentation - Basic Usage</title>
 	
     <link rel="stylesheet" href="docs.css"></link>
@@ -25,7 +26,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.1.1   Last Updated: 01/14/07 13:49:55</div>
+<div class="versionheader">Version: 0.1.2   Last Updated: 01/31/07 23:24:25</div>
 
 
 
@@ -111,7 +112,6 @@
     </ul>
 
 	</div>
-
 
 
 
@@ -391,32 +391,8 @@
 </pre></div>
 
     </div>
-<p>The above methods deal only with the encoding of the template output.  To indicate an encoding for the template's source file, place a Python-style "magic encoding comment" as the very first line in the template file:
+<p>Note that Mako's ability to return data in any encoding and/or <code>unicode</code> implies that the underlying output stream of the template is a Python unicode object.  This behavior is described fully in <a href="unicode.html">The Unicode Chapter</a>.
 </p>
-
-    
-    
-
-    <div class="code">
-        <div class="highlight" ><pre><span class="c"># -*- coding: utf-8 -*-</span>
-
-<span class="o">&lt;</span><span class="n">template</span> <span class="n">text</span><span class="o">&gt;</span>
-</pre></div>
-
-    </div>
-<p>Mako's <code>Lexer</code> module will detect the above marker and decode the template text internally into a <code>unicode</code> object using the given encoding.
-</p>
-<p>For the picky, the regular expression used is derived from that of <a href='http://www.python.org/dev/peps/pep-0263/'>pep-0263</a>:
-</p>
-
-    
-    
-
-    <div class="code">
-        <div class="highlight" ><pre><span class="c">#.*coding[:=]\s*([-\w.]+).*\n</span>
-</pre></div>
-
-    </div>
 
 
 

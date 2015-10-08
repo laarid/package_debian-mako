@@ -14,17 +14,19 @@ from mako import util, ast, parsetree, filters
 MAGIC_NUMBER = 1
 
 
-def compile(node, uri, filename=None):
+def compile(node, uri, filename=None, default_filters=None, imports=None):
     """generate module source code given a parsetree node, uri, and optional source filename"""
     buf = util.FastEncodingBuffer()
     printer = PythonPrinter(buf)
-    _GenerateRenderMethod(printer, _CompileContext(uri, filename), node)
+    _GenerateRenderMethod(printer, _CompileContext(uri, filename, default_filters, imports), node)
     return buf.getvalue()
 
 class _CompileContext(object):
-    def __init__(self, uri, filename):
+    def __init__(self, uri, filename, default_filters, imports):
         self.uri = uri
         self.filename = filename
+        self.default_filters = default_filters
+        self.imports = imports
         
 class _GenerateRenderMethod(object):
     """a template visitor object which generates the full module source for a template."""
@@ -113,10 +115,21 @@ class _GenerateRenderMethod(object):
         self.printer.writeline("_template_filename=%s" % repr(self.compiler.filename))
         self.printer.writeline("_template_uri=%s" % repr(self.compiler.uri))
         self.printer.writeline("_template_cache=cache.Cache(__name__, _modified_time)")
+        if self.compiler.imports:
+            buf = ''
+            for imp in self.compiler.imports:
+                buf += imp + "\n"
+                self.printer.writeline(imp)
+            impcode = ast.PythonCode(buf, 0, 0, 'template defined imports')
+        else:
+            impcode = None
         
         main_identifiers = module_identifiers.branch(self.node)
         module_identifiers.topleveldefs = module_identifiers.topleveldefs.union(main_identifiers.topleveldefs)
         [module_identifiers.declared.add(x) for x in ["UNDEFINED"]]
+        if impcode:
+            [module_identifiers.declared.add(x) for x in impcode.declared_identifiers]
+            
         self.compiler.identifiers = module_identifiers
         self.printer.writeline("_exports = %s" % repr([n.name for n in main_identifiers.topleveldefs.values()]))
         self.printer.write("\n\n")
@@ -331,7 +344,7 @@ class _GenerateRenderMethod(object):
             self.printer.writeline("_buf = context.pop_buffer()")
             s = "_buf.getvalue()"
             if filtered:
-                s = self.create_filter_callable(node.filter_args.args, s)
+                s = self.create_filter_callable(node.filter_args.args, s, False)
             self.printer.writeline(None)
             if buffered or cached:
                 self.printer.writeline("return %s" % s)
@@ -344,7 +357,6 @@ class _GenerateRenderMethod(object):
         self.printer.writeline("__%s = %s" % (name, name))
         cachekey = node_or_pagetag.parsed_attributes.get('cache_key', repr(name))
         cacheargs = {}
-        print node_or_pagetag
         for arg in (('cache_type', 'type'), ('cache_dir', 'data_dir'), ('cache_timeout', 'expiretime')):
             val = node_or_pagetag.parsed_attributes.get(arg[0], None)
             if val is not None:
@@ -376,32 +388,49 @@ class _GenerateRenderMethod(object):
                 None
             )
 
-    def create_filter_callable(self, args, target):
+    def create_filter_callable(self, args, target, is_expression):
         """write a filter-applying expression based on the filters present in the given 
         filter names, adjusting for the global 'default' filter aliases as needed."""
-        d = dict([(k, "filters." + v.func_name) for k, v in filters.DEFAULT_ESCAPES.iteritems()])
-        
-        if self.compiler.pagetag:
-            args += self.compiler.pagetag.filter_args.args
+        def locate_encode(name):
+            if re.match(r'decode\..+', name):
+                return "filters." + name
+            elif name == 'unicode':
+                return 'unicode'
+            else:
+                return \
+                {'x':'filters.xml_escape',
+                'h':'filters.html_escape',
+                'u':'filters.url_escape',
+                'trim':'filters.trim',
+                'entity':'filters.html_entities_escape',
+                }.get(name, name)
+                
+        if is_expression and self.compiler.pagetag:
+            args = self.compiler.pagetag.filter_args.args + args
+        if is_expression and self.compiler.default_filters:
+            args = self.compiler.default_filters + args
         for e in args:
             # if filter given as a function, get just the identifier portion
             m = re.match(r'(.+?)(\(.*\))', e)
             if m:
                 (ident, fargs) = m.group(1,2)
-                f = d.get(ident, ident)
+                f = locate_encode(ident)
                 e = f + fargs
             else:
-                e = d.get(e, e)
+                x = e
+                e = locate_encode(e)
+                if e is None:
+                    raise "der its none " + x
             target = "%s(%s)" % (e, target)
         return target
         
     def visitExpression(self, node):
         self.write_source_comment(node)
-        if len(node.escapes) or (self.compiler.pagetag is not None and len(self.compiler.pagetag.filter_args.args)):
-            s = self.create_filter_callable(node.escapes_code.args, "unicode(%s)" % node.text)
+        if len(node.escapes) or (self.compiler.pagetag is not None and len(self.compiler.pagetag.filter_args.args)) or len(self.compiler.default_filters):
+            s = self.create_filter_callable(node.escapes_code.args, "%s" % node.text, True)
             self.printer.writeline("context.write(%s)" % s)
         else:
-            self.printer.writeline("context.write(unicode(%s))" % node.text)
+            self.printer.writeline("context.write(%s)" % node.text)
             
     def visitControlLine(self, node):
         if node.isend:
@@ -425,7 +454,7 @@ class _GenerateRenderMethod(object):
             self.printer.writelines(
                 "finally:",
                 "_buf = context.pop_buffer()",
-                "context.write(%s)" % self.create_filter_callable(node.filter_args.args, "_buf.getvalue()"),
+                "context.write(%s)" % self.create_filter_callable(node.filter_args.args, "_buf.getvalue()", False),
                 None
                 )
         
@@ -437,7 +466,7 @@ class _GenerateRenderMethod(object):
             if not self.in_def and len(self.identifiers.locally_assigned) > 0:
                 # if we are the "template" def, fudge locally declared/modified variables into the "__locals" dictionary,
                 # which is used for def calls within the same template, to simulate "enclosing scope"
-                self.printer.writeline('__locals.update(dict([(k, locals()[k]) for k in [%s]]))' % ','.join([repr(x) for x in node.declared_identifiers()]))
+                self.printer.writeline('__locals.update(dict([(k, locals()[k]) for k in [%s] if k in locals()]))' % ','.join([repr(x) for x in node.declared_identifiers()]))
                 
     def visitIncludeTag(self, node):
         self.write_source_comment(node)

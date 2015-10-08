@@ -19,11 +19,12 @@ files = [
     'namespaces',
     'inheritance',
     'filtering',
+    'unicode',
     'caching',
     ]
 
 title='Mako Documentation'
-version = '0.1.1'
+version = '0.1.2'
 
 root = toc.TOCElement('', 'root', '', version=version, doctitle=title)
 
@@ -37,7 +38,7 @@ pickle.dump(root, file('./output/table_of_contents.pickle', 'w'))
 template_dirs = ['./templates', './output']
 output = os.path.dirname(os.getcwd())
 
-lookup = TemplateLookup(template_dirs, module_directory='./modules')
+lookup = TemplateLookup(template_dirs, module_directory='./modules', output_encoding='utf-8')
 
 def genfile(name, toc):
     infile = name + ".html"

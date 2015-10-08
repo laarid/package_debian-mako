@@ -14,6 +14,7 @@ doc/makotemplates.txt
 doc/namespaces.html
 doc/runtime.html
 doc/syntax.html
+doc/unicode.html
 doc/usage.html
 doc/build/genhtml.py
 doc/build/read_markdown.py
@@ -26,6 +27,7 @@ doc/build/content/inheritance.txt
 doc/build/content/namespaces.txt
 doc/build/content/runtime.txt
 doc/build/content/syntax.txt
+doc/build/content/unicode.txt
 doc/build/content/usage.txt
 doc/build/lib/markdown.py
 doc/build/lib/toc.py
@@ -99,5 +101,6 @@ test/test_namespace.py
 test/util.py
 test/foo/__init__.py
 test/foo/test_ns.py
+test_htdocs/crlf.html
 test_htdocs/internationalization.html
 test_htdocs/read_unicode.html
