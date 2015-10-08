@@ -38,3 +38,27 @@ In the case of the `memcached` type, this attribute is required and it's used to
         
         ## rest of template
     
+### Accessing the Cache {@name=accessing}
+
+The `Template`, as well as any template-derived namespace, has an accessor called `cache` which returns the `Cache` object for that template.   This object is a facade on top of the Beaker internal cache object, and provides some very rudimental capabilities, such as the ability to get and put arbitrary values:
+
+    <%
+        local.cache.put("somekey", type="memory", "somevalue")
+    %>
+    
+Above, the cache associated with the `local` namespace is accessed and a key is placed within a memory cache.
+
+More commonly the `cache` object is used to invalidate cached sections programmatically:
+
+    {python}
+    template = lookup.get_template('/sometemplate.html')
+    
+    # invalidate the "body" of the template
+    template.cache.invalidate_body()
+    
+    # invalidate an individual def
+    template.cache.invalidate_def('somedef')
+    
+    # invalidate an arbitrary key
+    template.cache.invalidate('somekey')
+    

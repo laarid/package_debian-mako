@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from mako.template import Template
+from mako.template import Template, ModuleTemplate
 from mako.lookup import TemplateLookup
 from mako.ext.preprocessors import convert_comments
 from mako import exceptions
@@ -226,6 +226,25 @@ class PageArgsTest(unittest.TestCase):
             id: ${id}
         """)
         assert flatten_result(template.render(id='some id', Exception='some exception')) == "exception: some exception id: some id"
+
+    def test_builtin_names_dont_clobber_defaults_in_includes(self):
+        lookup = TemplateLookup()
+        lookup.put_string("test.mako", 
+        """
+        <%include file="test1.mako"/>
+
+        """)
+
+        lookup.put_string("test1.mako", """
+        <%page args="id='foo'"/>
+
+        ${id}
+        """)
+
+        for template in ("test.mako", "test1.mako"):
+            assert flatten_result(lookup.get_template(template).render()) == "foo"
+            assert flatten_result(lookup.get_template(template).render(id=5)) == "5"
+            assert flatten_result(lookup.get_template(template).render(id=id)) == "<built-in function id>"
     
     def test_dict_locals(self):
         template = Template("""
@@ -287,7 +306,24 @@ class IncludeTest(unittest.TestCase):
             this is b.  ${a}, ${b}, ${c}
         """)
         assert flatten_result(lookup.get_template("a").render(a=7,b=8,i='b')) == "this is a this is b. 7, 8, 5"
-
+    
+    def test_within_ccall(self):
+        lookup = TemplateLookup()
+        lookup.put_string("a", """this is a""")
+        lookup.put_string("b", """
+        <%def name="bar()">
+            bar: ${caller.body()}
+            <%include file="a"/>
+        </%def>
+        """)
+        lookup.put_string("c", """
+        <%namespace name="b" file="b"/>
+        <%b:bar>
+            calling bar
+        </%b:bar>
+        """)
+        assert flatten_result(lookup.get_template("c").render()) == "bar: calling bar this is a"
+        
 class ControlTest(unittest.TestCase):
     def test_control(self):
         t = Template("""
@@ -391,6 +427,42 @@ class ModuleDirTest(unittest.TestCase):
         assert t.module.__file__ == 'test_htdocs/foo/modtest.html.py'
         assert t2.module.__file__ == 'test_htdocs/subdir/foo/modtest.html.py'
 
+class ModuleTemplateTest(unittest.TestCase):
+    def test_module_roundtrip(self):
+        lookup = TemplateLookup()
+
+        template = Template("""
+        <%inherit file="base.html"/>
+        
+        % for x in range(5):
+            ${x}
+        % endfor
+""", lookup=lookup)
+
+        base = Template("""
+        This is base.
+        ${self.body()}
+""", lookup=lookup)
+
+        lookup.put_template("base.html", base)
+        lookup.put_template("template.html", template)
+        
+        assert result_lines(template.render()) == [
+            "This is base.", "0", "1", "2", "3", "4"
+        ]
+        
+        lookup = TemplateLookup()
+        template = ModuleTemplate(template.module, lookup=lookup)
+        base = ModuleTemplate(base.module, lookup=lookup)
+
+        lookup.put_template("base.html", base)
+        lookup.put_template("template.html", template)
+        
+        assert result_lines(template.render()) == [
+            "This is base.", "0", "1", "2", "3", "4"
+        ]
+        
+    
 class PreprocessTest(unittest.TestCase):
     def test_old_comments(self):
         t = Template("""

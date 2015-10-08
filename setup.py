@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '0.2.2'
+version = '0.2.3'
 
 setup(name='Mako',
       version=version,
@@ -37,7 +37,7 @@ SVN version:
       scripts=['scripts/mako-render'],
       zip_safe=False,
       install_requires=[
-          'Beaker',
+          'Beaker>=1.1',
       ],
       entry_points="""
       [python.templating.engines]

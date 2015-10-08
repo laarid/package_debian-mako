@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.2.2   Last Updated: 06/23/08 13:32:03</div>
+<div class="versionheader">Version: 0.2.3   Last Updated: 11/23/08 11:57:46</div>
 
 
 
@@ -57,6 +57,12 @@
 	
     <ul>
         <li><A style="" href="caching.html#caching_arguments">Cache arguments</a></li>
+        
+            
+    <ul>
+    </ul>
+
+        <li><A style="" href="caching.html#caching_accessing">Accessing the Cache</a></li>
         
             
     <ul>
@@ -177,6 +183,59 @@ template text
 
  </li>
 </ul>
+
+
+
+            <a href="#top">back to section top</a>
+    </div>
+
+
+
+    
+    <A name="caching_accessing"></a>
+    
+    <div class="subsection">
+    
+
+    <h3>Accessing the Cache</h3>
+    
+    
+
+<p>The <code>Template</code>, as well as any template-derived namespace, has an accessor called <code>cache</code> which returns the <code>Cache</code> object for that template.   This object is a facade on top of the Beaker internal cache object, and provides some very rudimental capabilities, such as the ability to get and put arbitrary values:
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight"><pre><span class="cp">&lt;%</span>
+    <span class="n">local</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s">&quot;somekey&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;memory&quot;</span><span class="p">,</span> <span class="s">&quot;somevalue&quot;</span><span class="p">)</span>
+<span class="cp">%&gt;</span>
+</pre></div>
+
+    </div>
+<p>Above, the cache associated with the <code>local</code> namespace is accessed and a key is placed within a memory cache.
+</p>
+<p>More commonly the <code>cache</code> object is used to invalidate cached sections programmatically:
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight"><pre><span class="n">template</span> <span class="o">=</span> <span class="n">lookup</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="s">&#39;/sometemplate.html&#39;</span><span class="p">)</span>
+
+<span class="c"># invalidate the &quot;body&quot; of the template</span>
+<span class="n">template</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">invalidate_body</span><span class="p">()</span>
+
+<span class="c"># invalidate an individual def</span>
+<span class="n">template</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">invalidate_def</span><span class="p">(</span><span class="s">&#39;somedef&#39;</span><span class="p">)</span>
+
+<span class="c"># invalidate an arbitrary key</span>
+<span class="n">template</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">invalidate</span><span class="p">(</span><span class="s">&#39;somekey&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
 
 
 
