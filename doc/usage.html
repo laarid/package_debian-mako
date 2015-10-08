@@ -6,7 +6,7 @@
     
                 Usage
              &mdash; 
-    Mako 0.7.3 Documentation
+    Mako 0.8.0 Documentation
 </title>
 
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
           URL_ROOT:    '#',
-          VERSION:     '0.7.3',
+          VERSION:     '0.8.0',
           COLLAPSE_MODINDEX: false,
           FILE_SUFFIX: '.html'
       };
@@ -25,7 +25,7 @@
         <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="Mako 0.7.3 Documentation" href="index.html" />
+    <link rel="top" title="Mako 0.8.0 Documentation" href="index.html" />
         <link rel="next" title="Syntax" href="syntax.html" />
         <link rel="prev" title="Table of Contents" href="index.html" />
 
@@ -64,7 +64,7 @@
 
 
 <div id="docs-header">
-    <h1>Mako 0.7.3 Documentation</h1>
+    <h1>Mako 0.8.0 Documentation</h1>
 
     <div id="docs-search">
     Search:
@@ -76,7 +76,7 @@
     </div>
 
     <div id="docs-version-header">
-        Release: <span class="version-num">0.7.3</span>
+        Release: <span class="version-num">0.8.0</span>
 
     </div>
 
@@ -101,7 +101,7 @@
     </div>
 
     <div id="docs-navigation-banner">
-        <a href="index.html">Mako 0.7.3 Documentation</a>
+        <a href="index.html">Mako 0.8.0 Documentation</a>
         » 
                 Usage
              
@@ -545,7 +545,7 @@ for more information.</p>
 <h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="mako.template.Template">
-<em class="property">class </em><tt class="descclassname">mako.template.</tt><tt class="descname">Template</tt><big>(</big><em>text=None</em>, <em>filename=None</em>, <em>uri=None</em>, <em>format_exceptions=False</em>, <em>error_handler=None</em>, <em>lookup=None</em>, <em>output_encoding=None</em>, <em>encoding_errors='strict'</em>, <em>module_directory=None</em>, <em>cache_args=None</em>, <em>cache_impl='beaker'</em>, <em>cache_enabled=True</em>, <em>cache_type=None</em>, <em>cache_dir=None</em>, <em>cache_url=None</em>, <em>module_filename=None</em>, <em>input_encoding=None</em>, <em>disable_unicode=False</em>, <em>module_writer=None</em>, <em>bytestring_passthrough=False</em>, <em>default_filters=None</em>, <em>buffer_filters=()</em>, <em>strict_undefined=False</em>, <em>imports=None</em>, <em>enable_loop=True</em>, <em>preprocessor=None</em><big>)</big><a class="headerlink" href="#mako.template.Template" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">mako.template.</tt><tt class="descname">Template</tt><big>(</big><em>text=None</em>, <em>filename=None</em>, <em>uri=None</em>, <em>format_exceptions=False</em>, <em>error_handler=None</em>, <em>lookup=None</em>, <em>output_encoding=None</em>, <em>encoding_errors='strict'</em>, <em>module_directory=None</em>, <em>cache_args=None</em>, <em>cache_impl='beaker'</em>, <em>cache_enabled=True</em>, <em>cache_type=None</em>, <em>cache_dir=None</em>, <em>cache_url=None</em>, <em>module_filename=None</em>, <em>input_encoding=None</em>, <em>disable_unicode=False</em>, <em>module_writer=None</em>, <em>bytestring_passthrough=False</em>, <em>default_filters=None</em>, <em>buffer_filters=()</em>, <em>strict_undefined=False</em>, <em>imports=None</em>, <em>future_imports=None</em>, <em>enable_loop=True</em>, <em>preprocessor=None</em>, <em>lexer_cls=None</em><big>)</big><a class="headerlink" href="#mako.template.Template" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>Represents a compiled template.</p>
 <p><a class="reference internal" href="#mako.template.Template" title="mako.template.Template"><tt class="xref py py-class docutils literal"><span class="pre">Template</span></tt></a> includes a reference to the original
@@ -628,6 +628,14 @@ runtime exceptions are propagated outwards.</li>
 &#8220;import&#8221; lines, which will be placed into the module level
 preamble of all generated Python modules. See the example
 in <a class="reference internal" href="filtering.html#filtering-default-filters"><em>The default_filters Argument</em></a>.</li>
+<li><strong>future_imports</strong> &#8211; String list of names to import from <cite>__future__</cite>.
+These will be concatenated into a comma-separated string and inserted
+into the beginning of the template, e.g. <tt class="docutils literal"><span class="pre">futures_imports=['FOO',</span>
+<span class="pre">'BAR']</span></tt> results in <tt class="docutils literal"><span class="pre">from</span> <span class="pre">__future__</span> <span class="pre">import</span> <span class="pre">FOO,</span> <span class="pre">BAR</span></tt>.  If you&#8217;re
+interested in using features like the new division operator, you must
+use future_imports to convey that to the renderer, as otherwise the
+import will not appear as the first executed statement in the generated
+code and will therefore not have the desired effect.</li>
 <li><strong>input_encoding</strong> &#8211; Encoding of the template&#8217;s source code.  Can
 be used in lieu of the coding comment. See
 <a class="reference internal" href="#usage-unicode"><em>Using Unicode and Encoding</em></a> as well as <a class="reference internal" href="unicode.html"><em>The Unicode Chapter</em></a> for
@@ -663,7 +671,7 @@ writing function that mimics the default behavior would be:</p>
 
 <span class="kn">from</span> <span class="nn">mako.template</span> <span class="kn">import</span> <span class="n">Template</span>
 <span class="n">mytemplate</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span>
-                <span class="nb">file</span><span class="o">=</span><span class="s">&quot;index.html&quot;</span><span class="p">,</span>
+                <span class="n">filename</span><span class="o">=</span><span class="s">&quot;index.html&quot;</span><span class="p">,</span>
                 <span class="n">module_directory</span><span class="o">=</span><span class="s">&quot;/path/to/modules&quot;</span><span class="p">,</span>
                 <span class="n">module_writer</span><span class="o">=</span><span class="n">module_writer</span>
             <span class="p">)</span>
@@ -680,6 +688,12 @@ See <a class="reference internal" href="#usage-unicode"><em>Using Unicode and En
 the full template source before it is parsed. The return
 result of the callable will be used as the template source
 code.</li>
+<li><strong>lexer_cls</strong> &#8211; <p>A <tt class="xref py py-class docutils literal"><span class="pre">Lexer</span></tt> class used to parse
+the template.   The <tt class="xref py py-class docutils literal"><span class="pre">Lexer</span></tt> class is used by
+default.</p>
+<p class="versionadded">
+<span class="versionmodified">New in version 0.7.4.</span></p>
+</li>
 <li><strong>strict_undefined</strong> &#8211; <p>Replaces the automatic usage of
 <tt class="docutils literal"><span class="pre">UNDEFINED</span></tt> for any undeclared variables not located in
 the <a class="reference internal" href="runtime.html#mako.runtime.Context" title="mako.runtime.Context"><tt class="xref py py-class docutils literal"><span class="pre">Context</span></tt></a> with an immediate raise of
@@ -832,7 +846,7 @@ given <tt class="docutils literal"><span class="pre">uri</span></tt>.</p>
 
 <dl class="class">
 <dt id="mako.lookup.TemplateLookup">
-<em class="property">class </em><tt class="descclassname">mako.lookup.</tt><tt class="descname">TemplateLookup</tt><big>(</big><em>directories=None</em>, <em>module_directory=None</em>, <em>filesystem_checks=True</em>, <em>collection_size=-1</em>, <em>format_exceptions=False</em>, <em>error_handler=None</em>, <em>disable_unicode=False</em>, <em>bytestring_passthrough=False</em>, <em>output_encoding=None</em>, <em>encoding_errors='strict'</em>, <em>cache_args=None</em>, <em>cache_impl='beaker'</em>, <em>cache_enabled=True</em>, <em>cache_type=None</em>, <em>cache_dir=None</em>, <em>cache_url=None</em>, <em>modulename_callable=None</em>, <em>module_writer=None</em>, <em>default_filters=None</em>, <em>buffer_filters=()</em>, <em>strict_undefined=False</em>, <em>imports=None</em>, <em>enable_loop=True</em>, <em>input_encoding=None</em>, <em>preprocessor=None</em><big>)</big><a class="headerlink" href="#mako.lookup.TemplateLookup" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">mako.lookup.</tt><tt class="descname">TemplateLookup</tt><big>(</big><em>directories=None</em>, <em>module_directory=None</em>, <em>filesystem_checks=True</em>, <em>collection_size=-1</em>, <em>format_exceptions=False</em>, <em>error_handler=None</em>, <em>disable_unicode=False</em>, <em>bytestring_passthrough=False</em>, <em>output_encoding=None</em>, <em>encoding_errors='strict'</em>, <em>cache_args=None</em>, <em>cache_impl='beaker'</em>, <em>cache_enabled=True</em>, <em>cache_type=None</em>, <em>cache_dir=None</em>, <em>cache_url=None</em>, <em>modulename_callable=None</em>, <em>module_writer=None</em>, <em>default_filters=None</em>, <em>buffer_filters=()</em>, <em>strict_undefined=False</em>, <em>imports=None</em>, <em>future_imports=None</em>, <em>enable_loop=True</em>, <em>input_encoding=None</em>, <em>preprocessor=None</em>, <em>lexer_cls=None</em><big>)</big><a class="headerlink" href="#mako.lookup.TemplateLookup" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#mako.lookup.TemplateCollection" title="mako.lookup.TemplateCollection"><tt class="xref py py-class docutils literal"><span class="pre">mako.lookup.TemplateCollection</span></tt></a></p>
 <p>Represent a collection of templates that locates template source files
 from the local filesystem.</p>

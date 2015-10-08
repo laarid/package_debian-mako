@@ -97,6 +97,7 @@ mako/_ast_util.py
 mako/ast.py
 mako/cache.py
 mako/codegen.py
+mako/compat.py
 mako/exceptions.py
 mako/filters.py
 mako/lexer.py
