@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.2.4   Last Updated: 12/22/08 22:46:37</div>
+<div class="versionheader">Version: 0.2.5   Last Updated: 09/07/09 15:28:26</div>
 
 
 
@@ -170,7 +170,7 @@
 </pre></div>
 
     </div>
-<p>When you declare an argument signature for your def, they are required following normal Python conventions (i.e., all arguments are required except keyword arguments with a default value).  This is in contrast to using context-level variables, which evaluate to <code>UNDEFINED</code> if you reference a name that does not exist.
+<p>When you declare an argument signature for your def, they are required to follow normal Python conventions (i.e., all arguments are required except keyword arguments with a default value).  This is in contrast to using context-level variables, which evaluate to <code>UNDEFINED</code> if you reference a name that does not exist.
 </p>
 
 
@@ -434,7 +434,7 @@
 
     <div class="code">
         <div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;lister(count)&quot;</span><span class="cp">&gt;</span>
-    <span class="cp">%</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mf">1</span><span class="p">,</span><span class="n">count</span><span class="p">):</span>
+    <span class="cp">%</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">):</span>
         <span class="cp">${</span><span class="n">caller</span><span class="o">.</span><span class="n">body</span><span class="p">()</span><span class="cp">}</span>
     <span class="cp">%</span><span class="k"> endfor</span>
 <span class="cp">&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span>

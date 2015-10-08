@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.2.4   Last Updated: 12/22/08 22:46:37</div>
+<div class="versionheader">Version: 0.2.5   Last Updated: 09/07/09 15:28:26</div>
 
 
 
@@ -163,7 +163,7 @@
 </pre></div>
 
     </div>
-<p>Above, the text argument to <code>Template</code> is <strong>compiled</strong> into a Python module representation.  This module contains a function called <code>render_body()</code>, which produces the output of the template.  When <code>mytemplate.render()</code> is called, Mako sets up a runtime environment for the template and calls the <code>render_body()</code> function, capturing the output into a buffer and returning it's string contents.
+<p>Above, the text argument to <code>Template</code> is <strong>compiled</strong> into a Python module representation. This module contains a function called <code>render_body()</code>, which produces the output of the template. When <code>mytemplate.render()</code> is called, Mako sets up a runtime environment for the template and calls the <code>render_body()</code> function, capturing the output into a buffer and returning its string contents.
 </p>
 <p>The code inside the <code>render_body()</code> function has access to a namespace of variables.  You can specify these variables by sending them as additional keyword arguments to the <code>render()</code> method:
 </p>
@@ -341,7 +341,7 @@
     
     
 
-<p>Another important flag on <code>TemplateLookup</code> is <code>filesystem_checks</code>.  This defaults to <code>True</code>, and says that each time a template is returned by the <code>get_template()</code> method, the revision time of the original template file is checked against the last time the template was loaded, and if the file is newer will reload its contents and recompile the template.  On a production system, seting <code>filesystem_checks</code> to <code>False</code> can afford a small to moderate performance increase (depending on the type of filesystem used).
+<p>Another important flag on <code>TemplateLookup</code> is <code>filesystem_checks</code>. This defaults to <code>True</code>, and says that each time a template is returned by the <code>get_template()</code> method, the revision time of the original template file is checked against the last time the template was loaded, and if the file is newer will reload its contents and recompile the template. On a production system, setting <code>filesystem_checks</code> to <code>False</code> can afford a small to moderate performance increase (depending on the type of filesystem used).
 </p>
 
 

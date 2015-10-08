@@ -1,5 +1,5 @@
 # lexer.py
-# Copyright (C) 2006, 2007, 2008 Michael Bayer mike_mp@zzzcomputing.com
+# Copyright (C) 2006, 2007, 2008, 2009 Michael Bayer mike_mp@zzzcomputing.com
 #
 # This module is part of Mako and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
@@ -185,7 +185,7 @@ class Lexer(object):
             
             ([\w\.\:]+)   # keyword
             
-            ((?:\s+\w+|=|".*?"|'.*?')*)  # attrname, = sign, string expression
+            ((?:\s+\w+|\s*=\s*|".*?"|'.*?')*)  # attrname, = sign, string expression
             
             \s*     # more whitespace
             
@@ -196,7 +196,7 @@ class Lexer(object):
             re.I | re.S | re.X)
             
         if match:
-            (keyword, attr, isend) = (match.group(1).lower(), match.group(2), match.group(3))
+            (keyword, attr, isend) = (match.group(1), match.group(2), match.group(3))
             self.keyword = keyword
             attributes = {}
             if attr:
