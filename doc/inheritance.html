@@ -6,13 +6,15 @@
     
                 Inheritance
              &mdash;
-    Mako 0.9.1 Documentation
+    Mako 1.0.0 Documentation
 </title>
 
 <!-- begin iterate through sphinx environment css_files -->
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/docs.css" type="text/css" />
     <link rel="stylesheet" href="_static/site.css" type="text/css" />
+    <link rel="stylesheet" href="_static/changelog.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx_paramlinks.css" type="text/css" />
 <!-- end iterate through sphinx environment css_files -->
 
 
@@ -22,7 +24,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
           URL_ROOT:    './',
-          VERSION:     '0.9.1',
+          VERSION:     '1.0.0',
           COLLAPSE_MODINDEX: false,
           FILE_SUFFIX: '.html'
       };
@@ -32,7 +34,7 @@
         <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="Mako 0.9.1 Documentation" href="index.html" />
+    <link rel="top" title="Mako 1.0.0 Documentation" href="index.html" />
         <link rel="next" title="Filtering and Buffering" href="filtering.html" />
         <link rel="prev" title="Namespaces" href="namespaces.html" />
 
@@ -71,7 +73,7 @@
 
 
 <div id="docs-header">
-    <h1>Mako 0.9.1 Documentation</h1>
+    <h1>Mako 1.0.0 Documentation</h1>
 
     <div id="docs-search">
     Search:
@@ -83,7 +85,7 @@
     </div>
 
     <div id="docs-version-header">
-        Release: <span class="version-num">0.9.1</span>
+        Release: <span class="version-num">1.0.0</span>
 
     </div>
 
@@ -108,7 +110,7 @@
     </div>
 
     <div id="docs-navigation-banner">
-        <a href="index.html">Mako 0.9.1 Documentation</a>
+        <a href="index.html">Mako 1.0.0 Documentation</a>
         » 
                 Inheritance
             
@@ -133,6 +135,7 @@
 <li><a class="reference internal" href="#but-what-about-defs">But what about Defs?</a></li>
 <li><a class="reference internal" href="#using-the-next-namespace-to-produce-content-wrapping">Using the <tt class="docutils literal"><span class="pre">next</span></tt> Namespace to Produce Content Wrapping</a></li>
 <li><a class="reference internal" href="#using-the-parent-namespace-to-augment-defs">Using the <tt class="docutils literal"><span class="pre">parent</span></tt> Namespace to Augment Defs</a></li>
+<li><a class="reference internal" href="#using-include-with-template-inheritance">Using <tt class="docutils literal"><span class="pre">&lt;%include&gt;</span></tt> with Template Inheritance</a></li>
 <li><a class="reference internal" href="#inheritable-attributes">Inheritable Attributes</a></li>
 </ul>
 </li>
@@ -612,6 +615,97 @@ thing is now:</p>
 </pre></div>
 </div>
 <p>and you&#8217;re now a template inheritance ninja!</p>
+</div>
+<div class="section" id="using-include-with-template-inheritance">
+<h2>Using <tt class="docutils literal"><span class="pre">&lt;%include&gt;</span></tt> with Template Inheritance<a class="headerlink" href="#using-include-with-template-inheritance" title="Permalink to this headline">¶</a></h2>
+<p>A common source of confusion is the behavior of the <tt class="docutils literal"><span class="pre">&lt;%include&gt;</span></tt> tag,
+often in conjunction with its interaction within template inheritance.
+Key to understanding the <tt class="docutils literal"><span class="pre">&lt;%include&gt;</span></tt> tag is that it is a <em>dynamic</em>, e.g.
+runtime, include, and not a static include.   The <tt class="docutils literal"><span class="pre">&lt;%include&gt;</span></tt> is only processed
+as the template renders, and not at inheritance setup time.   When encountered,
+the referenced template is run fully as an entirely separate template with no
+linkage to any current inheritance structure.</p>
+<p>If the tag were on the other hand a <em>static</em> include, this would allow source
+within the included template to interact within the same inheritance context
+as the calling template, but currently Mako has no static include facility.</p>
+<p>In practice, this means that <tt class="docutils literal"><span class="pre">&lt;%block&gt;</span></tt> elements defined in an <tt class="docutils literal"><span class="pre">&lt;%include&gt;</span></tt>
+file will not interact with corresponding <tt class="docutils literal"><span class="pre">&lt;%block&gt;</span></tt> elements in the calling
+template.</p>
+<p>A common mistake is along these lines:</p>
+<div class="highlight-mako"><div class="highlight"><pre><span class="cp">## partials.mako</span><span class="x"></span>
+<span class="cp">&lt;%</span><span class="nb">block</span> <span class="na">name=</span><span class="s">&quot;header&quot;</span><span class="cp">&gt;</span><span class="x"></span>
+<span class="x">    Global Header</span>
+<span class="cp">&lt;/%</span><span class="nb">block</span><span class="cp">&gt;</span>
+
+<span class="cp">## parent.mako</span><span class="x"></span>
+<span class="cp">&lt;%</span><span class="nb">include</span> <span class="na">file=</span><span class="s">&quot;partials.mako&quot;</span><span class="cp">&gt;</span>
+
+<span class="cp">## child.mako</span><span class="x"></span>
+<span class="cp">&lt;%</span><span class="nb">inherit</span> <span class="na">file=</span><span class="s">&quot;parent.mako&quot;</span><span class="cp">&gt;</span><span class="x"></span>
+<span class="cp">&lt;%</span><span class="nb">block</span> <span class="na">name=</span><span class="s">&quot;header&quot;</span><span class="cp">&gt;</span><span class="x"></span>
+<span class="x">    Custom Header</span>
+<span class="cp">&lt;/%</span><span class="nb">block</span><span class="cp">&gt;</span><span class="x"></span>
+</pre></div>
+</div>
+<p>Above, one might expect that the <tt class="docutils literal"><span class="pre">&quot;header&quot;</span></tt> block declared in <tt class="docutils literal"><span class="pre">child.mako</span></tt>
+might be invoked, as a result of it overriding the same block present in
+<tt class="docutils literal"><span class="pre">parent.mako</span></tt> via the include for <tt class="docutils literal"><span class="pre">partials.mako</span></tt>.  But this is not the case.
+Instead, <tt class="docutils literal"><span class="pre">parent.mako</span></tt> will invoke <tt class="docutils literal"><span class="pre">partials.mako</span></tt>, which then invokes
+<tt class="docutils literal"><span class="pre">&quot;header&quot;</span></tt> in <tt class="docutils literal"><span class="pre">partials.mako</span></tt>, and then is finished rendering.  Nothing
+from <tt class="docutils literal"><span class="pre">child.mako</span></tt> will render; there is no interaction between the <tt class="docutils literal"><span class="pre">&quot;header&quot;</span></tt>
+block in <tt class="docutils literal"><span class="pre">child.mako</span></tt> and the <tt class="docutils literal"><span class="pre">&quot;header&quot;</span></tt> block in <tt class="docutils literal"><span class="pre">partials.mako</span></tt>.</p>
+<p>Instead, <tt class="docutils literal"><span class="pre">parent.mako</span></tt> must explicitly state the inheritance structure.
+In order to call upon specific elements of <tt class="docutils literal"><span class="pre">partials.mako</span></tt>, we will call upon
+it as a namespace:</p>
+<div class="highlight-mako"><div class="highlight"><pre><span class="cp">## partials.mako</span><span class="x"></span>
+<span class="cp">&lt;%</span><span class="nb">block</span> <span class="na">name=</span><span class="s">&quot;header&quot;</span><span class="cp">&gt;</span><span class="x"></span>
+<span class="x">    Global Header</span>
+<span class="cp">&lt;/%</span><span class="nb">block</span><span class="cp">&gt;</span>
+
+<span class="cp">## parent.mako</span><span class="x"></span>
+<span class="cp">&lt;%</span><span class="nb">namespace</span> <span class="na">name=</span><span class="s">&quot;partials&quot;</span> <span class="na">file=</span><span class="s">&quot;partials.mako&quot;</span><span class="cp">/&gt;</span><span class="x"></span>
+<span class="cp">&lt;%</span><span class="nb">block</span> <span class="na">name=</span><span class="s">&quot;header&quot;</span><span class="cp">&gt;</span><span class="x"></span>
+<span class="x">    </span><span class="cp">${</span><span class="n">partials</span><span class="o">.</span><span class="n">header</span><span class="p">()</span><span class="cp">}</span><span class="x"></span>
+<span class="cp">&lt;/%</span><span class="nb">block</span><span class="cp">&gt;</span>
+
+<span class="cp">## child.mako</span><span class="x"></span>
+<span class="cp">&lt;%</span><span class="nb">inherit</span> <span class="na">file=</span><span class="s">&quot;parent.mako&quot;</span><span class="cp">&gt;</span><span class="x"></span>
+<span class="cp">&lt;%</span><span class="nb">block</span> <span class="na">name=</span><span class="s">&quot;header&quot;</span><span class="cp">&gt;</span><span class="x"></span>
+<span class="x">    Custom Header</span>
+<span class="cp">&lt;/%</span><span class="nb">block</span><span class="cp">&gt;</span><span class="x"></span>
+</pre></div>
+</div>
+<p>Where above, <tt class="docutils literal"><span class="pre">parent.mako</span></tt> states the inheritance structure that <tt class="docutils literal"><span class="pre">child.mako</span></tt>
+is to participate within.  <tt class="docutils literal"><span class="pre">partials.mako</span></tt> only defines defs/blocks that can be
+used on a per-name basis.</p>
+<p>Another scenario is below, which results in both <tt class="docutils literal"><span class="pre">&quot;SectionA&quot;</span></tt> blocks being rendered for the <tt class="docutils literal"><span class="pre">child.mako</span></tt> document:</p>
+<div class="highlight-mako"><div class="highlight"><pre><span class="cp">## base.mako</span><span class="x"></span>
+<span class="cp">${</span><span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="p">()</span><span class="cp">}</span><span class="x"></span>
+<span class="cp">&lt;%</span><span class="nb">block</span> <span class="na">name=</span><span class="s">&quot;SectionA&quot;</span><span class="cp">&gt;</span><span class="x"></span>
+<span class="x">    base.mako</span>
+<span class="cp">&lt;/%</span><span class="nb">block</span><span class="cp">&gt;</span>
+
+<span class="cp">## parent.mako</span><span class="x"></span>
+<span class="cp">&lt;%</span><span class="nb">inherit</span> <span class="na">file=</span><span class="s">&quot;base.mako&quot;</span><span class="cp">&gt;</span><span class="x"></span>
+<span class="cp">&lt;%</span><span class="nb">include</span> <span class="na">file=</span><span class="s">&quot;child.mako&quot;</span><span class="cp">&gt;</span>
+
+<span class="cp">## child.mako</span><span class="x"></span>
+<span class="cp">&lt;%</span><span class="nb">block</span> <span class="na">name=</span><span class="s">&quot;SectionA&quot;</span><span class="cp">&gt;</span><span class="x"></span>
+<span class="x">    child.mako</span>
+<span class="cp">&lt;/%</span><span class="nb">block</span><span class="cp">&gt;</span><span class="x"></span>
+</pre></div>
+</div>
+<p>The resolution is similar; instead of using <tt class="docutils literal"><span class="pre">&lt;%include&gt;</span></tt>, we call upon the blocks
+of <tt class="docutils literal"><span class="pre">child.mako</span></tt> using a namespace:</p>
+<div class="highlight-mako"><div class="highlight"><pre><span class="cp">## parent.mako</span><span class="x"></span>
+<span class="cp">&lt;%</span><span class="nb">inherit</span> <span class="na">file=</span><span class="s">&quot;base.mako&quot;</span><span class="cp">&gt;</span><span class="x"></span>
+<span class="cp">&lt;%</span><span class="nb">namespace</span> <span class="na">name=</span><span class="s">&quot;child&quot;</span> <span class="na">file=</span><span class="s">&quot;child.mako&quot;</span><span class="cp">&gt;</span><span class="x"></span>
+
+<span class="cp">&lt;%</span><span class="nb">block</span> <span class="na">name=</span><span class="s">&quot;SectionA&quot;</span><span class="cp">&gt;</span><span class="x"></span>
+<span class="x">    </span><span class="cp">${</span><span class="n">child</span><span class="o">.</span><span class="n">SectionA</span><span class="p">()</span><span class="cp">}</span><span class="x"></span>
+<span class="cp">&lt;/%</span><span class="nb">block</span><span class="cp">&gt;</span><span class="x"></span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="inheritable-attributes">
 <span id="inheritance-attr"></span><h2>Inheritable Attributes<a class="headerlink" href="#inheritable-attributes" title="Permalink to this headline">¶</a></h2>

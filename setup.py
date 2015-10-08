@@ -9,14 +9,22 @@ v.close()
 
 readme = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
+if sys.version_info < (2, 6):
+    raise Exception("Mako requires Python 2.6 or higher.")
+
 markupsafe_installs = (
             sys.version_info >= (2, 6) and sys.version_info < (3, 0)
         ) or sys.version_info >= (3, 3)
 
+install_requires = []
+
 if markupsafe_installs:
-    install_requires = ['MarkupSafe>=0.9.2']
-else:
-    install_requires = []
+    install_requires.append('MarkupSafe>=0.9.2')
+
+try:
+    import argparse
+except ImportError:
+    install_requires.append('argparse')
 
 setup(name='Mako',
       version=VERSION,
@@ -39,12 +47,11 @@ setup(name='Mako',
       url='http://www.makotemplates.org/',
       license='MIT',
       packages=find_packages('.', exclude=['examples*', 'test*']),
-      scripts=['scripts/mako-render'],
-      tests_require=['nose >= 0.11'],
+      tests_require=['nose >= 0.11', 'mock'],
       test_suite="nose.collector",
       zip_safe=False,
       install_requires=install_requires,
-      extras_require={'beaker': ['Beaker>=1.1']},
+      extras_require={},
       entry_points="""
       [python.templating.engines]
       mako = mako.ext.turbogears:TGPlugin
@@ -58,5 +65,8 @@ setup(name='Mako',
 
       [babel.extractors]
       mako = mako.ext.babelplugin:extract
+
+      [console_scripts]
+      mako-render = mako.cmd:cmdline
       """
 )

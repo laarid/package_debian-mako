@@ -11,4 +11,7 @@
 
       [babel.extractors]
       mako = mako.ext.babelplugin:extract
+
+      [console_scripts]
+      mako-render = mako.cmd:cmdline
       
