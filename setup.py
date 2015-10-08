@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '0.1.5'
+version = '0.1.6'
 
 setup(name='Mako',
       version=version,
@@ -36,7 +36,7 @@ SVN version:
       packages=find_packages('lib', exclude=['ez_setup', 'examples', 'tests']),
       zip_safe=False,
       install_requires=[
-          'MyghtyUtils',
+          'Beaker',
       ],
       entry_points="""
       [python.templating.engines]

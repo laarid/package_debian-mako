@@ -91,6 +91,7 @@ test/ast.py
 test/cache.py
 test/call.py
 test/def.py
+test/exceptions_.py
 test/filters.py
 test/inheritance.py
 test/lexer.py

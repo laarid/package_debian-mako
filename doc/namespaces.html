@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.1.5   Last Updated: 03/31/07 17:18:12</div>
+<div class="versionheader">Version: 0.1.6   Last Updated: 05/18/07 19:23:42</div>
 
 
 
@@ -100,6 +100,12 @@
 
     </ul>
 
+        <li><A style="" href="namespaces.html#namespaces_inheritable">Inheritable Namespaces</a></li>
+        
+            
+    <ul>
+    </ul>
+
     </ul>
 
 	</div>
@@ -133,7 +139,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre># components.html
+        <div class="highlight" ><pre><span class="cp">## components.html</span>
 <span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;comp1()&quot;</span><span class="cp">&gt;</span>
     this is comp1
 <span class="cp">&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span>
@@ -151,7 +157,7 @@
     
 
     <div class="code">
-        <div class="highlight" ><pre># index.html
+        <div class="highlight" ><pre><span class="cp">## index.html</span>
 <span class="cp">&lt;%</span><span class="nb">namespace</span> <span class="na">name=</span><span class="s">&quot;comp&quot;</span> <span class="na">file=</span><span class="s">&quot;components.html&quot;</span><span class="cp">/&gt;</span>
 
 Heres comp1:  <span class="cp">${</span><span class="n">comp</span><span class="o">.</span><span class="n">comp1</span><span class="p">()</span><span class="cp">}</span>
@@ -257,14 +263,14 @@ Heres comp2:  <span class="cp">${</span><span class="n">comp2</span><span class=
     
 
     <div class="code">
-        <div class="highlight" ><pre># define a namespace
+        <div class="highlight" ><pre><span class="cp">## define a namespace</span>
 <span class="cp">&lt;%</span><span class="nb">namespace</span> <span class="na">name=</span><span class="s">&quot;stuff&quot;</span><span class="cp">&gt;</span>
     <span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;comp1()&quot;</span><span class="cp">&gt;</span>
         comp1
     <span class="cp">&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span>
 <span class="cp">&lt;/%</span><span class="nb">namespace</span><span class="cp">&gt;</span>
 
-# then call it
+<span class="cp">## then call it</span>
 <span class="cp">${</span><span class="n">stuff</span><span class="o">.</span><span class="n">comp1</span><span class="p">()</span><span class="cp">}</span>
 </pre></div>
 
@@ -428,8 +434,49 @@ Heres comp2:  <span class="cp">${</span><span class="n">comp2</span><span class=
 
 
 
+    </div>
+
+
+
+
+            <a href="#top">back to section top</a>
+    </div>
+
+
+
+    
+    <A name="namespaces_inheritable"></a>
+    
+    <div class="subsection">
+    
+
+    <h3>Inheritable Namespaces</h3>
+    
+    
+
+<p>The <code>&lt;%namespace&gt;</code> tag includes an optional attribute <code>inheritable=&quot;True&quot;</code>, which will cause the namespace to be attached to the <code>self</code> namespace.  Since <code>self</code> is globally available throughout an inheritance chain (described in the next section), all the templates in an inheritance chain can get at the namespace imported in a super-template via <code>self</code>.
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight" ><pre><span class="cp">## base.html</span>
+<span class="cp">&lt;%</span><span class="nb">namespace</span> <span class="na">name=</span><span class="s">&quot;foo&quot;</span> <span class="na">file=</span><span class="s">&quot;foo.html&quot;</span> <span class="na">inheritable=</span><span class="s">&quot;True&quot;</span><span class="cp">/&gt;</span>
+
+<span class="cp">${</span><span class="n">next</span><span class="o">.</span><span class="n">body</span><span class="p">()</span><span class="cp">}</span>
+
+<span class="cp">## somefile.html</span>
+<span class="cp">&lt;%</span><span class="nb">inherit</span> <span class="na">file=</span><span class="s">&quot;base.html&quot;</span><span class="cp">/&gt;</span>
+
+<span class="cp">${</span><span class="bp">self</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span><span class="cp">}</span>
+</pre></div>
 
     </div>
+<p>This allows a super-template to load a whole bunch of namespaces that its inheriting templates can get to, without them having to explicitly load those namespaces themselves.
+</p>
+<p>The <code>import=&quot;*&quot;</code> part of the <code>&lt;%namespace&gt;</code> tag doesn't yet interact with the <code>inheritable</code> flag, so currently you have to use the explicit namespace name off of <code>self</code>, followed by the desired function name.  But more on this in a future release.
+</p>
 
 
 

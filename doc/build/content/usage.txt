@@ -99,13 +99,13 @@ Another important flag on `TemplateLookup` is `filesystem_checks`.  This default
 
 ### Using Unicode and Encoding
 
-Both `Template` and `TemplateLookup` accept an `output_encoding` parameter which can be used to encode the output in any Python supported codec:
+Both `Template` and `TemplateLookup` accept `output_encoding` and `encoding_errors` parameters which can be used to encode the output in any Python supported codec:
 
     {python}
     from mako.template import Template
     from mako.lookup import TemplateLookup
     
-    mylookup = TemplateLookup(directories=['/docs'], output_encoding='utf-8')
+    mylookup = TemplateLookup(directories=['/docs'], output_encoding='utf-8', encoding_errors='replace')
     
     mytemplate = mylookup.get_template("foo.txt")
     print mytemplate.render()
@@ -118,7 +118,7 @@ Additionally, the `render_unicode()` method exists which will return the templat
 The above method disgards the output encoding keyword argument; you can encode yourself by saying:
 
     {python}
-    print mytemplate.render_unicode().encode('utf-8')
+    print mytemplate.render_unicode().encode('utf-8', 'replace')
     
 Note that Mako's ability to return data in any encoding and/or `unicode` implies that the underlying output stream of the template is a Python unicode object.  This behavior is described fully in [unicode](rel:unicode).
 
@@ -147,6 +147,12 @@ Or for the HTML render function:
         print template.render()
     except:
         print exceptions.html_error_template().render()
+
+The `html_error_template` template accepts two options: specifying `full=False` causes only a section of an HTML document to be rendered. Specifying `css=False` will disable the default stylesheet from being rendered.
+
+E.g.:
+
+        print exceptions.html_error_template().render(full=False)
 
 The HTML render function is also available built-in to `Template` using the `format_exceptions` flag.  In this case, any exceptions raised within the **render** stage of the template will result in the output being substituted with the output of `html_error_template`.
 
