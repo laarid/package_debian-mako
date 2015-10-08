@@ -1,5 +1,5 @@
 # codegen.py
-# Copyright (C) 2006, 2007 Michael Bayer mike_mp@zzzcomputing.com
+# Copyright (C) 2006, 2007, 2008 Michael Bayer mike_mp@zzzcomputing.com
 #
 # This module is part of Mako and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
@@ -14,21 +14,24 @@ from mako import util, ast, parsetree, filters
 MAGIC_NUMBER = 2
 
 
-def compile(node, uri, filename=None, default_filters=None, buffer_filters=None, imports=None, source_encoding=None):
+def compile(node, uri, filename=None, default_filters=None, buffer_filters=None, imports=None, source_encoding=None, generate_unicode=True):
     """generate module source code given a parsetree node, uri, and optional source filename"""
-    buf = util.FastEncodingBuffer()
+
+    buf = util.FastEncodingBuffer(unicode=generate_unicode)
+
     printer = PythonPrinter(buf)
-    _GenerateRenderMethod(printer, _CompileContext(uri, filename, default_filters, buffer_filters, imports, source_encoding), node)
+    _GenerateRenderMethod(printer, _CompileContext(uri, filename, default_filters, buffer_filters, imports, source_encoding, generate_unicode), node)
     return buf.getvalue()
 
 class _CompileContext(object):
-    def __init__(self, uri, filename, default_filters, buffer_filters, imports, source_encoding):
+    def __init__(self, uri, filename, default_filters, buffer_filters, imports, source_encoding, generate_unicode):
         self.uri = uri
         self.filename = filename
         self.default_filters = default_filters
         self.buffer_filters = buffer_filters
         self.imports = imports
         self.source_encoding = source_encoding
+        self.generate_unicode = generate_unicode
         
 class _GenerateRenderMethod(object):
     """a template visitor object which generates the full module source for a template."""
@@ -110,8 +113,13 @@ class _GenerateRenderMethod(object):
         module_identifiers.declared = module_ident
         
         # module-level names, python code
+        if not self.compiler.generate_unicode and self.compiler.source_encoding:
+            self.printer.writeline("# -*- encoding:%s -*-" % self.compiler.source_encoding)
+            
         self.printer.writeline("from mako import runtime, filters, cache")
         self.printer.writeline("UNDEFINED = runtime.UNDEFINED")
+        self.printer.writeline("__M_dict_builtin = dict")
+        self.printer.writeline("__M_locals_builtin = locals")
         self.printer.writeline("_magic_number = %s" % repr(MAGIC_NUMBER))
         self.printer.writeline("_modified_time = %s" % repr(time.time()))
         self.printer.writeline("_template_filename=%s" % repr(self.compiler.filename))
@@ -154,18 +162,18 @@ class _GenerateRenderMethod(object):
         this could be the main render() method or that of a top-level def."""
         self.printer.writelines(
             "def %s(%s):" % (name, ','.join(args)),
-                "context.caller_stack.push_frame()",
+                "context.caller_stack._push_frame()",
                 "try:"
         )
         if buffered or filtered or cached:
-            self.printer.writeline("context.push_buffer()")
-
+            self.printer.writeline("context._push_buffer()")
+        
         self.identifier_stack.append(self.compiler.identifiers.branch(self.node))
         if not self.in_def and '**pageargs' in args:
             self.identifier_stack[-1].argument_declared.add('pageargs')
 
         if not self.in_def and (len(self.identifiers.locally_assigned) > 0 or len(self.identifiers.argument_declared)>0):
-            self.printer.writeline("__M_locals = dict(%s)" % ','.join(["%s=%s" % (x, x) for x in self.identifiers.argument_declared]))
+            self.printer.writeline("__M_locals = __M_dict_builtin(%s)" % ','.join(["%s=%s" % (x, x) for x in self.identifiers.argument_declared]))
 
         self.write_variable_declares(self.identifiers, toplevel=True)
 
@@ -176,8 +184,8 @@ class _GenerateRenderMethod(object):
         self.printer.writeline(None)
         self.printer.write("\n\n")
         if cached:
-            self.write_cache_decorator(node, name, buffered, self.identifiers)
-        
+            self.write_cache_decorator(node, name, args, buffered, self.identifiers, toplevel=True)
+            
     def write_module_code(self, module_code):
         """write module-level template code, i.e. that which is enclosed in <%! %> tags
         in the template."""
@@ -293,6 +301,8 @@ class _GenerateRenderMethod(object):
                 else:
                     self.printer.writeline("%s = context.get(%s, UNDEFINED)" % (ident, repr(ident)))
         
+        self.printer.writeline("__M_writer = context.writer()")
+        
     def write_source_comment(self, node):
         """write a source comment containing the line number of the corresponding template line."""
         if self.last_source_line != node.lineno:
@@ -320,12 +330,12 @@ class _GenerateRenderMethod(object):
         buffered = eval(node.attributes.get('buffered', 'False'))
         cached = eval(node.attributes.get('cached', 'False'))
         self.printer.writelines(
-            "context.caller_stack.push_frame()",
+            "context.caller_stack._push_frame()",
             "try:"
             )
         if buffered or filtered or cached:
             self.printer.writelines(
-                "context.push_buffer()",
+                "context._push_buffer()",
                 )
 
         identifiers = identifiers.branch(node, nested=nested)
@@ -340,8 +350,8 @@ class _GenerateRenderMethod(object):
         self.write_def_finish(node, buffered, filtered, cached)
         self.printer.writeline(None)
         if cached:
-            self.write_cache_decorator(node, node.name, False, identifiers, inline=True)
-        
+            self.write_cache_decorator(node, node.name, namedecls, False, identifiers, inline=True, toplevel=False)
+            
     def write_def_finish(self, node, buffered, filtered, cached, callstack=True):
         """write the end section of a rendering function, either outermost or inline.
         
@@ -353,16 +363,16 @@ class _GenerateRenderMethod(object):
             if callstack:
                 self.printer.writelines(
                     "finally:",
-                        "context.caller_stack.pop_frame()",
+                        "context.caller_stack._pop_frame()",
                     None
                 )
         if buffered or filtered or cached:
             self.printer.writelines(
                 "finally:",
-                    "__M_buf = context.pop_buffer()"
+                    "__M_buf, __M_writer = context._pop_buffer_and_writer()"
             )
             if callstack:
-                self.printer.writeline("context.caller_stack.pop_frame()")
+                self.printer.writeline("context.caller_stack._pop_frame()")
             s = "__M_buf.getvalue()"
             if filtered:
                 s = self.create_filter_callable(node.filter_args.args, s, False)
@@ -373,11 +383,11 @@ class _GenerateRenderMethod(object):
                 self.printer.writeline("return %s" % s)
             else:
                 self.printer.writelines(
-                    "context.write(%s)" % s,
+                    "__M_writer(%s)" % s,
                     "return ''"
                 )
 
-    def write_cache_decorator(self, node_or_pagetag, name, buffered, identifiers, inline=False):
+    def write_cache_decorator(self, node_or_pagetag, name, args, buffered, identifiers, inline=False, toplevel=False):
         """write a post-function decorator to replace a rendering callable with a cached version of itself."""
         self.printer.writeline("__M_%s = %s" % (name, name))
         cachekey = node_or_pagetag.parsed_attributes.get('cache_key', repr(name))
@@ -398,22 +408,20 @@ class _GenerateRenderMethod(object):
                         else:
                             cacheargs[arg[1]] = val
         
-        if inline:
-            ctx_arg = ""
-        else:
-            ctx_arg = "context, "
-            
-        self.printer.writeline("def %s(%s*args, **kwargs):" % (name, ctx_arg))
+        self.printer.writeline("def %s(%s):" % (name, ','.join(args)))
+        
+        # form "arg1, arg2, arg3=arg3, arg4=arg4", etc.
+        pass_args = [ '=' in a and "%s=%s" % ((a.split('=')[0],)*2) or a for a in args]
 
-        self.write_variable_declares(identifiers, limit=node_or_pagetag.undeclared_identifiers())
+        self.write_variable_declares(identifiers, toplevel=toplevel, limit=node_or_pagetag.undeclared_identifiers())
         if buffered:
-            s = "context.get('local').get_cached(%s, %screatefunc=lambda:__M_%s(%s*args, **kwargs))" % (cachekey, ''.join(["%s=%s, " % (k,v) for k, v in cacheargs.iteritems()]), name, ctx_arg)
+            s = "context.get('local').get_cached(%s, %screatefunc=lambda:__M_%s(%s))" % (cachekey, ''.join(["%s=%s, " % (k,v) for k, v in cacheargs.iteritems()]), name, ','.join(pass_args))
             # apply buffer_filters
             s = self.create_filter_callable(self.compiler.buffer_filters, s, False)
             self.printer.writelines("return " + s,None)
         else:
             self.printer.writelines(
-                    "context.write(context.get('local').get_cached(%s, %screatefunc=lambda:__M_%s(%s*args, **kwargs)))" % (cachekey, ''.join(["%s=%s, " % (k,v) for k, v in cacheargs.iteritems()]), name, ctx_arg),
+                    "__M_writer(context.get('local').get_cached(%s, %screatefunc=lambda:__M_%s(%s)))" % (cachekey, ''.join(["%s=%s, " % (k,v) for k, v in cacheargs.iteritems()]), name, ','.join(pass_args)),
                     "return ''",
                 None
             )
@@ -424,8 +432,6 @@ class _GenerateRenderMethod(object):
         def locate_encode(name):
             if re.match(r'decode\..+', name):
                 return "filters." + name
-            elif name == 'unicode':
-                return 'unicode'
             else:
                 return filters.DEFAULT_ESCAPES.get(name, name)
         
@@ -455,9 +461,9 @@ class _GenerateRenderMethod(object):
         self.write_source_comment(node)
         if len(node.escapes) or (self.compiler.pagetag is not None and len(self.compiler.pagetag.filter_args.args)) or len(self.compiler.default_filters):
             s = self.create_filter_callable(node.escapes_code.args, "%s" % node.text, True)
-            self.printer.writeline("context.write(%s)" % s)
+            self.printer.writeline("__M_writer(%s)" % s)
         else:
-            self.printer.writeline("context.write(%s)" % node.text)
+            self.printer.writeline("__M_writer(%s)" % node.text)
             
     def visitControlLine(self, node):
         if node.isend:
@@ -467,12 +473,12 @@ class _GenerateRenderMethod(object):
             self.printer.writeline(node.text)
     def visitText(self, node):
         self.write_source_comment(node)
-        self.printer.writeline("context.write(%s)" % repr(node.content))
+        self.printer.writeline("__M_writer(%s)" % repr(node.content))
     def visitTextTag(self, node):
         filtered = len(node.filter_args.args) > 0
         if filtered:
             self.printer.writelines(
-                "context.push_buffer()",
+                "__M_writer = context._push_writer()",
                 "try:",
             )
         for n in node.nodes:
@@ -480,8 +486,8 @@ class _GenerateRenderMethod(object):
         if filtered:
             self.printer.writelines(
                 "finally:",
-                "__M_buf = context.pop_buffer()",
-                "context.write(%s)" % self.create_filter_callable(node.filter_args.args, "__M_buf.getvalue()", False),
+                "__M_buf, __M_writer = context._pop_buffer_and_writer()",
+                "__M_writer(%s)" % self.create_filter_callable(node.filter_args.args, "__M_buf.getvalue()", False),
                 None
                 )
         
@@ -493,7 +499,7 @@ class _GenerateRenderMethod(object):
             if not self.in_def and len(self.identifiers.locally_assigned) > 0:
                 # if we are the "template" def, fudge locally declared/modified variables into the "__M_locals" dictionary,
                 # which is used for def calls within the same template, to simulate "enclosing scope"
-                self.printer.writeline('__M_locals.update(dict([(__M_key, locals()[__M_key]) for __M_key in [%s] if __M_key in locals()]))' % ','.join([repr(x) for x in node.declared_identifiers()]))
+                self.printer.writeline('__M_locals.update(__M_dict_builtin([(__M_key, __M_locals_builtin()[__M_key]) for __M_key in [%s] if __M_key in __M_locals_builtin()]))' % ','.join([repr(x) for x in node.declared_identifiers()]))
                 
     def visitIncludeTag(self, node):
         self.write_source_comment(node)
@@ -539,11 +545,12 @@ class _GenerateRenderMethod(object):
         buffered = False
         if buffered:
             self.printer.writelines(
-                "context.push_buffer()",
+                "context._push_buffer()",
                 "try:"
             )
         self.write_variable_declares(body_identifiers)
         self.identifier_stack.append(body_identifiers)
+        
         for n in node.nodes:
             n.accept_visitor(self)
         self.identifier_stack.pop()
@@ -563,7 +570,7 @@ class _GenerateRenderMethod(object):
             "try:")
         self.write_source_comment(node)
         self.printer.writelines(
-                "context.write(unicode(%s))" % node.attributes['expr'],
+                "__M_writer(%s)" % self.create_filter_callable([], node.attributes['expr'], True),
             "finally:",
                 "context.caller_stack.nextcaller = None",
             None

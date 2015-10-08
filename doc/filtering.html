@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.1.10   Last Updated: 12/27/07 00:53:49</div>
+<div class="versionheader">Version: 0.2.0   Last Updated: 06/03/08 15:05:59</div>
 
 
 
@@ -254,7 +254,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
 
 <p><strong>New in version 0.1.2</strong>
 </p>
-<p>In addition to the <code>expression_filter</code> argument, the <code>default_filters</code> argument to both <code>Template</code> and <code>TemplateLookup</code> can specify filtering for all expression tags at the programmatic level.  This array-based argument defaults to <code>[&quot;unicode&quot;]</code>:
+<p>In addition to the <code>expression_filter</code> argument, the <code>default_filters</code> argument to both <code>Template</code> and <code>TemplateLookup</code> can specify filtering for all expression tags at the programmatic level.  This array-based argument, when given its default argument of <code>None</code>, will be internally set to <code>[&quot;unicode&quot;]</code>, except when <code>disable_unicode=True</code> is set in which case it defaults to <code>[&quot;str&quot;]</code>:
 </p>
 
     
@@ -273,6 +273,17 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
 
     <div class="code">
         <div class="highlight"><pre><span class="n">t</span> <span class="o">=</span> <span class="n">TemplateLookup</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;/tmp&#39;</span><span class="p">],</span> <span class="n">default_filters</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;decode.utf8&#39;</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+<p>To disable <code>default_filters</code> entirely, set it to an empty list:
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight"><pre><span class="n">t</span> <span class="o">=</span> <span class="n">TemplateLookup</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;/tmp&#39;</span><span class="p">],</span> <span class="n">default_filters</span><span class="o">=</span><span class="p">[])</span>
 </pre></div>
 
     </div>

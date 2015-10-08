@@ -316,6 +316,60 @@ class NamespaceTest(unittest.TestCase):
         """)
 
         assert result_lines(collection.get_template("front.html").render()) == ['lib.bar', 'base.foo', 'lib.foo', 'base.bat', 'base.bat']
+
+    def test_attr(self):
+        l = lookup.TemplateLookup()
+
+        l.put_string("foo.html", """
+        <%!
+            foofoo = "foo foo"
+            onlyfoo = "only foo"
+        %>
+        <%inherit file="base.html"/>
+        <%def name="setup()">
+            <%
+            self.attr.foolala = "foo lala"
+            %>
+        </%def>
+        ${self.attr.basefoo}
+        ${self.attr.foofoo}
+        ${self.attr.onlyfoo}
+        ${self.attr.lala}
+        ${self.attr.foolala}
+        """)
+
+        l.put_string("base.html", """
+        <%!
+            basefoo = "base foo 1"
+            foofoo = "base foo 2"
+        %>
+        <%
+            self.attr.lala = "base lala"
+        %>
+        
+        ${self.attr.basefoo}
+        ${self.attr.foofoo}
+        ${self.attr.onlyfoo}
+        ${self.attr.lala}
+        ${self.setup()}
+        ${self.attr.foolala}
+        body
+        ${self.body()}
+        """)
+
+        assert result_lines(l.get_template("foo.html").render()) == [
+            "base foo 1",
+            "foo foo",
+            "only foo",
+            "base lala",
+            "foo lala",
+            "body",
+            "base foo 1",
+            "foo foo",
+            "only foo",
+            "base lala",
+            "foo lala",
+        ]
         
     def test_ccall(self):
         collection = lookup.TemplateLookup()
