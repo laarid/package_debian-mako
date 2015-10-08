@@ -6,8 +6,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         
         <title>
-    Filtering and Buffering
- &mdash; Mako 0.4.0 Documentation</title>
+                        Filtering and Buffering
+                     &mdash; Mako 0.4.1 Documentation</title>
         
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/docs.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
           URL_ROOT:    '#',
-          VERSION:     '0.4.0',
+          VERSION:     '0.4.1',
           COLLAPSE_MODINDEX: false,
           FILE_SUFFIX: '.html'
       };
@@ -26,9 +26,11 @@
     <script type="text/javascript" src="_static/init.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="Mako 0.4.0 Documentation" href="index.html" />
+    <link rel="top" title="Mako 0.4.1 Documentation" href="index.html" />
         <link rel="next" title="The Unicode Chapter" href="unicode.html" />
         <link rel="prev" title="Inheritance" href="inheritance.html" />
+
+    
     
 
     </head>
@@ -37,8 +39,7 @@
 
 
 
-
-        <h1>Mako 0.4.0 Documentation</h1>
+        <h1>Mako 0.4.1 Documentation</h1>
 
         <div id="search">
         Search:
@@ -50,7 +51,7 @@
         </div>
 
         <div class="versionheader">
-            Version: <span class="versionnum">0.4.0</span> Last Updated: 02/21/2011 12:13:43
+            Version: <span class="versionnum">0.4.1</span> Last Updated: 04/06/2011 19:09:35
         </div>
         <div class="clearboth"></div>
 
@@ -64,9 +65,9 @@
             <div class="navbanner">
                 <a class="totoc" href="index.html">Table of Contents</a>
                 » 
-    Filtering and Buffering
- 
- 
+                        Filtering and Buffering
+                     
+
                 
 <div class="prevnext">
         Previous:
@@ -77,8 +78,8 @@
 
                 <h2>
                     
-    Filtering and Buffering
- 
+                        Filtering and Buffering
+                    
                 </h2>
             </div>
                 <ul>
@@ -88,7 +89,7 @@
 <li><a class="reference internal" href="#turning-off-filtering-with-the-n-filter">Turning off Filtering with the &#8220;n&#8221; filter</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#filtering-defs">Filtering Defs</a></li>
+<li><a class="reference internal" href="#filtering-defs-and-blocks">Filtering Defs and Blocks</a></li>
 <li><a class="reference internal" href="#buffering">Buffering</a></li>
 <li><a class="reference internal" href="#decorating">Decorating</a></li>
 </ul>
@@ -232,9 +233,9 @@ expression, will <strong>disable</strong> all filters declared in the
 <p>will render <tt class="docutils literal"><span class="pre">myexpression</span></tt> using the <tt class="docutils literal"><span class="pre">trim</span></tt> filter only.</p>
 </div>
 </div>
-<div class="section" id="filtering-defs">
-<h2>Filtering Defs<a class="headerlink" href="#filtering-defs" title="Permalink to this headline">¶</a></h2>
-<p>The <tt class="docutils literal"><span class="pre">%def</span></tt> tag has a filter argument which will apply the
+<div class="section" id="filtering-defs-and-blocks">
+<h2>Filtering Defs and Blocks<a class="headerlink" href="#filtering-defs-and-blocks" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="docutils literal"><span class="pre">%def</span></tt> and <tt class="docutils literal"><span class="pre">%block</span></tt> tags have an argument called <tt class="docutils literal"><span class="pre">filter</span></tt> which will apply the
 given list of filter functions to the output of the <tt class="docutils literal"><span class="pre">%def</span></tt>:</p>
 <div class="highlight-mako"><div class="highlight"><pre><span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;foo()&quot;</span> <span class="na">filter=</span><span class="s">&quot;h, trim&quot;</span><span class="cp">&gt;</span><span class="x"></span>
 <span class="x">    &lt;b&gt;this is bold&lt;/b&gt;</span>
@@ -373,7 +374,7 @@ as just <tt class="docutils literal"><span class="pre">runtime</span></tt>):</p>
 </pre></div>
 </div>
 <p>The decorator can be used with top-level defs as well as nested
-defs. Note that when calling a top-level def from the
+defs, and blocks too. Note that when calling a top-level def from the
 <tt class="docutils literal"><span class="pre">Template</span></tt> api, i.e. <tt class="docutils literal"><span class="pre">template.get_def('somedef').render()</span></tt>,
 the decorator has to write the output to the <tt class="docutils literal"><span class="pre">context</span></tt>, i.e.
 as in the first example. The return value gets discarded.</p>
@@ -383,7 +384,6 @@ as in the first example. The return value gets discarded.</p>
             </div>
         </div>
 
-        
         
             <div class="bottomnav">
                 
@@ -400,7 +400,6 @@ as in the first example. The return value gets discarded.</p>
                 </div>
             </div>
         
-
 
 
 

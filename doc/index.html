@@ -6,8 +6,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         
         <title>
-    Table of Contents
- &mdash; Mako 0.4.0 Documentation</title>
+                        Table of Contents
+                     &mdash; Mako 0.4.1 Documentation</title>
         
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/docs.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
           URL_ROOT:    '#',
-          VERSION:     '0.4.0',
+          VERSION:     '0.4.1',
           COLLAPSE_MODINDEX: false,
           FILE_SUFFIX: '.html'
       };
@@ -26,8 +26,10 @@
     <script type="text/javascript" src="_static/init.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="Mako 0.4.0 Documentation" href="#" />
+    <link rel="top" title="Mako 0.4.1 Documentation" href="#" />
         <link rel="next" title="Usage" href="usage.html" />
+
+    
     
 
     </head>
@@ -36,8 +38,7 @@
 
 
 
-
-        <h1>Mako 0.4.0 Documentation</h1>
+        <h1>Mako 0.4.1 Documentation</h1>
 
         <div id="search">
         Search:
@@ -49,7 +50,7 @@
         </div>
 
         <div class="versionheader">
-            Version: <span class="versionnum">0.4.0</span> Last Updated: 02/21/2011 12:13:43
+            Version: <span class="versionnum">0.4.1</span> Last Updated: 04/06/2011 19:09:35
         </div>
         <div class="clearboth"></div>
 
@@ -62,7 +63,7 @@
  
             <div class="navbanner">
                 <a class="totoc" href="#">Table of Contents</a>
- 
+
                 
 <div class="prevnext">
         Next:
@@ -71,8 +72,8 @@
 
                 <h2>
                     
-    Table of Contents
- 
+                        Table of Contents
+                    
                 </h2>
             </div>
             <div class="clearboth"></div>
@@ -107,11 +108,9 @@
 <li class="toctree-l2"><a class="reference internal" href="syntax.html#returning-early-from-a-template">Returning early from a template</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="defs.html">Defs</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="defs.html#calling-defs-from-other-files">Calling defs from Other Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="defs.html#calling-defs-programmatically">Calling defs programmatically</a></li>
-<li class="toctree-l2"><a class="reference internal" href="defs.html#defs-within-defs">Defs within Defs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="defs.html#calling-a-def-with-embedded-content-and-or-other-defs">Calling a def with embedded content and/or other defs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="defs.html">Defs and Blocks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="defs.html#using-defs">Using Defs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="defs.html#using-blocks">Using Blocks</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="runtime.html">The Mako Runtime Environment</a><ul>
@@ -131,6 +130,9 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="inheritance.html">Inheritance</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="inheritance.html#nesting-blocks">Nesting Blocks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inheritance.html#rendering-a-named-block-multiple-times">Rendering a named block multiple times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inheritance.html#but-what-about-defs">But what about defs ?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inheritance.html#using-the-next-namespace-to-produce-content-wrapping">Using the &#8220;next&#8221; namespace to produce content wrapping</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inheritance.html#using-the-parent-namespace-to-augment-defs">Using the &#8220;parent&#8221; namespace to augment defs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inheritance.html#inheritable-attributes">Inheritable Attributes</a></li>
@@ -138,7 +140,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="filtering.html">Filtering and Buffering</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="filtering.html#expression-filtering">Expression Filtering</a></li>
-<li class="toctree-l2"><a class="reference internal" href="filtering.html#filtering-defs">Filtering Defs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filtering.html#filtering-defs-and-blocks">Filtering Defs and Blocks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="filtering.html#buffering">Buffering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="filtering.html#decorating">Decorating</a></li>
 </ul>
@@ -171,7 +173,6 @@
         </div>
 
         
-        
             <div class="bottomnav">
                 
 <div class="prevnext">
@@ -185,7 +186,6 @@
                 </div>
             </div>
         
-
 
 
 
