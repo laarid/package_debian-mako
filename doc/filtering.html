@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.1.8   Last Updated: 06/25/07 21:16:32</div>
+<div class="versionheader">Version: 0.1.9   Last Updated: 09/25/07 16:19:18</div>
 
 
 
@@ -63,6 +63,12 @@
             
     <ul>
         <li><A style="" href="filtering.html#filtering_expression_defaultfilters">The default_filters Argument</a></li>
+        
+            
+    <ul>
+    </ul>
+
+        <li><A style="" href="filtering.html#filtering_expression_turning">Turning off Filtering with the "n" filter</a></li>
         
             
     <ul>
@@ -161,6 +167,10 @@
  <li>
      <code>decode.&lt;some encoding&gt;</code> : decode input into a Python unicode with the specified encoding
  </li>
+
+ <li>
+     <code>n</code> : disable all default filtering; only filters specified in the local expression tag will be applied.
+ </li>
 </ul>
 <p>To apply more than one filter, separate them by a comma:
 </p>
@@ -244,7 +254,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
 
 <p><strong>New in version 0.1.2</strong>
 </p>
-<p>In addition to the <code>expression_filter</code> argument, the <code>default_filters</code> argument to both <code>Template</code> and <code>TemplateLookup</code> can specify filtering at the programmatic level.  This array-based argument defaults to <code>[&quot;unicode&quot;]</code>:
+<p>In addition to the <code>expression_filter</code> argument, the <code>default_filters</code> argument to both <code>Template</code> and <code>TemplateLookup</code> can specify filtering for all expression tags at the programmatic level.  This array-based argument defaults to <code>[&quot;unicode&quot;]</code>:
 </p>
 
     
@@ -305,6 +315,48 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
 </pre></div>
 
     </div>
+
+
+
+            <a href="#top">back to section top</a>
+    </div>
+
+
+
+    
+    <A name="filtering_expression_turning"></a>
+    
+    <div class="subsection">
+    
+
+    <h3>Turning off Filtering with the "n" filter</h3>
+    
+    
+
+<p>In all cases the special <code>n</code> filter, used locally within an expression, will <strong>disable</strong> all filters declared in the <code>&lt;%page&gt;</code> tag as well <code>default_filters</code>.  Such as:
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight" ><pre><span class="cp">${</span><span class="s">&#39;myexpression&#39;</span> <span class="o">|</span> <span class="n">n</span><span class="cp">}</span>
+</pre></div>
+
+    </div>
+<p>Will render <code>myexpression</code> with no filtering of any kind, and
+</p>
+
+    
+    
+
+    <div class="code">
+        <div class="highlight" ><pre><span class="cp">${</span><span class="s">&#39;myexpression&#39;</span> <span class="o">|</span> <span class="n">n</span><span class="p">,</span> <span class="n">trim</span><span class="cp">}</span>
+</pre></div>
+
+    </div>
+<p>will render <code>myexpression</code> using the <code>trim</code> filter only.  <br></br>
+</p>
 
 
 
