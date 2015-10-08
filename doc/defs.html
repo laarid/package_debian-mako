@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.3.3   Last Updated: 05/31/10 16:21:29</div>
+<div class="versionheader">Version: 0.3.4   Last Updated: 06/22/10 17:39:23</div>
 
 
 
@@ -208,7 +208,7 @@
     
 
     <div class="code">
-        <div class="highlight"><pre><span class="cp">${</span><span class="n">mystuff</span><span class="o">.</span><span class="n">somedef</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">5</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mf">7</span><span class="p">)</span><span class="cp">}</span>
+        <div class="highlight"><pre><span class="cp">${</span><span class="n">mystuff</span><span class="o">.</span><span class="n">somedef</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span><span class="cp">}</span>
 </pre></div>
 
     </div>
@@ -310,11 +310,11 @@
 
     <div class="code">
         <div class="highlight"><pre><span class="cp">&lt;%</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="mf">12</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="mi">12</span>
 <span class="cp">%&gt;</span>
 <span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;outer()&quot;</span><span class="cp">&gt;</span>
     <span class="cp">&lt;%</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="mf">15</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="mi">15</span>
     <span class="cp">%&gt;</span>
     <span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;inner()&quot;</span><span class="cp">&gt;</span>
         inner, x is <span class="cp">${</span><span class="n">x</span><span class="cp">}</span>, y is <span class="cp">${</span><span class="n">y</span><span class="cp">}</span>
@@ -333,13 +333,13 @@
 
     <div class="code">
         <div class="highlight"><pre><span class="cp">&lt;%</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="mf">10</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="cp">%&gt;</span>
 <span class="cp">&lt;%</span><span class="nb">def</span> <span class="na">name=</span><span class="s">&quot;somedef()&quot;</span><span class="cp">&gt;</span>
     <span class="cp">## error !</span>
     somedef, x is <span class="cp">${</span><span class="n">x</span><span class="cp">}</span>  
     <span class="cp">&lt;%</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="mf">27</span>  
+        <span class="n">x</span> <span class="o">=</span> <span class="mi">27</span>  
     <span class="cp">%&gt;</span>
 <span class="cp">&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span>
 </pre></div>
@@ -367,7 +367,7 @@
 
 <p>A flip-side to def within def is a def call with content.  This is where you call a def, and at the same time declare a block of content (or multiple blocks) that can be used by the def being called.  The main point of such a call is to create custom, nestable tags, just like any other template language's custom-tag creation system - where the external tag controls the execution of the nested tags and can communicate state to them.  Only with Mako, you don't have to use any external Python modules, you can define arbitrarily nestable tags right in your templates.
 </p>
-<p>To achieve this, the target def is invoked using the form <code>&lt;%namepacename:defname&gt;</code> instead of the normal <code>${}</code> syntax.  This syntax, introduced in Mako 0.2.3, is functionally equivalent another tag known as <code>call</code>, which takes the form <code>&lt;%call expr='namespacename.defname(args)'&gt;</code>.  While <code>%call</code> is available in all versions of Mako, the newer style is probably more familiar looking.  The <code>namespace</code> portion of the call is the name of the <strong>namespace</strong> in which the def is defined - in the most simple cases, this can be <code>local</code> or <code>self</code> to reference the current template's namespace (the difference between <code>local</code> and <code>self</code> is one of inheritance - see <a href="namespaces.html#namespaces_builtin">Built-in Namespaces</a> for details).
+<p>To achieve this, the target def is invoked using the form <code>&lt;%namepacename:defname&gt;</code> instead of the normal <code>${}</code> syntax.  This syntax, introduced in Mako 0.2.3, is functionally equivalent another tag known as <code>call</code>, which takes the form <code>&lt;%call expr=&#39;namespacename.defname(args)&#39;&gt;</code>.  While <code>%call</code> is available in all versions of Mako, the newer style is probably more familiar looking.  The <code>namespace</code> portion of the call is the name of the <strong>namespace</strong> in which the def is defined - in the most simple cases, this can be <code>local</code> or <code>self</code> to reference the current template's namespace (the difference between <code>local</code> and <code>self</code> is one of inheritance - see <a href="namespaces.html#namespaces_builtin">Built-in Namespaces</a> for details).
 </p>
 <p>When the target def is invoked, a variable <code>caller</code> is placed in its context which contains another namespace containing the body and other defs defined by the caller.  The body itself is referenced by the method <code>body()</code>.  Below, we build a <code>%def</code> that operates upon <code>caller.body()</code> to invoke the body of the custom tag:
 </p>

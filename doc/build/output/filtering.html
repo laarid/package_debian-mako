@@ -28,7 +28,7 @@
  </li>
 
  <li>
-     <code><%text filter='h'>h</%text></code> : HTML escaping, provided by <code><%text filter='h'>cgi.escape(string, True)</%text></code>
+     <code><%text filter='h'>h</%text></code> : HTML escaping, provided by <code><%text filter='h'>markupsafe.escape(string)</%text></code>  (new as of 0.3.4 - prior versions use <code><%text filter='h'>cgi.escape(string, True)</%text></code>)
  </li>
 
  <li>

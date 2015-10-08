@@ -120,12 +120,14 @@ test/templates/chs_unicode.html
 test/templates/chs_unicode_py3k.html
 test/templates/chs_utf8.html
 test/templates/crlf.html
+test/templates/gettext.mako
 test/templates/index.html
 test/templates/internationalization.html
 test/templates/modtest.html
 test/templates/read_unicode.html
 test/templates/read_unicode_py3k.html
 test/templates/runtimeerr.html
+test/templates/runtimeerr_py3k.html
 test/templates/unicode.html
 test/templates/unicode_arguments.html
 test/templates/unicode_arguments_py3k.html

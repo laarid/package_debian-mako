@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.3.3   Last Updated: 05/31/10 16:21:29</div>
+<div class="versionheader">Version: 0.3.4   Last Updated: 06/22/10 17:39:23</div>
 
 
 
@@ -224,7 +224,7 @@
     
 
     <div class="code">
-        <div class="highlight"><pre>pythagorean theorem:  <span class="cp">${</span><span class="nb">pow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mf">2</span><span class="p">)</span> <span class="o">+</span> <span class="nb">pow</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="mf">2</span><span class="p">)</span><span class="cp">}</span>
+        <div class="highlight"><pre>pythagorean theorem:  <span class="cp">${</span><span class="nb">pow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="nb">pow</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="cp">}</span>
 </pre></div>
 
     </div>
@@ -287,7 +287,7 @@
     
 
     <div class="code">
-        <div class="highlight"><pre><span class="cp">%</span> <span class="k">if</span> <span class="n">x</span><span class="o">==</span><span class="mf">5</span><span class="p">:</span>
+        <div class="highlight"><pre><span class="cp">%</span> <span class="k">if</span> <span class="n">x</span><span class="o">==</span><span class="mi">5</span><span class="p">:</span>
     this is some output
 <span class="cp">%</span><span class="k"> endif</span>
 </pre></div>
@@ -301,9 +301,9 @@
 
     <div class="code">
         <div class="highlight"><pre><span class="cp">%</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;one&#39;</span><span class="p">,</span> <span class="s">&#39;two&#39;</span><span class="p">,</span> <span class="s">&#39;three&#39;</span><span class="p">,</span> <span class="s">&#39;four&#39;</span><span class="p">,</span> <span class="s">&#39;five&#39;</span><span class="p">]:</span>
-    <span class="cp">%</span> <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;t&#39;</span><span class="p">:</span>
+    <span class="cp">%</span> <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;t&#39;</span><span class="p">:</span>
      its two or three
-    <span class="cp">%</span> <span class="k">elif</span> <span class="n">a</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;f&#39;</span><span class="p">:</span>
+    <span class="cp">%</span> <span class="k">elif</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;f&#39;</span><span class="p">:</span>
     four/five
     <span class="cp">%</span> <span class="k">else</span><span class="p">:</span>
     one
@@ -438,7 +438,7 @@ another line.
         <div class="highlight"><pre>this is a template
 <span class="cp">&lt;%</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_resource</span><span class="p">(</span><span class="s">&#39;foo&#39;</span><span class="p">)</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">z</span><span class="o">.</span><span class="n">element</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">x</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">frobnizzle</span><span class="o">==</span><span class="mf">5</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">z</span><span class="o">.</span><span class="n">element</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">x</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">frobnizzle</span><span class="o">==</span><span class="mi">5</span><span class="p">]</span>
 <span class="cp">%&gt;</span>
 <span class="cp">%</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">y</span><span class="p">:</span>
     element: <span class="cp">${</span><span class="n">elem</span><span class="cp">}</span>
@@ -641,7 +641,7 @@ another line.
     this is myfunc, x is <span class="cp">${</span><span class="n">x</span><span class="cp">}</span>
 <span class="cp">&lt;/%</span><span class="nb">def</span><span class="cp">&gt;</span>
 
-<span class="cp">${</span><span class="n">myfunc</span><span class="p">(</span><span class="mf">7</span><span class="p">)</span><span class="cp">}</span>
+<span class="cp">${</span><span class="n">myfunc</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span><span class="cp">}</span>
 </pre></div>
 
     </div>
