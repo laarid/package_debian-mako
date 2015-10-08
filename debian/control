@@ -14,8 +14,8 @@ Build-Depends-Indep: python-all, python-setuptools,
 Standards-Version: 3.9.6
 Homepage: http://www.makotemplates.org/
 X-Python-Version: >= 2.4
-Vcs-Svn: svn://anonscm.debian.org/python-modules/packages/mako/trunk/
-Vcs-Browser: http://anonscm.debian.org/viewvc/python-modules/packages/mako/trunk/
+Vcs-Git: git://anonscm.debian.org/python-modules/packages/mako.git
+Vcs-Browser: https://anonscm.debian.org/cgit/python-modules/packages/mako.git
 
 Package: python-mako
 Architecture: all
