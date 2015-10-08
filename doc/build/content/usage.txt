@@ -110,13 +110,15 @@ Both `Template` and `TemplateLookup` accept `output_encoding` and `encoding_erro
     
     mytemplate = mylookup.get_template("foo.txt")
     print mytemplate.render()
-    
-Additionally, the `render_unicode()` method exists which will return the template output as a Python `unicode` object:
+
+When using Python 3, the `render()` method will return a `bytes` object, **if** `output_encoding` is set.  Otherwise it returns a `string`.
+
+Additionally, the `render_unicode()` method exists which will return the template output as a Python `unicode` object, or in Python 3 a `string`:
 
     {python}
     print mytemplate.render_unicode()
     
-The above method disgards the output encoding keyword argument; you can encode yourself by saying:
+The above method disregards the output encoding keyword argument; you can encode yourself by saying:
 
     {python}
     print mytemplate.render_unicode().encode('utf-8', 'replace')

@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.2.5   Last Updated: 09/07/09 15:28:26</div>
+<div class="versionheader">Version: 0.3.0   Last Updated: 03/05/10 15:01:21</div>
 
 
 
@@ -167,7 +167,7 @@
  </li>
 
  <li>
-     <code>unicode</code> : produces a Python unicode string (this function is applied by default).
+     <code>unicode</code> (<code>str</code> on Python 3): produces a Python unicode string (this function is applied by default).
  </li>
 
  <li>
@@ -258,9 +258,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
     
     
 
-<p><strong>New in version 0.1.2</strong>
-</p>
-<p>In addition to the <code>expression_filter</code> argument, the <code>default_filters</code> argument to both <code>Template</code> and <code>TemplateLookup</code> can specify filtering for all expression tags at the programmatic level.  This array-based argument, when given its default argument of <code>None</code>, will be internally set to <code>[&quot;unicode&quot;]</code>, except when <code>disable_unicode=True</code> is set in which case it defaults to <code>[&quot;str&quot;]</code>:
+<p>In addition to the <code>expression_filter</code> argument, the <code>default_filters</code> argument to both <code>Template</code> and <code>TemplateLookup</code> can specify filtering for all expression tags at the programmatic level.  This array-based argument, when given its default argument of <code>None</code>, will be internally set to <code>[&quot;unicode&quot;]</code> (or <code>[&quot;str&quot;]</code> on Python 3), except when <code>disable_unicode=True</code> is set in which case it defaults to <code>[&quot;str&quot;]</code>:
 </p>
 
     
@@ -271,7 +269,7 @@ Escaped text:  <span class="cp">${</span><span class="s">&quot;&lt;html&gt;some 
 </pre></div>
 
     </div>
-<p>To replace the usual <code>unicode</code> function with a specific encoding, the <code>decode</code> filter can be substituted:
+<p>To replace the usual <code>unicode</code>/<code>str</code> function with a specific encoding, the <code>decode</code> filter can be substituted:
 </p>
 
     

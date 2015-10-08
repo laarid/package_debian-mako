@@ -1,8 +1,15 @@
 from setuptools import setup, find_packages
 import os
 import re
+import sys
 
-v = file(os.path.join(os.path.dirname(__file__), 'lib', 'mako', '__init__.py'))
+extra = {}
+if sys.version_info >= (3, 0):
+    extra.update(
+        use_2to3=True,
+    )
+
+v = open(os.path.join(os.path.dirname(__file__), 'mako', '__init__.py'))
 VERSION = re.compile(r".*__version__ = '(.*?)'", re.S).match(v.read()).group(1)
 v.close()
 
@@ -25,10 +32,11 @@ SVN version:
 
 """,
       classifiers=[
-      'Development Status :: 4 - Beta',
+      'Development Status :: 5 - Production/Stable',
       'Environment :: Web Environment',
       'Intended Audience :: Developers',
       'Programming Language :: Python',
+      'Programming Language :: Python :: 3',
       'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
       ],
       keywords='wsgi myghty mako',
@@ -36,9 +44,10 @@ SVN version:
       author_email='mike@zzzcomputing.com',
       url='http://www.makotemplates.org/',
       license='MIT',
-      package_dir={'':'lib'},
-      packages=find_packages('lib', exclude=['ez_setup', 'examples', 'tests']),
+      packages=find_packages('.', exclude=['ez_setup', 'examples', 'tests']),
       scripts=['scripts/mako-render'],
+      tests_require = ['nose >= 0.11'],
+      test_suite = "nose.collector",
       zip_safe=False,
       install_requires=[
           'Beaker>=1.1',

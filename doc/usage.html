@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.2.5   Last Updated: 09/07/09 15:28:26</div>
+<div class="versionheader">Version: 0.3.0   Last Updated: 03/05/10 15:01:21</div>
 
 
 
@@ -383,7 +383,9 @@
 </pre></div>
 
     </div>
-<p>Additionally, the <code>render_unicode()</code> method exists which will return the template output as a Python <code>unicode</code> object:
+<p>When using Python 3, the <code>render()</code> method will return a <code>bytes</code> object, <strong>if</strong> <code>output_encoding</code> is set.  Otherwise it returns a <code>string</code>.
+</p>
+<p>Additionally, the <code>render_unicode()</code> method exists which will return the template output as a Python <code>unicode</code> object, or in Python 3 a <code>string</code>:
 </p>
 
     
@@ -394,7 +396,7 @@
 </pre></div>
 
     </div>
-<p>The above method disgards the output encoding keyword argument; you can encode yourself by saying:
+<p>The above method disregards the output encoding keyword argument; you can encode yourself by saying:
 </p>
 
     
