@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '0.1.7'
+version = '0.1.8'
 
 setup(name='Mako',
       version=version,
@@ -48,5 +48,8 @@ SVN version:
       xml+mako = mako.ext.pygmentplugin:MakoXmlLexer
       js+mako = mako.ext.pygmentplugin:MakoJavascriptLexer
       css+mako = mako.ext.pygmentplugin:MakoCssLexer
+
+      [babel.extractors]
+      mako = mako.ext.babelplugin:extract
       """,
 )

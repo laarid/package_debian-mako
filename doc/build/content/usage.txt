@@ -160,7 +160,7 @@ The HTML render function is also available built-in to `Template` using the `for
     template = Template(filename="/foo/bar", format_exceptions=True)
     print template.render()
     
-Note that the compile stage of the above template occurs when you construct the `Template` itself, and no output stream is defined.  Therefore exceptions which occur within the lookup/parse/compile stage will not be handled and will propigate normally.   While the pre-render traceback usually will not include any Mako-specific lines anyway, it will mean that exceptions which occur previous to rendering and those which occur within rendering will be handled differently...so the `try/except` patterns described previously are probably of more general use.
+Note that the compile stage of the above template occurs when you construct the `Template` itself, and no output stream is defined.  Therefore exceptions which occur within the lookup/parse/compile stage will not be handled and will propagate normally.   While the pre-render traceback usually will not include any Mako-specific lines anyway, it will mean that exceptions which occur previous to rendering and those which occur within rendering will be handled differently...so the `try/except` patterns described previously are probably of more general use.
 
 The underlying object used by the error template functions is the `RichTraceback` object.  This object can also be used directly to provide custom error views.  Here's an example usage which describes its general API:
 
@@ -190,9 +190,63 @@ The standard plugin methodology used by [Turbogears](http://www.turbogears.org) 
 
 #### WSGI
 
-A sample WSGI application is included in the distrubution in the file `examples/wsgi/run_wsgi.py`.  This runner is set up to pull files from a `templates` as well as an `htdocs` directory and includes a rudimental two-file layout.  The WSGI runner acts as a fully functional standalone web server, using `wsgiutils` to run itself, and propigates GET and POST arguments from the request into the `Context`, can serve images, css files and other kinds of files, and also displays errors using Mako's included exception-handling utilities.
+A sample WSGI application is included in the distrubution in the file `examples/wsgi/run_wsgi.py`.  This runner is set up to pull files from a `templates` as well as an `htdocs` directory and includes a rudimental two-file layout.  The WSGI runner acts as a fully functional standalone web server, using `wsgiutils` to run itself, and propagates GET and POST arguments from the request into the `Context`, can serve images, css files and other kinds of files, and also displays errors using Mako's included exception-handling utilities.
 
 #### Pygments
 
 A [Pygments](http://pygments.pocoo.org)-compatible syntax highlighting module is included under `mako.ext.pygmentplugin`.  This module is used in the generation of Mako documentation and also contains various setuptools entry points under the heading `pygments.lexers`, including `mako`, `html+mako`, `xml+mako` (see the `setup.py` file for all the entry points).
 
+#### Babel (Internationalization)
+
+Mako provides support for extracting gettext messages from templates via a [Babel](http://babel.edgewall.org/) extractor entry point under `mako.ext.babelplugin`.
+
+Gettext messages are extracted from all Python code sections, even the more obscure ones such as [control structures](rel:syntax_control), [def tag function declarations](rel:defs), [call tag exprs](rel:defs_defswithcontent) and even [page tag args](rel:syntax_tags_page).
+
+[Translator comments](http://babel.edgewall.org/wiki/Documentation/messages.html#comments-tags-and-translator-comments-explanation) may also be extracted from Mako templates when a comment tag is specified to [Babel](http://babel.edgewall.org/) (such as with the -c option).
+
+For example, a project '`myproj`' contains the following Mako template at myproj/myproj/templates/name.html:
+
+    <div id="name">
+      Name:
+      ## TRANSLATORS: This is a proper name. See the gettext
+      ## manual, section Names.
+      ${_('Francois Pinard')}
+    </div>
+
+To extract gettext messages from this template the project needs a Mako section in its [Babel Extraction Method Mapping file](http://babel.edgewall.org/wiki/Documentation/messages.html#extraction-method-mapping-and-configuration) (typically located at myproj/babel.cfg):
+
+    {ini}
+    # Extraction from Python source files
+
+    [python: myproj/**.py]
+
+    # Extraction from Mako templates
+
+    [mako: myproj/templates/**.html]
+    input_encoding = utf-8
+
+The Mako extractor supports an optional `input_encoding` parameter specifying the encoding of the templates (identical to `Template`/`TemplateLookup`'s `input_encoding` parameter).
+
+Invoking [Babel](http://babel.edgewall.org/)'s extractor at the command line in the project's root directory:
+
+    myproj$ babel extract -F babel.cfg -c "TRANSLATORS:" .
+
+Will output a gettext catalog to stdout including the following:
+
+    #. This is a proper name. See the gettext
+    #. manual, section Names.
+    #: myproj/templates/name.html:5
+    msgid "Francois Pinard"
+    msgstr ""
+
+This is only a basic example: [Babel](http://babel.edgewall.org/) can be invoked from setup.py and its command line options specified in the accompanying setup.cfg via [Babel Distutils/Setuptools Integration](http://babel.edgewall.org/wiki/Documentation/setup.html).
+
+Comments must immediately precede a gettext message to be extracted. In the following case the TRANSLATORS: comment would not have been extracted:
+
+    <div id="name">
+      ## TRANSLATORS: This is a proper name. See the gettext
+      ## manual, section Names.
+      Name: ${_('Francois Pinard')}
+    </div>
+
+See the [Babel User Guide](http://babel.edgewall.org/wiki/Documentation/index.html) for more information.

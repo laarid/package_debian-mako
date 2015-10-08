@@ -1,32 +1,38 @@
-import re
+import re, inspect
 from mako.lookup import TemplateLookup
 from mako.template import Template
 
 class TGPlugin(object):
     """TurboGears compatible Template Plugin."""
-    extension = 'mak'
 
-    def __init__(self, extra_vars_func=None, options=None):
+    def __init__(self, extra_vars_func=None, options=None, extension='mak'):
         self.extra_vars_func = extra_vars_func
+        self.extension = extension
         if not options:
             options = {}
 
         # Pull the options out and initialize the lookup
-        tmpl_options = {}
+        lookup_options = {}
         for k, v in options.iteritems():
             if k.startswith('mako.'):
-                tmpl_options[k[5:]] = v
+                lookup_options[k[5:]] = v
             elif k in ['directories', 'filesystem_checks', 'module_directory']:
-                tmpl_options[k] = v
-        self.tmpl_options = tmpl_options
-        self.lookup = TemplateLookup(**tmpl_options)
+                lookup_options[k] = v
+        self.lookup = TemplateLookup(**lookup_options)
+        
+        self.tmpl_options = {}
+        # transfer lookup args to template args, based on those available
+        # in getargspec
+        for kw in inspect.getargspec(Template.__init__)[0]:
+            if kw in lookup_options:
+                self.tmpl_options[kw] = lookup_options[kw]
 
     def load_template(self, templatename, template_string=None):
         """Loads a template from a file or a string"""
         if template_string is not None:
             return Template(template_string, **self.tmpl_options)
         # Translate TG dot notation to normal / template path
-        if '/' not in templatename and '.' not in templatename:
+        if '/' not in templatename:
             templatename = '/' + templatename.replace('.', '/') + '.' + self.extension
 
         # Lookup template

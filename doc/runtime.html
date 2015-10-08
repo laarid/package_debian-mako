@@ -28,7 +28,7 @@
 
 <h1>Mako Documentation</h1>
 
-<div class="versionheader">Version: 0.1.7   Last Updated: 06/12/07 22:18:47</div>
+<div class="versionheader">Version: 0.1.8   Last Updated: 06/25/07 21:16:32</div>
 
 
 
@@ -204,7 +204,7 @@
 
  </li>
 </ul>
-<p>Another facet of the <code>Context</code> is that its dictionary of variables is <strong>immutable</strong>.  Whatever is set when <code>template.render()</code> is called is what stays.  Of course, since its Python, you can hack around this and change values in the context's internal dictionary, but this will probably will not work as well as you'd think.  The reason for this is that Mako in many cases creates copies of the <code>Context</code> object, which get sent to various elements of the template and inheriting templates used in an execution.  So changing the value in your local <code>Context</code> will not necessarily make that value available in other parts of the template's execution.  Examples of where Mako creates copies of the <code>Context</code> include within top-level def calls from the main body of the template (the context is used to propigate locally assigned variables into the scope of defs; since in the template's body they appear as inlined functions, Mako tries to make them act that way), and within an inheritance chain (each template in an inheritance chain has a different notion of <code>parent</code> and <code>next</code>, which are all stored in unique <code>Context</code> instances).
+<p>Another facet of the <code>Context</code> is that its dictionary of variables is <strong>immutable</strong>.  Whatever is set when <code>template.render()</code> is called is what stays.  Of course, since its Python, you can hack around this and change values in the context's internal dictionary, but this will probably will not work as well as you'd think.  The reason for this is that Mako in many cases creates copies of the <code>Context</code> object, which get sent to various elements of the template and inheriting templates used in an execution.  So changing the value in your local <code>Context</code> will not necessarily make that value available in other parts of the template's execution.  Examples of where Mako creates copies of the <code>Context</code> include within top-level def calls from the main body of the template (the context is used to propagate locally assigned variables into the scope of defs; since in the template's body they appear as inlined functions, Mako tries to make them act that way), and within an inheritance chain (each template in an inheritance chain has a different notion of <code>parent</code> and <code>next</code>, which are all stored in unique <code>Context</code> instances).
 </p>
 <ul>
  <li>
@@ -272,7 +272,7 @@
 
  </li>
 
- <li><p><code>kwargs</code> - this returns a <strong>copy</strong> of the context's dictionary of variables.  This is useful when you want to propigate the variables in the current context to a function as keyword arguments, i.e.:
+ <li><p><code>kwargs</code> - this returns a <strong>copy</strong> of the context's dictionary of variables.  This is useful when you want to propagate the variables in the current context to a function as keyword arguments, i.e.:
 </p>
 
     
