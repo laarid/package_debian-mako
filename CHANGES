@@ -1,3 +1,50 @@
+0.3.6
+- Documentation is on Sphinx.
+  [ticket:126]
+
+- Beaker is now part of "extras" in
+  setup.py instead of "install_requires".
+  This to produce a lighter weight install
+  for those who don't use the caching
+  as well as to conform to Pyramid 
+  deployment practices.  [ticket:154]
+
+- The Beaker import (or attempt thereof)
+  is delayed until actually needed; 
+  this to remove the performance penalty 
+  from startup, particularly for 
+  "single execution" environments
+  such as shell scripts. [ticket:153]
+
+- Patch to lexer to not generate an empty
+  '' write in the case of backslash-ended
+  lines.  [ticket:155]
+    
+- Fixed missing **extra collection in 
+  setup.py which prevented setup.py
+  from running 2to3 on install.
+  [ticket:148]
+  
+- New flag on Template, TemplateLookup - 
+  strict_undefined=True, will cause
+  variables not found in the context to 
+  raise a NameError immediately, instead of
+  defaulting to the UNDEFINED value.
+
+- The range of Python identifiers that
+  are considered "undefined", meaning they
+  are pulled from the context, has been 
+  trimmed back to not include variables 
+  declared inside of expressions (i.e. from
+  list comprehensions), as well as 
+  in the argument list of lambdas.  This
+  to better support the strict_undefined
+  feature.  The change should be 
+  fully backwards-compatible but involved
+  a little bit of tinkering in the AST code,
+  which hadn't really been touched for 
+  a couple of years, just FYI.
+  
 0.3.5
 - The <%namespace> tag allows expressions
   for the `file` argument, i.e. with ${}.
