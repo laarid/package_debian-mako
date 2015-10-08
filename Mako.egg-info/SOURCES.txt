@@ -134,6 +134,7 @@ test/test_loop.py
 test/test_lru.py
 test/test_namespace.py
 test/test_pygen.py
+test/test_runtime.py
 test/test_template.py
 test/test_tgplugin.py
 test/test_util.py
