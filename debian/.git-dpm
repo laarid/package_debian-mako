@@ -1,11 +1,11 @@
 # see git-dpm(1) from git-dpm package
-d43f9b6428cf19a5a6cc7ce897707fa6c4b3a0e7
-d43f9b6428cf19a5a6cc7ce897707fa6c4b3a0e7
-d43f9b6428cf19a5a6cc7ce897707fa6c4b3a0e7
-d43f9b6428cf19a5a6cc7ce897707fa6c4b3a0e7
-mako_1.0.3+ds1.orig.tar.gz
-02eb5cf4c30452978634cbddddf33fbb867c7207
-270666
+88956c5c9e1c96af7e6f633ebd3da7582aea387f
+88956c5c9e1c96af7e6f633ebd3da7582aea387f
+88956c5c9e1c96af7e6f633ebd3da7582aea387f
+88956c5c9e1c96af7e6f633ebd3da7582aea387f
+mako_1.0.4+ds1.orig.tar.gz
+659d200a9723555f97a10163dfe69bf294727f8b
+271924
 debianTag="debian/%e%v"
 patchedTag="patched/%e%v"
 upstreamTag="upstream/%e%u"
