@@ -6,6 +6,34 @@ Changelog
 ===
 
 .. changelog::
+    :version: 1.0.4
+    :released: Thu Mar 10 2016
+
+    .. change::
+        :tags: feature, test
+
+      The default test runner is now py.test.  Running "python setup.py test"
+      will make use of py.test instead of nose.  nose still works as a test
+      runner as well, however.
+
+    .. change::
+        :tags: bug, lexer
+        :pullreq: github:19
+
+      Major improvements to lexing of intricate Python sections which may
+      contain complex backslash sequences, as well as support for the bitwise
+      operator (e.g. pipe symbol) inside of expression sections distinct
+      from the Mako "filter" operator, provided the operator is enclosed
+      within parentheses or brackets.  Pull request courtesy Daniel Martin.
+
+    .. change::
+        :tags: feature
+        :pullreq: bitbucket:16
+
+      Added new method :meth:`.Template.list_defs`.   Pull request courtesy
+      Jonathan Vanasco.
+
+.. changelog::
     :version: 1.0.3
     :released: Tue Oct 27 2015
 
