@@ -1,6 +1,10 @@
-mako (1.0.3+ds1-2) UNRELEASED; urgency=medium
+mako (1.0.4+ds1-1) unstable; urgency=medium
 
+  [ Ondřej Nový ]
   * Fixed VCS URL (https)
+
+  [ Piotr Ożarowski ]
+  * New upstream release
 
  -- Ondřej Nový <novy@ondrej.org>  Tue, 29 Mar 2016 21:42:26 +0200
 
