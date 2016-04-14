@@ -5,8 +5,10 @@ mako (1.0.4+ds1-1) unstable; urgency=medium
 
   [ Piotr Ożarowski ]
   * New upstream release
+  * Replace python-nose with python-pytest (following upstream, this also
+    closes: #813668)
 
- -- Ondřej Nový <novy@ondrej.org>  Tue, 29 Mar 2016 21:42:26 +0200
+ -- Piotr Ożarowski <piotr@debian.org>  Thu, 14 Apr 2016 21:16:59 +0200
 
 mako (1.0.3+ds1-1) unstable; urgency=medium
 
