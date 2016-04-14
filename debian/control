@@ -9,9 +9,9 @@ Build-Depends-Indep: python-all, python-setuptools,
 # to rebuild docs:
  python-sphinx, python-changelog, python-sphinx-paramlinks,
 # for tests:
-Standards-Version: 3.9.6
  python-pytest, python-markupsafe, python-mock,
  python3-pytest, python3-markupsafe, python3-mock
+Standards-Version: 3.9.8
 Homepage: http://www.makotemplates.org/
 X-Python-Version: >= 2.4
 Vcs-Git: https://anonscm.debian.org/git/python-modules/packages/mako.git

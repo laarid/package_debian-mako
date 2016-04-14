@@ -7,6 +7,7 @@ mako (1.0.4+ds1-1) unstable; urgency=medium
   * New upstream release
   * Replace python-nose with python-pytest (following upstream, this also
     closes: #813668)
+  * Standards-Version bumped to 3.9.8 (no changes needed)
 
  -- Piotr Ożarowski <piotr@debian.org>  Thu, 14 Apr 2016 21:16:59 +0200
 
