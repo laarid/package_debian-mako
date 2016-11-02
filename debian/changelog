@@ -1,3 +1,10 @@
+mako (1.0.4+ds1-2) unstable; urgency=medium
+
+  * Fix FTBFS due to Sphinx API change (closes: 830178, thanks to Nishanth
+    Aravamudan for the patch)
+
+ -- Piotr Ożarowski <piotr@debian.org>  Wed, 02 Nov 2016 23:27:06 +0100
+
 mako (1.0.4+ds1-1) unstable; urgency=medium
 
   [ Ondřej Nový ]
