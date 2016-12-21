@@ -2,10 +2,10 @@
 fdee05b5abfc54b0c1de8326786a39d4cab58afa
 fdee05b5abfc54b0c1de8326786a39d4cab58afa
 88956c5c9e1c96af7e6f633ebd3da7582aea387f
-88956c5c9e1c96af7e6f633ebd3da7582aea387f
-mako_1.0.4+ds1.orig.tar.gz
-659d200a9723555f97a10163dfe69bf294727f8b
-271924
+5d1ccaf2c078af06033d728a7b5f7e3983a2882f
+mako_1.0.6+ds1.orig.tar.gz
+d9e272c2925dd313d4546e2f231a738e2c2fc31a
+272388
 debianTag="debian/%e%v"
 patchedTag="patched/%e%v"
 upstreamTag="upstream/%e%u"
