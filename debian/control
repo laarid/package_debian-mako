@@ -9,8 +9,8 @@ Build-Depends-Indep: python-all, python-setuptools,
 # to rebuild docs:
  python-sphinx, python-changelog, python-sphinx-paramlinks,
 # for tests:
- python-pytest, python-markupsafe, python-mock,
- python3-pytest, python3-markupsafe, python3-mock
+ python-pytest, python-mock,
+ python3-pytest, python3-mock
 Standards-Version: 3.9.8
 Homepage: http://www.makotemplates.org/
 X-Python-Version: >= 2.4
@@ -19,6 +19,7 @@ Vcs-Browser: https://anonscm.debian.org/cgit/python-modules/packages/mako.git
 
 Package: python-mako
 Architecture: all
+Multi-Arch: foreign
 Depends: ${python:Depends}, ${misc:Depends}
 Suggests: python-beaker (>= 1.1), python-mako-doc
 Enhances: python-pylons, python-turbogears, python-pygments
@@ -34,6 +35,7 @@ Description: fast and lightweight templating for the Python platform
 
 Package: python3-mako
 Architecture: all
+Multi-Arch: foreign
 Depends: ${python3:Depends}, ${misc:Depends}
 Suggests: ${python3:Suggests}, python3-beaker, python-mako-doc
 Description: fast and lightweight templating for the Python 3 platform
