@@ -45,8 +45,7 @@ before_install:
 install:
 - ${DOCKER_EXEC_ROOT} apt-get update -qq
 - |
-  ${DOCKER_EXEC_ROOT} \
-    env "DEB_BUILD_PROFILES=pkg.$(cat debian/control | grep ^Source: | awk '{print $2}').stage${JOB_STAGE}" \
+  ${DOCKER_EXEC} \
     mk-build-deps --install --remove \
       --root-cmd sudo \
       --tool 'apt-get -o Debug::pkgProblemResolver=yes --no-install-recommends -y --allow-unauthenticated'
