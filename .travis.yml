@@ -43,6 +43,7 @@ before_install:
     /bin/bash
 
 install:
+- ${DOCKER_EXEC_ROOT} chown -R laarid:laarid ${TRAVIS_BUILD_DIR%${TRAVIS_REPO_SLUG}}
 - ${DOCKER_EXEC_ROOT} apt-get update -qq
 - |
   ${DOCKER_EXEC} \
