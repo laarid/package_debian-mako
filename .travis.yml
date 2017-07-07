@@ -55,6 +55,7 @@ script:
 - ${DOCKER_EXEC} dpkg-buildpackage -i -us -uc -b
 
 before_deploy:
+- sudo chown -R $(id -u):$(id -g) ${TRAVIS_BUILD_DIR%${TRAVIS_REPO_SLUG}}
 - |
   cat debian/bintray.json.in | \
     sed -e "s#@BINTRAY_PACKAGE@#$(cat debian/control | grep ^Source: | awk '{print $2}')#g" \
