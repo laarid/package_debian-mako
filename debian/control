@@ -3,7 +3,7 @@ Section: python
 Priority: optional
 Maintainer: Piotr Ożarowski <piotr@debian.org>
 Uploaders: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
-Build-Depends: debhelper (>= 5.0.38), dh-python
+Build-Depends: debhelper (>= 10~), dh-python
 Build-Depends-Indep: python-all, python-setuptools,
  python3-all, python3-setuptools,
 # to rebuild docs:
