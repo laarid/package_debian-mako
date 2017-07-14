@@ -6,6 +6,18 @@ Changelog
 ===
 
 .. changelog::
+    :version: 1.0.7
+    :released: Thu Jul 13 2017
+
+    .. change::
+        :tags: bug
+
+     Changed the "print" in the mako-render command to
+     sys.stdout.write(), avoiding the extra newline at the end
+     of the template output.  Pull request courtesy
+     Yves Chevallier.
+
+.. changelog::
     :version: 1.0.6
     :released: Wed Nov 9 2016
 
@@ -1570,7 +1582,7 @@ Older Versions
         :tags: bugfixes
         :tickets: 69
 
-      fixed codegen bug which occured when using <%page>
+      fixed codegen bug which occurred when using <%page>
       level caching, combined with an expression-based
       cache_key, combined with the usage of <%namespace
       import="*"/> - fixed lexer exceptions not cleaning up
