@@ -14,19 +14,20 @@ env:
   - BINTRAY_ARCH=all
   - BINTRAY_DESC="Multiarch-awared Debian mako packages"
 
-branches:
-  only:
-  - master
-  - release
+addons:
+  apt:
+    packages:
+    - dpkg-dev
 
 before_install:
 - |
+  export JOB_SUITE=$(dpkg-parsechangelog | grep ^Distribution: | awk '{print $2}'); \
   sudo docker run --detach --tty \
     --name test_container \
     --volume ${TRAVIS_BUILD_DIR%${TRAVIS_REPO_SLUG}}:${TRAVIS_BUILD_DIR%${TRAVIS_REPO_SLUG}} \
     --workdir ${TRAVIS_BUILD_DIR} \
     --add-host dl.bintray.com:$(nslookup dl.bintray.com | grep -m1 -A1 Name: | grep Address: | awk '{print $2}') \
-    laarid/devel:amd64 \
+    laarid/devel:${JOB_SUITE}-$(dpkg --print-architecture) \
     /bin/bash
 
 install:
@@ -44,24 +45,24 @@ script:
 before_deploy:
 - sudo chown -R $(id -u):$(id -g) ${TRAVIS_BUILD_DIR%${TRAVIS_REPO_SLUG}}
 - |
-  cat debian/bintray.json.in | \
-    sed -e "s#@BINTRAY_PACKAGE@#$(cat debian/control | grep ^Source: | awk '{print $2}')#g" \
+  cat .bintray.json.in | \
+    sed -e "s#@BINTRAY_PACKAGE@#$(dpkg-parsechangelog | grep ^Source: | awk '{print $2}')#g" \
         -e "s#@BINTRAY_USER@#${BINTRAY_USER}#g" \
         -e "s#@BINTRAY_REPO@#${BINTRAY_REPO}#g" \
         -e "s#@BINTRAY_DESC@#${BINTRAY_DESC}#g" \
         -e "s#@GITHUB_REPO@#${TRAVIS_REPO_SLUG}#g" \
-        -e "s,@BINTRAY_VERSION@,$(cat debian/changelog | head -n 1 | sed 's,.*(\(.*\)).*,\1,'),g" \
-        -e "s#@BINTRAY_RELEASE_DATE@#$(cat debian/changelog | grep -m 1 '^ -- ' | sed 's,^.*  ,,')#g" \
+        -e "s#@BINTRAY_VERSION@#$(dpkg-parsechangelog | grep ^Version: | awk '{print $2}')#g" \
+        -e "s#@BINTRAY_RELEASE_DATE@#$(date -Iseconds --date="$(${DOCKER_EXEC} dpkg-parsechangelog | grep ^Date: | cut -d ' ' -f 2-)")#g" \
         -e "s#@BINTRAY_OUTDIR@#$(dirname ${TRAVIS_BUILD_DIR})#g" \
-        -e "s#@BINTRAY_POOLABBR@#$(cat debian/control | grep ^Source: | awk '{print $2}' | cut -c1)#g" \
-        -e "s#@BINTRAY_SUITE@#$(${DOCKER_EXEC} cat /etc/apt/sources.list | grep -m 1 '^deb ' | awk '{print $3}')#g" \
+        -e "s#@BINTRAY_POOLABBR@#$(dpkg-parsechangelog | grep ^Source: | awk '{print $2}' | cut -c1)#g" \
+        -e "s#@BINTRAY_SUITE@#${JOB_SUITE}#g" \
         -e "s#@BINTRAY_COMPONENT@#${BINTRAY_COMPONENT}#g" \
         -e "s#@BINTRAY_ARCH@#${BINTRAY_ARCH}#g" | \
-    tee debian/bintray.json
+    tee bintray.json
 
 deploy:
 - provider: bintray
-  file: debian/bintray.json
+  file: bintray.json
   user: vicamo
   key:
     secure: "qZ/JhATGaNUKxTYjS+KveRwRwpy0zW725tEoGZOK+yAhqRb3ehVFNwRESBrGYWZTS9oPWzWneyVt4h1LHT2+RTDOlvhbsTr0dVePOEtwmCOf1n9Pw1ivtQrUF2AnQ826GtcKHoqS65KEwZGj3X1ooCQOUwdR7VdGzzBsF7fQKR8mZZl9IV66NU/SYstcSnyuYtEvbr3a5IgEp7uudqz9FpNifcEo1rYn6ezUil/mFDKf7X/dAF4GEztfb7rAztGBufyAowtbTHbRruMYmS9McudlfLX6khmJx6D/EjuyPpmtf0SO59Wmt7vYC02ZgQRYa+0yVEWnDiBIt1lPa2aYHnrQlI42Gt+0aPF27Ps7QedRDAsnh7oXFPxyasVH60lLHOTEb5TMesqT0fSIZ9Rwb40TnLAOt25/mhkMgSUUbJdAlD6ubNttz8tyRqYma+ZZIgOWHNzhTuBRw9wBTxgqkG8MvgYR3l0sGA1KNZPetS7nUtTv8Z2GahTB1EtZXcVylMAia4Cuuz5cawqM3X06oj7K8CTCqtObDBrD1n7DK/o4WDMiMOzoyjb/+rWqvf3jkK63Igsr9/JhMnSPvPwhXNG7Gl94GkdHCEuzCr0Krrnsy1cGp/BcwyXjRK03nqTYseAKH88gP2oiFwEtq3iRNxDh0bJn67dMTp9pZoXNtI0="
