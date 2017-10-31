@@ -3,7 +3,7 @@ Section: python
 Priority: optional
 Maintainer: Piotr Ożarowski <piotr@debian.org>
 Uploaders: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
-Build-Depends: debhelper (>= 5.0.38), dh-python
+Build-Depends: debhelper (>= 10~), dh-python
 Build-Depends-Indep: python-all, python-setuptools,
  python3-all, python3-setuptools,
 # to rebuild docs:
@@ -11,7 +11,7 @@ Build-Depends-Indep: python-all, python-setuptools,
 # for tests:
  python-pytest, python-mock,
  python3-pytest, python3-mock
-Standards-Version: 3.9.8
+Standards-Version: 4.0.0
 Homepage: http://www.makotemplates.org/
 X-Python-Version: >= 2.4
 Vcs-Git: https://anonscm.debian.org/git/python-modules/packages/mako.git

@@ -1,8 +1,15 @@
-mako (1.0.6+ds1-2-multiarch) unstable; urgency=medium
+mako (1.0.7+ds1-1+buster1) buster; urgency=medium
 
   * Specify Multi-Arch: foreign.
 
- -- You-Sheng Yang <vicamo@gmail.com>  Tue, 21 Mar 2017 15:55:10 +0800
+ -- You-Sheng Yang <vicamo@gmail.com>  Tue, 01 Nov 2017 00:42:33 +0800
+
+mako (1.0.7+ds1-1) unstable; urgency=medium
+
+  * New upstream release
+  * Standards-Version bumped to 4.0.0 (no changes needed)
+
+ -- Piotr Ożarowski <piotr@debian.org>  Fri, 14 Jul 2017 16:44:18 +0200
 
 mako (1.0.6+ds1-2) unstable; urgency=medium
 
