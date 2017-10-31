@@ -6,9 +6,8 @@ services:
 
 env:
   global:
-  - DOCKER_EXEC_ROOT="sudo docker exec --interactive --tty --user root test_container"
-  - DOCKER_EXEC="sudo docker exec --interactive --tty test_container"
-  - DOCKER_EXEC_NOTTY="sudo docker exec test_container"
+  - DOCKER_EXEC_ROOT="docker exec --user root test_container"
+  - DOCKER_EXEC="docker exec test_container"
   - BINTRAY_USER=laarid
   - BINTRAY_REPO=main
   - BINTRAY_COMPONENT=main
@@ -22,7 +21,7 @@ branches:
 
 before_install:
 - |
-  sudo docker run --detach --interactive --tty \
+  sudo docker run --detach --tty \
     --name test_container \
     --volume ${TRAVIS_BUILD_DIR%${TRAVIS_REPO_SLUG}}:${TRAVIS_BUILD_DIR%${TRAVIS_REPO_SLUG}} \
     --workdir ${TRAVIS_BUILD_DIR} \
@@ -55,7 +54,7 @@ before_deploy:
         -e "s#@BINTRAY_RELEASE_DATE@#$(cat debian/changelog | grep -m 1 '^ -- ' | sed 's,^.*  ,,')#g" \
         -e "s#@BINTRAY_OUTDIR@#$(dirname ${TRAVIS_BUILD_DIR})#g" \
         -e "s#@BINTRAY_POOLABBR@#$(cat debian/control | grep ^Source: | awk '{print $2}' | cut -c1)#g" \
-        -e "s#@BINTRAY_SUITE@#$(${DOCKER_EXEC_NOTTY} cat /etc/apt/sources.list | grep -m 1 '^deb ' | awk '{print $3}')#g" \
+        -e "s#@BINTRAY_SUITE@#$(${DOCKER_EXEC} cat /etc/apt/sources.list | grep -m 1 '^deb ' | awk '{print $3}')#g" \
         -e "s#@BINTRAY_COMPONENT@#${BINTRAY_COMPONENT}#g" \
         -e "s#@BINTRAY_ARCH@#${BINTRAY_ARCH}#g" | \
     tee debian/bintray.json
