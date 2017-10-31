@@ -1,6 +1,5 @@
 language: c
 
-dist: trusty
 sudo: required
 services:
 - docker
@@ -20,17 +19,6 @@ branches:
   only:
   - master
   - release
-
-addons:
-  apt:
-    sources:
-    - sourceline: 'deb http://archive.ubuntu.com/ubuntu/ devel universe'
-    packages:
-    - binfmt-support
-    - qemu-user-static
-
-cache:
-- apt
 
 before_install:
 - |
